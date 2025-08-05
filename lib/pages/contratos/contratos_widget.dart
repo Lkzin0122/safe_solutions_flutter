@@ -110,10 +110,10 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             ),
                           ],
                         ),
-                        Align(
-                          alignment: AlignmentDirectional(0, 0),
-                          child: Text(
-                            'Serviços em andamento',
+                       Align(
+                       alignment: AlignmentDirectional(0.0, -0.84), // ou outro valor que faça sentido
+                       child: Text(
+                        'Serviços em andamento',
                             textAlign: TextAlign.center,
                             style: FlutterFlowTheme.of(context)
                                 .displaySmall
@@ -134,7 +134,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
                             ),
-                            child: Container(
+                            child: Container( // Container O Montador
                               width: 370.0,
                               height: 149.0,
                               decoration: BoxDecoration(
@@ -239,7 +239,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
                             ),
-                            child: Container(
+                            child: Container( // Container Super Clean
                               width: 370.0,
                               height: 149.0,
                               decoration: BoxDecoration(
@@ -256,6 +256,14 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                 ],
                                 borderRadius: BorderRadius.circular(18.0),
                               ),
+                            child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.pushNamed(SuperCleanWidget.routeName);
+                                },
                               child: Stack(
                                 children: [
                                   Align(
@@ -319,6 +327,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                   ),
                                 ],
                               ),
+                              ), //
                             ),
                           ),
                         ),
@@ -330,7 +339,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
                             ),
-                            child: Container(
+                            child: Container( // Container Bratecno
                               width: 370.0,
                               height: 149.0,
                               decoration: BoxDecoration(
@@ -347,7 +356,15 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                 ],
                                 borderRadius: BorderRadius.circular(18.0),
                               ),
-                              child: Stack(
+                            child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.pushNamed(BratecnoWidget.routeName);
+                                },
+                             child: Stack(
                                 children: [
                                   Align(
                                     alignment:
@@ -410,7 +427,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                   ),
                                 ],
                               ),
-                            ),
+                              ), 
+                             ),
                           ),
                         ),
                       ],
@@ -424,22 +442,10 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                 tablet: false,
               ))
                 Expanded(
-                  flex: 6,
+
                   child: Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Container(
-                      width: 100.0,
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: Image.network(
-                            'https://images.unsplash.com/photo-1514924013411-cbf25faa35bb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1380&q=80',
-                          ).image,
-                        ),
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
                     ),
                   ),
                 ),
