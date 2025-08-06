@@ -205,7 +205,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                             useGoogleFonts: !FlutterFlowTheme.of(context)
                                 .labelMediumIsCustom,
                           ),
-                      hintText: 'imperioanimal27@gmail.com',
+                      hintText: '',
                       hintStyle: FlutterFlowTheme.of(context)
                           .labelMedium
                           .override(

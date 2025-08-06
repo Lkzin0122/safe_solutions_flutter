@@ -9,6 +9,11 @@ import 'package:provider/provider.dart';
 import 'contratos_model.dart';
 export 'contratos_model.dart';
 
+bool isUserLoggedIn() {
+  // TODO: substitua isso pela sua lógica real para verificar o login
+  return false; // temporário: sempre retorna não logado
+}
+
 class ContratosWidget extends StatefulWidget {
   const ContratosWidget({super.key});
 
@@ -17,6 +22,8 @@ class ContratosWidget extends StatefulWidget {
 
   @override
   State<ContratosWidget> createState() => _ContratosWidgetState();
+
+  
 }
 
 class _ContratosWidgetState extends State<ContratosWidget> {
@@ -28,8 +35,15 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ContratosModel());
-  }
-
+   // Aguarda a primeira frame para acessar o contexto e redirecionar
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (!isUserLoggedIn()) {
+      // Redireciona para a página de login
+      context.goNamed('/login1'); 
+      // ou context.pushNamed('login') se você quiser empilhar a rota
+    }
+  });
+}
   @override
   void dispose() {
     _model.dispose();

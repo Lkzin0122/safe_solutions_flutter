@@ -60,12 +60,23 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    _appStateNotifier = AppStateNotifier.instance;
-    _router = createRouter(_appStateNotifier);
-    userStream = safeSolutionsAuthUserStream()
-      ..listen((user) {
-        _appStateNotifier.update(user);
-      });
+GoRouter createRouter(AppStateNotifier appStateNotifier) {
+  return GoRouter(
+    routes: [
+      GoRoute(
+        name: 'login',  // nome correto
+        path: '/login1',
+        builder: (context, state) => Login1Widget(),
+      ),
+       GoRoute(
+        name: 'contratos',  // <- aqui é onde o nome da rota deve estar
+        path: '/contratos',
+        builder: (context, state) => ContratosWidget(),
+      ),
+      // outras rotas
+    ],
+  );
+}
 
     Future.delayed(
       Duration(milliseconds: 1000),
