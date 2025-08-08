@@ -314,9 +314,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                               fontFamily: 'Montserrat',
                                               letterSpacing: 0.0,
                                             ),
-                                        validator: _model
-                                            .passwordTextControllerValidator
-                                            .asValidator(context),
+                                        validator: _validatePassword,
                                       ),
                                     ),
                                   ),

@@ -36,11 +36,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
-
   ThemeMode _themeMode = FlutterFlowTheme.themeMode;
 
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
+  late Stream<SafeSolutionsAuthUser> userStream;
+
   String getRoute([RouteMatch? routeMatch]) {
     final RouteMatch lastMatch =
         routeMatch ?? _router.routerDelegate.currentConfiguration.last;
@@ -50,36 +51,23 @@ class _MyAppState extends State<MyApp> {
     return matchList.uri.toString();
   }
 
-  List<String> getRouteStack() =>
-      _router.routerDelegate.currentConfiguration.matches
-          .map((e) => getRoute(e))
-          .toList();
-  late Stream<SafeSolutionsAuthUser> userStream;
+  List<String> getRouteStack() => _router.routerDelegate.currentConfiguration.matches
+      .map((e) => getRoute(e))
+      .toList();
 
   @override
   void initState() {
     super.initState();
 
-GoRouter createRouter(AppStateNotifier appStateNotifier) {
-  return GoRouter(
-    routes: [
-      GoRoute(
-        name: 'login',  // nome correto
-        path: '/login1',
-        builder: (context, state) => Login1Widget(),
-      ),
-       GoRoute(
-        name: 'contratos',  // <- aqui é onde o nome da rota deve estar
-        path: '/contratos',
-        builder: (context, state) => ContratosWidget(),
-      ),
-      // outras rotas
-    ],
-  );
-}
+    _appStateNotifier = AppStateNotifier.instance;
+    _router = createRouter(_appStateNotifier);
+    userStream = safeSolutionsAuthUserStream()
+      ..listen((user) {
+        _appStateNotifier.update(user);
+      });
 
     Future.delayed(
-      Duration(milliseconds: 1000),
+      const Duration(milliseconds: 1000),
       () => _appStateNotifier.stopShowingSplashImage(),
     );
   }
@@ -98,7 +86,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'SafeSolutions',
-      localizationsDelegates: [
+      localizationsDelegates: const [
         FFLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
