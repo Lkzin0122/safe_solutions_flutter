@@ -24,6 +24,18 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
   late EsqueciSenhaModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, insira o email.';
+    }
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Por favor, insira um email válido.';
+    }
+    return null;
+  }
 
   @override
   void initState() {
@@ -259,8 +271,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                     maxLines: null,
                     keyboardType: TextInputType.emailAddress,
                     cursorColor: FlutterFlowTheme.of(context).primary,
-                    validator: _model.emailAddressTextControllerValidator
-                        .asValidator(context),
+                    validator: _validateEmail,
                   ),
                 ),
                 Align(
@@ -270,6 +281,10 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                         EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
                     child: FFButtonWidget(
                       onPressed: () async {
+                        final isValid =
+                            _formKey.currentState?.validate() ?? false;
+                        if (!isValid) return;
+
                         context.pushNamed(NovaSenhaWidget.routeName);
                       },
                       text: 'Verificar',
