@@ -11,7 +11,7 @@ export 'contratos_model.dart';
 
 bool isUserLoggedIn() {
   // TODO: substitua isso pela sua lógica real para verificar o login
-  return false; // temporário: sempre retorna não logado
+  return true; // temporário: sempre retorna logado
 }
 
 class ContratosWidget extends StatefulWidget {

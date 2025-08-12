@@ -62,7 +62,7 @@ class _MontadorWidgetState extends State<MontadorWidget> {
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                         shape: BoxShape.rectangle,
                       ),
-                      alignment: const AlignmentDirectional(0.0, -1.0),
+                      alignment: const AlignmentDirectional(0.0, 2.0),
                       child: Stack(
                         children: [
                           Stack(

@@ -171,7 +171,7 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
                             ),
                           ),
                           Align(
-                            alignment: const AlignmentDirectional(-0.65, -0.24),
+                            alignment: const AlignmentDirectional(-0.8, -0.24),
                             child: Text(
                               'Descriçao do Orçamento',
                               style: FlutterFlowTheme.of(context)
@@ -196,7 +196,7 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
                                     .secondaryBackground,
                               ),
                               child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
+                                'Orçamento solicitado para a realização de serviços de limpeza em um espaço comercial. O serviço incluirá a limpeza de várias áreas, com foco na sala de reuniões e banheiros. A limpeza da sala de reuniões incluirá a remoção de poeira, limpeza das superfícies das mesas e desinfecção de equipamentos.',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -285,14 +285,14 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
                           Align(
                             alignment: const AlignmentDirectional(-0.27, 0.01),
                             child: Container(
-                              width: 294.7,
-                              height: 122.5,
+                              width: 310.0,
+                              height: 140.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
                               ),
                               child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
+                                'Orçamento solicitado para a realização de serviços de limpeza em um espaço comercial. O serviço incluirá a limpeza de várias áreas, com foco na sala de reuniões e banheiros. A limpeza da sala de reuniões incluirá a remoção de poeira, limpeza das superfícies das mesas e desinfecção de equipamentos. ',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -332,7 +332,7 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
                             ),
                           ),
                           Align(
-                            alignment: const AlignmentDirectional(-0.77, 0.3),
+                            alignment: const AlignmentDirectional(-0.75, 0.3),
                             child: Container(
                               width: 100.0,
                               height: 21.85,
@@ -341,7 +341,7 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
                                     .secondaryBackground,
                               ),
                               child: Text(
-                                'R\$ 1.200,00',
+                                'R\$ 1.000,00',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -356,7 +356,7 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
                             ),
                           ),
                           Align(
-                            alignment: const AlignmentDirectional(-0.83, 0.4),
+                            alignment: const AlignmentDirectional(-0.8, 0.4),
                             child: Container(
                               width: 100.0,
                               height: 21.14,
@@ -365,7 +365,7 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
                                     .secondaryBackground,
                               ),
                               child: Text(
-                                'Prazo: 08/11',
+                                'Prazo: 20/11',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyLarge
                                     .override(
