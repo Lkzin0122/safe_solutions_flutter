@@ -58,20 +58,20 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
     return Scaffold(
       key: scaffoldKey,
       body: Align(
-        alignment: AlignmentDirectional(0.0, -1.0),
+        alignment: const AlignmentDirectional(0.0, -1.0),
         child: Container(
           width: double.infinity,
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             maxWidth: 570.0,
           ),
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
-              color: Color(0xFFFDFDFD),
+              color: const Color(0xFFFDFDFD),
             ),
           ),
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+            padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -86,7 +86,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                   child: Stack(
                     children: [
                       Align(
-                        alignment: AlignmentDirectional(-1.02, -0.27),
+                        alignment: const AlignmentDirectional(-1.02, -0.27),
                         child: FlutterFlowIconButton(
                           borderColor: Colors.transparent,
                           borderRadius: 30.0,
@@ -103,14 +103,14 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                         ),
                       ),
                       Align(
-                        alignment: AlignmentDirectional(0.03, -0.14),
+                        alignment: const AlignmentDirectional(0.03, -0.14),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(0.0),
                           child: Image.network(
                             'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
                             width: 250.0,
                             fit: BoxFit.fill,
-                            alignment: Alignment(0.0, 0.0),
+                            alignment: const Alignment(0.0, 0.0),
                           ),
                         ),
                       ),
@@ -126,7 +126,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                 ))
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 8.0),
+                        const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 8.0),
                     child: InkWell(
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
@@ -139,7 +139,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 12.0, 0.0, 12.0),
                             child: Icon(
                               Icons.arrow_back_rounded,
@@ -148,7 +148,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 0.0, 0.0, 0.0),
                             child: Text(
                               'Back',
@@ -170,7 +170,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                   ),
                 Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(30.0, 30.0, 40.0, 10.0),
+                      const EdgeInsetsDirectional.fromSTEB(30.0, 30.0, 40.0, 10.0),
                   child: Text(
                     'Confirme seu endereço de E-mail',
                     style: FlutterFlowTheme.of(context).headlineMedium.override(
@@ -185,7 +185,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                 ),
                 Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(30.0, 10.0, 40.0, 0.0),
+                      const EdgeInsetsDirectional.fromSTEB(30.0, 10.0, 40.0, 0.0),
                   child: Text(
                     'Para recuperar sua senha, uma série de perguntas serão feitas para validar o acesso',
                     style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -199,11 +199,11 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                 ),
                 Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(30.0, 50.0, 30.0, 0.0),
+                      const EdgeInsetsDirectional.fromSTEB(30.0, 50.0, 30.0, 0.0),
                   child: TextFormField(
                     controller: _model.emailAddressTextController,
                     focusNode: _model.emailAddressFocusNode,
-                    autofillHints: [AutofillHints.email],
+                    autofillHints: const [AutofillHints.email],
                     obscureText: false,
                     decoration: InputDecoration(
                       labelText: 'insira seu e-mail\n',
@@ -242,14 +242,14 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0x00000000),
                           width: 2.0,
                         ),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0x00000000),
                           width: 2.0,
                         ),
@@ -258,7 +258,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                       filled: true,
                       fillColor:
                           FlutterFlowTheme.of(context).secondaryBackground,
-                      contentPadding: EdgeInsetsDirectional.fromSTEB(
+                      contentPadding: const EdgeInsetsDirectional.fromSTEB(
                           24.0, 24.0, 20.0, 24.0),
                     ),
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -275,10 +275,10 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
+                  alignment: const AlignmentDirectional(0.0, 0.0),
                   child: Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
                     child: FFButtonWidget(
                       onPressed: () async {
                         final isValid =
@@ -292,9 +292,9 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                         width: 270.0,
                         height: 50.0,
                         padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                         iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                         color: FlutterFlowTheme.of(context).tertiary,
                         textStyle: FlutterFlowTheme.of(context)
                             .titleSmall
@@ -307,7 +307,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                                   .titleSmallIsCustom,
                             ),
                         elevation: 3.0,
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Colors.transparent,
                           width: 1.0,
                         ),

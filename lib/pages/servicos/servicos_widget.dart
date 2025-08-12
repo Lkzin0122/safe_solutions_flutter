@@ -45,7 +45,7 @@ class _ServicosWidgetState extends State<ServicosWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        body: SafeArea(
+        body: const SafeArea(
           top: true,
           child: Stack(
             children: [],

@@ -74,9 +74,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
-                  alignment: AlignmentDirectional(0.0, -1.0),
+                  alignment: const AlignmentDirectional(0.0, -1.0),
                   child: Align(
-                    alignment: AlignmentDirectional(100.0, 0.0),
+                    alignment: const AlignmentDirectional(100.0, 0.0),
                     child: Stack(
                       children: [
                         Stack(
@@ -92,19 +92,19 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                     decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryBackground,
-                                      borderRadius: BorderRadius.only(
+                                      borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(16.0),
                                         bottomRight: Radius.circular(16.0),
                                         topLeft: Radius.circular(0.0),
                                         topRight: Radius.circular(0.0),
                                       ),
                                     ),
-                                    alignment: AlignmentDirectional(-1.0, 0.0),
+                                    alignment: const AlignmentDirectional(-1.0, 0.0),
                                     child: Stack(
                                       children: [
                                         Align(
                                           alignment:
-                                              AlignmentDirectional(0.03, -0.82),
+                                              const AlignmentDirectional(0.03, -0.82),
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(0.0),
@@ -112,7 +112,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                               'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
                                               width: 250.0,
                                               fit: BoxFit.fill,
-                                              alignment: Alignment(0.0, 0.0),
+                                              alignment: const Alignment(0.0, 0.0),
                                             ),
                                           ),
                                         ),
@@ -125,7 +125,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           ],
                         ),
                        Align(
-                       alignment: AlignmentDirectional(0.0, -0.84), // ou outro valor que faça sentido
+                       alignment: const AlignmentDirectional(0.0, -0.84), // ou outro valor que faça sentido
                        child: Text(
                         'Serviços em andamento',
                             textAlign: TextAlign.center,
@@ -133,7 +133,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                 .displaySmall
                                 .override(
                                   fontFamily: 'Montserrat',
-                                  color: Color(0xFF274364),
+                                  color: const Color(0xFF274364),
                                   fontSize: 22.0,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
@@ -141,7 +141,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           ),
                         ),
                         Align(
-                          alignment: AlignmentDirectional(0.0, -0.65),
+                          alignment: const AlignmentDirectional(0.0, -0.65),
                           child: Material(
                             color: Colors.transparent,
                             elevation: 2.0,
@@ -152,8 +152,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                               width: 370.0,
                               height: 149.0,
                               decoration: BoxDecoration(
-                                color: Color(0xFFF4F3F3),
-                                boxShadow: [
+                                color: const Color(0xFFF4F3F3),
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x33000000),
@@ -177,7 +177,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                   children: [
                                     Align(
                                       alignment:
-                                          AlignmentDirectional(-0.85, 0.15),
+                                          const AlignmentDirectional(-0.85, 0.15),
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(0.0),
@@ -191,7 +191,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                     ),
                                     Align(
                                       alignment:
-                                          AlignmentDirectional(-0.06, -0.61),
+                                          const AlignmentDirectional(-0.06, -0.61),
                                       child: Text(
                                         'O Montador',
                                         style: FlutterFlowTheme.of(context)
@@ -208,17 +208,17 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                     ),
                                     Align(
                                       alignment:
-                                          AlignmentDirectional(0.49, 0.7),
+                                          const AlignmentDirectional(0.49, 0.7),
                                       child: Container(
                                         width: 195.0,
                                         height: 100.0,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: Color(0xFFF3F3F3),
                                         ),
                                         child: Stack(
                                           children: [
                                             Align(
-                                              alignment: AlignmentDirectional(
+                                              alignment: const AlignmentDirectional(
                                                   0.0, -0.2),
                                               child: Text(
                                                 'Nossa empresa oferece serviços especializados de montagem de móveis para residências, escritórios e ambientes comerciais.',
@@ -246,7 +246,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           ),
                         ),
                         Align(
-                          alignment: AlignmentDirectional(0.0, -0.11),
+                          alignment: const AlignmentDirectional(0.0, -0.11),
                           child: Material(
                             color: Colors.transparent,
                             elevation: 2.0,
@@ -257,8 +257,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                               width: 370.0,
                               height: 149.0,
                               decoration: BoxDecoration(
-                                color: Color(0xFFF3F3F3),
-                                boxShadow: [
+                                color: const Color(0xFFF3F3F3),
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x33000000),
@@ -282,7 +282,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                 children: [
                                   Align(
                                     alignment:
-                                        AlignmentDirectional(-0.85, 0.15),
+                                        const AlignmentDirectional(-0.85, 0.15),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: Image.network(
@@ -295,7 +295,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                   ),
                                   Align(
                                     alignment:
-                                        AlignmentDirectional(-0.05, -0.77),
+                                        const AlignmentDirectional(-0.05, -0.77),
                                     child: Text(
                                       'Super Clean',
                                       style: FlutterFlowTheme.of(context)
@@ -310,18 +310,18 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                     ),
                                   ),
                                   Align(
-                                    alignment: AlignmentDirectional(0.49, 0.7),
+                                    alignment: const AlignmentDirectional(0.49, 0.7),
                                     child: Container(
                                       width: 195.02,
                                       height: 100.0,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         color: Color(0xFFF3F3F3),
                                       ),
                                       child: Stack(
                                         children: [
                                           Align(
                                             alignment:
-                                                AlignmentDirectional(0.0, -0.2),
+                                                const AlignmentDirectional(0.0, -0.2),
                                             child: Text(
                                               'Orçamento solicitado para a realização de serviços de limpeza em um espaço comercial. O serviço incluirá a limpeza de várias áreas, com foco na sala de reuniões.',
                                               style: FlutterFlowTheme.of(
@@ -346,7 +346,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           ),
                         ),
                         Align(
-                          alignment: AlignmentDirectional(-0.01, 0.44),
+                          alignment: const AlignmentDirectional(-0.01, 0.44),
                           child: Material(
                             color: Colors.transparent,
                             elevation: 2.0,
@@ -357,8 +357,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                               width: 370.0,
                               height: 149.0,
                               decoration: BoxDecoration(
-                                color: Color(0xFFF3F3F3),
-                                boxShadow: [
+                                color: const Color(0xFFF3F3F3),
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x33000000),
@@ -382,7 +382,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                 children: [
                                   Align(
                                     alignment:
-                                        AlignmentDirectional(-0.11, -0.73),
+                                        const AlignmentDirectional(-0.11, -0.73),
                                     child: Text(
                                       'Bratecno',
                                       style: FlutterFlowTheme.of(context)
@@ -397,18 +397,18 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                     ),
                                   ),
                                   Align(
-                                    alignment: AlignmentDirectional(0.49, 0.7),
+                                    alignment: const AlignmentDirectional(0.49, 0.7),
                                     child: Container(
                                       width: 195.0,
                                       height: 100.0,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         color: Color(0xFFF3F3F3),
                                       ),
                                       child: Stack(
                                         children: [
                                           Align(
                                             alignment:
-                                                AlignmentDirectional(0.0, -0.2),
+                                                const AlignmentDirectional(0.0, -0.2),
                                             child: Text(
                                               'Orçamento solicitado para a realização de serviços de limpeza em um espaço comercial. O serviço incluirá a limpeza de várias áreas, com foco na sala de reuniões.',
                                               style: FlutterFlowTheme.of(
@@ -428,7 +428,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                   ),
                                   Align(
                                     alignment:
-                                        AlignmentDirectional(-0.85, 0.15),
+                                        const AlignmentDirectional(-0.85, 0.15),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: Image.network(
@@ -458,7 +458,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                 Expanded(
 
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Container(
                     ),
                   ),

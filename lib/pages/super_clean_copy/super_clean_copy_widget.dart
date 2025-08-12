@@ -62,7 +62,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                         shape: BoxShape.rectangle,
                       ),
-                      alignment: AlignmentDirectional(0.0, -1.0),
+                      alignment: const AlignmentDirectional(0.0, -1.0),
                       child: Stack(
                         children: [
                           Stack(
@@ -78,7 +78,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                                       decoration: BoxDecoration(
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryBackground,
-                                        borderRadius: BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                           bottomLeft: Radius.circular(16.0),
                                           bottomRight: Radius.circular(16.0),
                                           topLeft: Radius.circular(0.0),
@@ -86,11 +86,11 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                                         ),
                                       ),
                                       alignment:
-                                          AlignmentDirectional(-1.0, 0.0),
+                                          const AlignmentDirectional(-1.0, 0.0),
                                       child: Stack(
                                         children: [
                                           Align(
-                                            alignment: AlignmentDirectional(
+                                            alignment: const AlignmentDirectional(
                                                 -1.04, 0.51),
                                             child: FlutterFlowIconButton(
                                               borderColor: Colors.transparent,
@@ -118,7 +118,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ],
                           ),
                           Align(
-                            alignment: AlignmentDirectional(0.0, -0.65),
+                            alignment: const AlignmentDirectional(0.0, -0.65),
                             child: Container(
                               width: 390.0,
                               height: 149.0,
@@ -129,7 +129,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                               child: Stack(
                                 children: [
                                   Align(
-                                    alignment: AlignmentDirectional(0.0, -0.01),
+                                    alignment: const AlignmentDirectional(0.0, -0.01),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: Image.network(
@@ -145,7 +145,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(0.0, -0.38),
+                            alignment: const AlignmentDirectional(0.0, -0.38),
                             child: Container(
                               width: 150.0,
                               height: 16.0,
@@ -154,7 +154,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                                     .secondaryBackground,
                               ),
                               child: Align(
-                                alignment: AlignmentDirectional(0.0, 0.03),
+                                alignment: const AlignmentDirectional(0.0, 0.03),
                                 child: Text(
                                   'Limpeza',
                                   textAlign: TextAlign.center,
@@ -171,7 +171,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.65, -0.24),
+                            alignment: const AlignmentDirectional(-0.65, -0.24),
                             child: Text(
                               'Descriçao do Orçamento',
                               style: FlutterFlowTheme.of(context)
@@ -187,7 +187,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.27, 0.01),
+                            alignment: const AlignmentDirectional(-0.27, 0.01),
                             child: Container(
                               width: 294.7,
                               height: 122.48,
@@ -211,7 +211,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.27, 0.01),
+                            alignment: const AlignmentDirectional(-0.27, 0.01),
                             child: Container(
                               width: 294.7,
                               height: 122.5,
@@ -235,7 +235,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.27, 0.01),
+                            alignment: const AlignmentDirectional(-0.27, 0.01),
                             child: Container(
                               width: 294.7,
                               height: 122.5,
@@ -259,7 +259,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.27, 0.01),
+                            alignment: const AlignmentDirectional(-0.27, 0.01),
                             child: Container(
                               width: 294.7,
                               height: 122.5,
@@ -283,7 +283,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.27, 0.01),
+                            alignment: const AlignmentDirectional(-0.27, 0.01),
                             child: Container(
                               width: 294.7,
                               height: 122.5,
@@ -307,7 +307,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.8, 0.23),
+                            alignment: const AlignmentDirectional(-0.8, 0.23),
                             child: Container(
                               width: 100.0,
                               height: 27.76,
@@ -332,7 +332,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.77, 0.3),
+                            alignment: const AlignmentDirectional(-0.77, 0.3),
                             child: Container(
                               width: 100.0,
                               height: 21.85,
@@ -356,7 +356,7 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.83, 0.4),
+                            alignment: const AlignmentDirectional(-0.83, 0.4),
                             child: Container(
                               width: 100.0,
                               height: 21.14,
@@ -387,14 +387,14 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                 ],
               ),
               Align(
-                alignment: AlignmentDirectional(0.0, -0.97),
+                alignment: const AlignmentDirectional(0.0, -0.97),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(0.0),
                   child: Image.network(
                     'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
                     width: 250.0,
                     fit: BoxFit.fill,
-                    alignment: Alignment(0.0, 0.0),
+                    alignment: const Alignment(0.0, 0.0),
                   ),
                 ),
               ),

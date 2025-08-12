@@ -82,68 +82,68 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? ContratosWidget() : InicialWidget(),
+          appStateNotifier.loggedIn ? const ContratosWidget() : const InicialWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? ContratosWidget() : InicialWidget(),
+              appStateNotifier.loggedIn ? const ContratosWidget() : const InicialWidget(),
         ),
         FFRoute(
           name: Login1Widget.routeName,
           path: Login1Widget.routePath,
-          builder: (context, params) => Login1Widget(),
+          builder: (context, params) => const Login1Widget(),
         ),
         FFRoute(
           name: EsqueciSenhaWidget.routeName,
           path: EsqueciSenhaWidget.routePath,
-          builder: (context, params) => EsqueciSenhaWidget(),
+          builder: (context, params) => const EsqueciSenhaWidget(),
         ),
         FFRoute(
           name: NovaSenhaWidget.routeName,
           path: NovaSenhaWidget.routePath,
-          builder: (context, params) => NovaSenhaWidget(),
+          builder: (context, params) => const NovaSenhaWidget(),
         ),
         FFRoute(
           name: InicialWidget.routeName,
           path: InicialWidget.routePath,
-          builder: (context, params) => InicialWidget(),
+          builder: (context, params) => const InicialWidget(),
         ),
         FFRoute(
           name: ContratosWidget.routeName,
           path: ContratosWidget.routePath,
-          builder: (context, params) => ContratosWidget(),
+          builder: (context, params) => const ContratosWidget(),
         ),
         FFRoute(
           name: ProfileWidget.routeName,
           path: ProfileWidget.routePath,
-          builder: (context, params) => ProfileWidget(),
+          builder: (context, params) => const ProfileWidget(),
         ),
         FFRoute(
           name: ServicosWidget.routeName,
           path: ServicosWidget.routePath,
-          builder: (context, params) => ServicosWidget(),
+          builder: (context, params) => const ServicosWidget(),
         ),
         FFRoute(
           name: MontadorWidget.routeName,
           path: MontadorWidget.routePath,
-          builder: (context, params) => MontadorWidget(),
+          builder: (context, params) => const MontadorWidget(),
         ),
         FFRoute(
           name: SuperCleanWidget.routeName,
           path: SuperCleanWidget.routePath,
-          builder: (context, params) => SuperCleanWidget(),
+          builder: (context, params) => const SuperCleanWidget(),
         ),
         FFRoute(
           name: BratecnoWidget.routeName,
           path: BratecnoWidget.routePath,
-          builder: (context, params) => BratecnoWidget(),
+          builder: (context, params) => const BratecnoWidget(),
         ),
         FFRoute(
           name: SuperCleanCopyWidget.routeName,
           path: SuperCleanCopyWidget.routePath,
-          builder: (context, params) => SuperCleanCopyWidget(),
+          builder: (context, params) => const SuperCleanCopyWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -379,7 +379,7 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() => const TransitionInfo(hasTransition: false);
 }
 
 class RootPageContext {
