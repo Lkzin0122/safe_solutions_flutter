@@ -39,7 +39,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   WidgetsBinding.instance.addPostFrameCallback((_) {
     if (!isUserLoggedIn()) {
       // Redireciona para a página de login
-      context.goNamed('/login1'); 
+      context.pushNamed('login1'); 
       // ou context.pushNamed('login') se você quiser empilhar a rota
     }
   });
@@ -323,7 +323,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                             alignment:
                                                 const AlignmentDirectional(0.0, -0.2),
                                             child: Text(
-                                              'Orçamento solicitado para a realização de serviços de limpeza em um espaço comercial. O serviço incluirá a limpeza de várias áreas, com foco na sala de reuniões.',
+                                              'Nosso serviço de limpeza profissional oferece soluções completas e personalizSadas para manter seu ambiente impecável e saudável. ',
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .bodyMedium
@@ -410,7 +410,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                             alignment:
                                                 const AlignmentDirectional(0.0, -0.2),
                                             child: Text(
-                                              'Orçamento solicitado para a realização de serviços de limpeza em um espaço comercial. O serviço incluirá a limpeza de várias áreas, com foco na sala de reuniões.',
+                                              'Nosso serviço de manutenção de hardware é projetado para garantir o desempenho ideal, a longevidade e a confiabilidade dos seus equipamentos de informática. ',
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .bodyMedium
