@@ -144,6 +144,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: SuperCleanCopyWidget.routeName,
           path: SuperCleanCopyWidget.routePath,
           builder: (context, params) => const SuperCleanCopyWidget(),
+        ),
+        FFRoute(
+          name: FaleConoscoWidget.routeName,
+          path: FaleConoscoWidget.routePath,
+          builder: (context, params) => const FaleConoscoWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
