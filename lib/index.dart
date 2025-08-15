@@ -12,3 +12,4 @@ export '/pages/bratecno/bratecno_widget.dart' show BratecnoWidget;
 export '/pages/super_clean_copy/super_clean_copy_widget.dart'
     show SuperCleanCopyWidget;
 export '/pages/fale_conosco/fale_conosco_widget.dart' show FaleConoscoWidget;
+export '/pages/editar_conta/editar_conta_widget.dart' show EditarContaWidget;

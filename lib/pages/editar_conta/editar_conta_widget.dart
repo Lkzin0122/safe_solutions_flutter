@@ -3,36 +3,32 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'fale_conosco_model.dart';
-export 'fale_conosco_model.dart';
+import 'editar_conta_model.dart';
+export 'editar_conta_model.dart';
 
-class FaleConoscoWidget extends StatefulWidget {
-  const FaleConoscoWidget({super.key});
+class EditarContaWidget extends StatefulWidget {
+  const EditarContaWidget({super.key});
 
-  static String routeName = 'faleConosco';
-  static String routePath = '/faleConosco';
+  static String routeName = 'editarConta';
+  static String routePath = '/editarConta';
 
   @override
-  State<FaleConoscoWidget> createState() => _FaleConoscoWidgetState();
+  State<EditarContaWidget> createState() => _EditarContaWidgetState();
 }
 
-class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
-  late FaleConoscoModel _model;
+class _EditarContaWidgetState extends State<EditarContaWidget> {
+  late EditarContaModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showSuccessMessage = false;
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => FaleConoscoModel());
-    _model.emailController ??= TextEditingController();
+    _model = createModel(context, () => EditarContaModel());
+    _model.emailController ??= TextEditingController(text: 'techsolutions@gmail.com');
     _model.emailFocusNode ??= FocusNode();
-    _model.nomeController ??= TextEditingController();
+    _model.nomeController ??= TextEditingController(text: 'Tech Solutions');
     _model.nomeFocusNode ??= FocusNode();
-    _model.telefoneController ??= TextEditingController();
-    _model.telefoneFocusNode ??= FocusNode();
-    _model.mensagemController ??= TextEditingController();
-    _model.mensagemFocusNode ??= FocusNode();
   }
 
   @override
@@ -80,7 +76,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Fale conosco e tire suas dúvidas',
+                        'Editar Conta',
                         style: FlutterFlowTheme.of(context).headlineSmall.override(
                           fontFamily: 'Montserrat',
                           color: Colors.black,
@@ -90,29 +86,55 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                       ),
                       SizedBox(height: 30),
                       
-                      // Campo Email
-                      TextFormField(
-                        controller: _model.emailController,
-                        focusNode: _model.emailFocusNode,
-                        decoration: InputDecoration(
-                          hintText: 'Email',
-                          filled: true,
-                          fillColor: Color(0xFFF0F0F0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: EdgeInsetsDirectional.fromSTEB(20, 16, 20, 16),
+                      // Foto de perfil
+                      Center(
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Color(0xFF234063),
+                                  width: 3,
+                                ),
+                              ),
+                              child: ClipOval(
+                                child: Image.network(
+                                  'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/k8xruzgiy7xp/vecteezy_profile-icon-avatar-icon-user-icon-person-icon_20911732.png',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                width: 35,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF234063),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 16),
+                      SizedBox(height: 30),
                       
                       // Campo Nome
                       TextFormField(
                         controller: _model.nomeController,
                         focusNode: _model.nomeFocusNode,
                         decoration: InputDecoration(
-                          hintText: 'Nome',
+                          labelText: 'Nome',
                           filled: true,
                           fillColor: Color(0xFFF0F0F0),
                           border: OutlineInputBorder(
@@ -124,30 +146,12 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                       ),
                       SizedBox(height: 16),
                       
-                      // Campo Telefone
+                      // Campo Email
                       TextFormField(
-                        controller: _model.telefoneController,
-                        focusNode: _model.telefoneFocusNode,
+                        controller: _model.emailController,
+                        focusNode: _model.emailFocusNode,
                         decoration: InputDecoration(
-                          hintText: 'Telefone',
-                          filled: true,
-                          fillColor: Color(0xFFF0F0F0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: EdgeInsetsDirectional.fromSTEB(20, 16, 20, 16),
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      
-                      // Campo Mensagem
-                      TextFormField(
-                        controller: _model.mensagemController,
-                        focusNode: _model.mensagemFocusNode,
-                        maxLines: 4,
-                        decoration: InputDecoration(
-                          hintText: 'Digite sua mensagem',
+                          labelText: 'Email',
                           filled: true,
                           fillColor: Color(0xFFF0F0F0),
                           border: OutlineInputBorder(
@@ -159,16 +163,16 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                       ),
                       SizedBox(height: 30),
                       
-                      // Botão Enviar
+                      // Botão Salvar
                       FFButtonWidget(
                         onPressed: () async {
                           setState(() {
                             _showSuccessMessage = true;
                           });
-                          await Future.delayed(Duration(seconds: 3));
-                          context.pushNamed(ContratosWidget.routeName);
+                          await Future.delayed(Duration(seconds: 2));
+                          context.pushNamed(ProfileWidget.routeName);
                         },
-                        text: 'Enviar',
+                        text: 'Salvar',
                         options: FFButtonOptions(
                           width: 120,
                           height: 50,
@@ -196,11 +200,9 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                             children: [
                               Icon(Icons.check, color: Colors.green, size: 20),
                               SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  'Mensagem enviada com sucesso! Voltar para a página de contratos',
-                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-                                ),
+                              Text(
+                                'Dados salvos com sucesso!',
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
@@ -261,29 +263,38 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                     ],
                   ),
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.message_outlined,
-                      color: FlutterFlowTheme.of(context).primary,
-                      size: 24,
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                      child: Text(
-                        'Fale conosco',
-                        style: FlutterFlowTheme.of(context).bodySmall.override(
-                              fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                              color: FlutterFlowTheme.of(context).primary,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.w500,
-                              useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
-                            ),
+                InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    context.pushNamed(FaleConoscoWidget.routeName);
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.message_outlined,
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                        size: 24,
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          'Fale conosco',
+                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
+                                color: FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 InkWell(
                   splashColor: Colors.transparent,
@@ -299,7 +310,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                     children: [
                       Icon(
                         Icons.person_outlined,
-                        color: FlutterFlowTheme.of(context).secondaryText,
+                        color: FlutterFlowTheme.of(context).primary,
                         size: 24,
                       ),
                       Padding(
@@ -308,7 +319,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                           'Perfil',
                           style: FlutterFlowTheme.of(context).bodySmall.override(
                                 fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                                color: FlutterFlowTheme.of(context).secondaryText,
+                                color: FlutterFlowTheme.of(context).primary,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.w500,
                                 useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,

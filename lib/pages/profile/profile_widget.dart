@@ -267,12 +267,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 40.0, 20.0),
                   child: FFButtonWidget(
                     onPressed: () async {
-                      GoRouter.of(context).prepareAuthEvent();
-                      await authManager.signOut();
-                      GoRouter.of(context).clearRedirectLocation();
-
-                      context.goNamedAuth(
-                          InicialWidget.routeName, context.mounted);
+                      context.pushNamed(EditarContaWidget.routeName);
                     },
                     text: 'Editar Conta',
                     options: FFButtonOptions(
