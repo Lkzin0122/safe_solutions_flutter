@@ -92,31 +92,16 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                     decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryBackground,
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(16.0),
-                                        bottomRight: Radius.circular(16.0),
-                                        topLeft: Radius.circular(0.0),
-                                        topRight: Radius.circular(0.0),
-                                      ),
                                     ),
-                                    alignment: const AlignmentDirectional(-1.0, 0.0),
-                                    child: Stack(
-                                      children: [
-                                        Align(
-                                          alignment:
-                                              const AlignmentDirectional(0.03, -0.82),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(0.0),
-                                            child: Image.network(
-                                              'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                                              width: 250.0,
-                                              fit: BoxFit.fill,
-                                              alignment: const Alignment(0.0, 0.0),
-                                            ),
-                                          ),
+                                    child: Center(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(0.0),
+                                        child: Image.network(
+                                          'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                                          width: 250.0,
+                                          fit: BoxFit.fill,
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -125,7 +110,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           ],
                         ),
                        Align(
-                       alignment: const AlignmentDirectional(0.0, -0.84), // ou outro valor que faça sentido
+                       alignment: const AlignmentDirectional(0.0, -0.68),
                        child: Text(
                         'Serviços em andamento',
                             textAlign: TextAlign.center,
