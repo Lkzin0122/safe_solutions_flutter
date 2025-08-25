@@ -109,16 +109,16 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             ),
                           ],
                         ),
-                       Align(
-                       alignment: const AlignmentDirectional(0.0, -0.68),
-                       child: Text(
-                        'Serviços em andamento',
+                        Align(
+                          alignment: const AlignmentDirectional(0.0, -0.60),
+                          child: Text(
+                            'Serviços em andamento',
                             textAlign: TextAlign.center,
                             style: FlutterFlowTheme.of(context)
                                 .displaySmall
                                 .override(
                                   fontFamily: 'Montserrat',
-                                  color: const Color(0xFF274364),
+                                  color: Colors.black,
                                   fontSize: 22.0,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
@@ -126,7 +126,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           ),
                         ),
                         Align(
-                          alignment: const AlignmentDirectional(0.0, -0.65),
+                          alignment: const AlignmentDirectional(0.0, -0.30),
                           child: Material(
                             color: Colors.transparent,
                             elevation: 2.0,
@@ -231,7 +231,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           ),
                         ),
                         Align(
-                          alignment: const AlignmentDirectional(0.0, -0.11),
+                          alignment: const AlignmentDirectional(0.0, 0.20),
                           child: Material(
                             color: Colors.transparent,
                             elevation: 2.0,
@@ -331,7 +331,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           ),
                         ),
                         Align(
-                          alignment: const AlignmentDirectional(-0.01, 0.44),
+                          alignment: const AlignmentDirectional(-0.01, 0.70),
                           child: Material(
                             color: Colors.transparent,
                             elevation: 2.0,
