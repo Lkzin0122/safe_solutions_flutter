@@ -179,7 +179,22 @@ class _ContratosWidgetState extends State<ContratosWidget> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // Header com logo e estatísticas
+                // Logo fora do container
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 0.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.network(
+                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                      width: 200.0,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                
+                SizedBox(height: 20.0),
+                
+                // Container com estatísticas
                 Container(
                   width: double.infinity,
                   padding: EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 20.0),
@@ -193,25 +208,12 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       end: Alignment.bottomRight,
                     ),
                   ),
-                  child: Column(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                          width: 200.0,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      SizedBox(height: 16.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildStatCard('3', 'Serviços\nAtivos', Icons.work_outline),
-                          _buildStatCard('15', 'Contratos\nConcluídos', Icons.check_circle_outline),
-                          _buildStatCard('98%', 'Satisfação\nClientes', Icons.star_outline),
-                        ],
-                      ),
+                      _buildStatCard('3', 'Serviços\nAtivos', Icons.work_outline),
+                      _buildStatCard('15', 'Contratos\nConcluídos', Icons.check_circle_outline),
+                      _buildStatCard('98%', 'Satisfação\nClientes', Icons.star_outline),
                     ],
                   ),
                 ),
