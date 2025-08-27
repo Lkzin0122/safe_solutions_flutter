@@ -55,7 +55,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
 
         body: SafeArea(
           child: Form(

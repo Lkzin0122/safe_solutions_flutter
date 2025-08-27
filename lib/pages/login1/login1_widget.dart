@@ -5,6 +5,7 @@ import 'dart:ui';
 import '/index.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'login1_model.dart';
@@ -26,15 +27,27 @@ class _Login1WidgetState extends State<Login1Widget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
-  String? _validateCpf(String? value) {
+  String? _validateCnpj(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Por favor, insira o CPF.';
+      return 'Por favor, insira o CNPJ.';
     }
-    final cpfRegex = RegExp(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$');
-    if (!cpfRegex.hasMatch(value)) {
-      return 'Por favor, insira um CPF válido.';
+    final cnpjRegex = RegExp(r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$');
+    if (!cnpjRegex.hasMatch(value)) {
+      return 'Por favor, insira um CNPJ válido.';
     }
     return null;
+  }
+
+  String _formatCnpj(String value) {
+    value = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (value.length <= 2) return value;
+    if (value.length <= 5)
+      return '${value.substring(0, 2)}.${value.substring(2)}';
+    if (value.length <= 8)
+      return '${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5)}';
+    if (value.length <= 12)
+      return '${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5, 8)}/${value.substring(8)}';
+    return '${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5, 8)}/${value.substring(8, 12)}-${value.substring(12, 14)}';
   }
 
   String? _validatePassword(String? value) {
@@ -52,8 +65,8 @@ class _Login1WidgetState extends State<Login1Widget> {
     super.initState();
     _model = createModel(context, () => Login1Model());
 
-    _model.emailAddressTextController ??= TextEditingController();
-    _model.emailAddressFocusNode ??= FocusNode();
+    _model.CnpjAddressTextController ??= TextEditingController();
+    _model.CnpjAddressFocusNode ??= FocusNode();
 
     _model.passwordTextController ??= TextEditingController();
     _model.passwordFocusNode ??= FocusNode();
@@ -97,33 +110,20 @@ class _Login1WidgetState extends State<Login1Widget> {
                         Container(
                           width: double.infinity,
                           height: 140.0,
+                          margin: const EdgeInsets.only(top: 50.0),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(16.0),
-                              bottomRight: Radius.circular(16.0),
-                              topLeft: Radius.circular(0.0),
-                              topRight: Radius.circular(0.0),
-                            ),
                           ),
-                          alignment: const AlignmentDirectional(-1.0, 0.0),
-                          child: Stack(
-                            children: [
-                              Align(
-                                alignment:
-                                    const AlignmentDirectional(0.0, 0.01),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(0.0),
-                                  child: Image.network(
-                                    'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                                    width: 250.0,
-                                    fit: BoxFit.fill,
-                                    alignment: const Alignment(0.0, 0.0),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          child: Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(0.0),
+                              child: Image.network(
+                                  'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                                  width: 250.0,
+                                  fit: BoxFit.fill,
+                                  alignment: const Alignment(0.0, 0.0)),
+                            ),
                           ),
                         ),
                         Align(
@@ -144,15 +144,29 @@ class _Login1WidgetState extends State<Login1Widget> {
                                       width: 370.0,
                                       child: TextFormField(
                                         controller:
-                                            _model.emailAddressTextController,
-                                        focusNode: _model.emailAddressFocusNode,
+                                            _model.CnpjAddressTextController,
+                                        focusNode: _model.CnpjAddressFocusNode,
                                         autofocus: true,
-                                        autofillHints: const [
-                                          AutofillHints.email
-                                        ],
                                         obscureText: false,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(18),
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
+                                        ],
+                                        onChanged: (value) {
+                                          final formatted = _formatCnpj(value);
+                                          if (formatted != value) {
+                                            _model.CnpjAddressTextController
+                                                ?.value = TextEditingValue(
+                                              text: formatted,
+                                              selection:
+                                                  TextSelection.collapsed(
+                                                      offset: formatted.length),
+                                            );
+                                          }
+                                        },
                                         decoration: InputDecoration(
-                                          labelText: 'CPF',
+                                          labelText: 'CNPJ',
                                           labelStyle: FlutterFlowTheme.of(
                                                   context)
                                               .labelMedium
@@ -215,9 +229,8 @@ class _Login1WidgetState extends State<Login1Widget> {
                                               fontFamily: 'Montserrat',
                                               letterSpacing: 0.0,
                                             ),
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        validator: _validateCpf,
+                                        keyboardType: TextInputType.number,
+                                        validator: _validateCnpj,
                                       ),
                                     ),
                                   ),
