@@ -56,35 +56,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).tertiary,
-          automaticallyImplyLeading: false,
-          leading: FlutterFlowIconButton(
-            borderColor: Colors.transparent,
-            borderRadius: 30.0,
-            borderWidth: 1.0,
-            buttonSize: 60.0,
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.white,
-              size: 30.0,
-            ),
-            onPressed: () async {
-              context.pushNamed(ContratosWidget.routeName);
-            },
-          ),
-          title: Text(
-            'Fale Conosco',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-              fontFamily: 'Montserrat',
-              color: Colors.white,
-              fontSize: 22.0,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          centerTitle: true,
-          elevation: 2.0,
-        ),
+
         body: SafeArea(
           child: Form(
             key: formKey,
@@ -93,6 +65,24 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Logo no topo
+                  Container(
+                    width: double.infinity,
+                    height: 140.0,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(0.0),
+                        child: Image.network(
+                          'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                          width: 250.0,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ),
                   // Seção de contato rápido
                   Container(
                     width: double.infinity,

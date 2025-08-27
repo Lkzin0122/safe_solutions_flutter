@@ -109,7 +109,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             child: Row(
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12.0),
                     child: Image.network(
@@ -122,28 +123,34 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 16.0, 16.0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 16.0, 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           title,
-                          style: FlutterFlowTheme.of(context).titleMedium.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).tertiary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .titleMedium
+                              .override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).tertiary,
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                         SizedBox(height: 8.0),
                         Text(
                           description,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodySmall
+                              .override(
+                                fontFamily: 'Montserrat',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                              ),
                         ),
                       ],
                     ),
@@ -181,7 +188,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
               children: [
                 // Logo fora do container
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 0.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 0.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
@@ -191,50 +199,27 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     ),
                   ),
                 ),
-                
-                SizedBox(height: 20.0),
-                
-                // Container com estatísticas
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 20.0),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        FlutterFlowTheme.of(context).tertiary,
-                        FlutterFlowTheme.of(context).primary
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildStatCard('3', 'Serviços\nAtivos', Icons.work_outline),
-                      _buildStatCard('15', 'Contratos\nConcluídos', Icons.check_circle_outline),
-                      _buildStatCard('98%', 'Satisfação\nClientes', Icons.star_outline),
-                    ],
-                  ),
-                ),
-                
+
                 // Título da seção
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 10.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Nossos Serviços',
-                        style: FlutterFlowTheme.of(context).headlineSmall.override(
-                          fontFamily: 'Montserrat',
-                          color: FlutterFlowTheme.of(context).tertiary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style:
+                            FlutterFlowTheme.of(context).headlineSmall.override(
+                                  fontFamily: 'Montserrat',
+                                  color: FlutterFlowTheme.of(context).tertiary,
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                       Container(
-                        padding: EdgeInsetsDirectional.fromSTEB(12.0, 6.0, 12.0, 6.0),
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            12.0, 6.0, 12.0, 6.0),
                         decoration: BoxDecoration(
                           color: FlutterFlowTheme.of(context).success,
                           borderRadius: BorderRadius.circular(20.0),
@@ -251,29 +236,35 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     ],
                   ),
                 ),
-                
+
                 // Cards de serviços
                 _buildServiceCard(
                   title: 'O Montador',
-                  description: 'Serviços especializados de montagem de móveis para residências, escritórios e ambientes comerciais.',
-                  imageUrl: 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png',
+                  description:
+                      'Serviços especializados de montagem de móveis para residências, escritórios e ambientes comerciais.',
+                  imageUrl:
+                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png',
                   onTap: () => context.pushNamed(MontadorWidget.routeName),
                 ),
-                
+
                 _buildServiceCard(
                   title: 'Super Clean',
-                  description: 'Serviço de limpeza profissional com soluções completas e personalizadas para manter seu ambiente impecável.',
-                  imageUrl: 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/dfq8wa491iyv/image_17_(1).png',
+                  description:
+                      'Serviço de limpeza profissional com soluções completas e personalizadas para manter seu ambiente impecável.',
+                  imageUrl:
+                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/dfq8wa491iyv/image_17_(1).png',
                   onTap: () => context.pushNamed(SuperCleanWidget.routeName),
                 ),
-                
+
                 _buildServiceCard(
                   title: 'Bratecno',
-                  description: 'Manutenção de hardware projetada para garantir desempenho ideal e confiabilidade dos seus equipamentos.',
-                  imageUrl: 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/42x886euiaf7/image_20_1.png',
+                  description:
+                      'Manutenção de hardware projetada para garantir desempenho ideal e confiabilidade dos seus equipamentos.',
+                  imageUrl:
+                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/42x886euiaf7/image_20_1.png',
                   onTap: () => context.pushNamed(BratecnoWidget.routeName),
                 ),
-                
+
                 SizedBox(height: 20.0),
               ],
             ),
@@ -309,12 +300,14 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       child: Text(
                         'Contratos',
                         style: FlutterFlowTheme.of(context).bodySmall.override(
-                          fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                          color: FlutterFlowTheme.of(context).primary,
-                          letterSpacing: 0.0,
-                          fontWeight: FontWeight.w600,
-                          useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
-                        ),
+                              fontFamily:
+                                  FlutterFlowTheme.of(context).bodySmallFamily,
+                              color: FlutterFlowTheme.of(context).primary,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w600,
+                              useGoogleFonts: !FlutterFlowTheme.of(context)
+                                  .bodySmallIsCustom,
+                            ),
                       ),
                     ),
                   ],
@@ -340,13 +333,18 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
                           'Fale conosco',
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                            fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.w500,
-                            useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodySmall
+                              .override(
+                                fontFamily: FlutterFlowTheme.of(context)
+                                    .bodySmallFamily,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                                useGoogleFonts: !FlutterFlowTheme.of(context)
+                                    .bodySmallIsCustom,
+                              ),
                         ),
                       ),
                     ],
@@ -373,13 +371,18 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
                           'Perfil',
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                            fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.w500,
-                            useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodySmall
+                              .override(
+                                fontFamily: FlutterFlowTheme.of(context)
+                                    .bodySmallFamily,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                                useGoogleFonts: !FlutterFlowTheme.of(context)
+                                    .bodySmallIsCustom,
+                              ),
                         ),
                       ),
                     ],

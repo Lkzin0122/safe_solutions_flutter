@@ -26,13 +26,13 @@ class _Login1WidgetState extends State<Login1Widget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
-  String? _validateEmail(String? value) {
+  String? _validateCpf(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Por favor, insira o email.';
+      return 'Por favor, insira o CPF.';
     }
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Por favor, insira um email válido.';
+    final cpfRegex = RegExp(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$');
+    if (!cpfRegex.hasMatch(value)) {
+      return 'Por favor, insira um CPF válido.';
     }
     return null;
   }
@@ -111,7 +111,8 @@ class _Login1WidgetState extends State<Login1Widget> {
                           child: Stack(
                             children: [
                               Align(
-                                alignment: const AlignmentDirectional(0.0, 0.01),
+                                alignment:
+                                    const AlignmentDirectional(0.0, 0.01),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(0.0),
                                   child: Image.network(
@@ -136,8 +137,9 @@ class _Login1WidgetState extends State<Login1Widget> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 16.0),
                                     child: SizedBox(
                                       width: 370.0,
                                       child: TextFormField(
@@ -145,10 +147,12 @@ class _Login1WidgetState extends State<Login1Widget> {
                                             _model.emailAddressTextController,
                                         focusNode: _model.emailAddressFocusNode,
                                         autofocus: true,
-                                        autofillHints: const [AutofillHints.email],
+                                        autofillHints: const [
+                                          AutofillHints.email
+                                        ],
                                         obscureText: false,
                                         decoration: InputDecoration(
-                                          labelText: 'E-mail',
+                                          labelText: 'CPF',
                                           labelStyle: FlutterFlowTheme.of(
                                                   context)
                                               .labelMedium
@@ -213,13 +217,14 @@ class _Login1WidgetState extends State<Login1Widget> {
                                             ),
                                         keyboardType:
                                             TextInputType.emailAddress,
-                                        validator: _validateEmail,
+                                        validator: _validateCpf,
                                       ),
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 16.0),
                                     child: SizedBox(
                                       width: 370.0,
                                       child: TextFormField(
@@ -227,7 +232,9 @@ class _Login1WidgetState extends State<Login1Widget> {
                                             _model.passwordTextController,
                                         focusNode: _model.passwordFocusNode,
                                         autofocus: true,
-                                        autofillHints: const [AutofillHints.password],
+                                        autofillHints: const [
+                                          AutofillHints.password
+                                        ],
                                         obscureText: !_model.passwordVisibility,
                                         decoration: InputDecoration(
                                           labelText: 'Senha',
@@ -319,8 +326,9 @@ class _Login1WidgetState extends State<Login1Widget> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 20.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 20.0),
                                     child: InkWell(
                                       splashColor: Colors.transparent,
                                       focusColor: Colors.transparent,
@@ -346,8 +354,9 @@ class _Login1WidgetState extends State<Login1Widget> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 15.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 15.0, 0.0, 0.0),
                                     child: FFButtonWidget(
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
@@ -361,11 +370,10 @@ class _Login1WidgetState extends State<Login1Widget> {
                                       options: FFButtonOptions(
                                         width: 370.0,
                                         height: 44.0,
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        iconPadding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
                                         color: FlutterFlowTheme.of(context)
                                             .tertiary,
                                         textStyle: FlutterFlowTheme.of(context)
