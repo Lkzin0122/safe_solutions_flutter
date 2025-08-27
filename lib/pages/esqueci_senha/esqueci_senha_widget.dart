@@ -72,7 +72,9 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
           ),
           child: Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-            child: Column(
+            child: Form(
+              key: _formKey,
+              child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,7 +208,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                     autofillHints: const [AutofillHints.email],
                     obscureText: false,
                     decoration: InputDecoration(
-                      labelText: 'insira seu e-mail\n',
+                      labelText: 'insira seu e-mail',
                       labelStyle: FlutterFlowTheme.of(context)
                           .labelMedium
                           .override(
@@ -242,15 +244,15 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color(0x00000000),
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).error,
                           width: 2.0,
                         ),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color(0x00000000),
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).error,
                           width: 2.0,
                         ),
                         borderRadius: BorderRadius.circular(12.0),
@@ -281,11 +283,9 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                         const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        final isValid =
-                            _formKey.currentState?.validate() ?? false;
-                        if (!isValid) return;
-
-                        context.pushNamed(NovaSenhaWidget.routeName);
+                        if (_formKey.currentState?.validate() ?? false) {
+                          context.pushNamed('verificarCodigo');
+                        }
                       },
                       text: 'Verificar',
                       options: FFButtonOptions(
@@ -316,6 +316,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                   ),
                 ),
               ],
+            ),
             ),
           ),
         ),

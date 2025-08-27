@@ -144,6 +144,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: SuperCleanCopyWidget.routeName,
           path: SuperCleanCopyWidget.routePath,
           builder: (context, params) => const SuperCleanCopyWidget(),
+        ),
+        FFRoute(
+          name: VerificarCodigoWidget.routeName,
+          path: VerificarCodigoWidget.routePath,
+          builder: (context, params) => const VerificarCodigoWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

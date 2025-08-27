@@ -11,3 +11,4 @@ export '/pages/super_clean/super_clean_widget.dart' show SuperCleanWidget;
 export '/pages/bratecno/bratecno_widget.dart' show BratecnoWidget;
 export '/pages/super_clean_copy/super_clean_copy_widget.dart'
     show SuperCleanCopyWidget;
+export '/pages/verificar_codigo/verificar_codigo_widget.dart' show VerificarCodigoWidget;
