@@ -149,6 +149,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: VerificarCodigoWidget.routeName,
           path: VerificarCodigoWidget.routePath,
           builder: (context, params) => const VerificarCodigoWidget(),
+        ),
+        FFRoute(
+          name: FaleConoscoWidget.routeName,
+          path: FaleConoscoWidget.routePath,
+          builder: (context, params) => const FaleConoscoWidget(),
+        ),
+        FFRoute(
+          name: EditarContaWidget.routeName,
+          path: EditarContaWidget.routePath,
+          builder: (context, params) => const EditarContaWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
