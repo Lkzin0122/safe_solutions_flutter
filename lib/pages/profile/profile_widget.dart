@@ -195,15 +195,46 @@ class _ProfileWidgetState extends State<ProfileWidget>
                 decoration: BoxDecoration(
                   color: FlutterFlowTheme.of(context).secondaryBackground,
                 ),
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(0.0),
-                    child: Image.network(
-                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                      width: 250.0,
-                      fit: BoxFit.fill,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(0.0),
+                        child: Image.network(
+                          'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                          width: 250.0,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                     ),
-                  ),
+                    Positioned(
+                      top: 16.0,
+                      right: 16.0,
+                      child: InkWell(
+                        onTap: () => context.pushNamed('configuracoes'),
+                        child: Container(
+                          width: 40.0,
+                          height: 40.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context).secondaryBackground,
+                            borderRadius: BorderRadius.circular(20.0),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 4.0,
+                                color: Colors.black.withOpacity(0.1),
+                                offset: Offset(0.0, 2.0),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.settings,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 20.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Card(

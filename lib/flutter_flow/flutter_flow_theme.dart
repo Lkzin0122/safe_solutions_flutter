@@ -622,22 +622,22 @@ class DarkModeTheme extends FlutterFlowTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color(0xFF4870B8);
-  late Color secondary = const Color(0xFF5080D8);
-  late Color tertiary = const Color(0xFF204060);
-  late Color alternate = const Color(0xFFE8F0F0);
-  late Color primaryText = const Color(0xFF282840);
-  late Color secondaryText = const Color(0xFF95A1AC);
-  late Color primaryBackground = const Color(0xFF1D2428);
-  late Color secondaryBackground = const Color(0xFF14181B);
+  late Color primary = const Color(0xFF6B9AE8);
+  late Color secondary = const Color(0xFF7BA8F0);
+  late Color tertiary = const Color(0xFF8BB6F8);
+  late Color alternate = const Color(0xFF2D3748);
+  late Color primaryText = const Color(0xFFFFFFFF);
+  late Color secondaryText = const Color(0xFFA0AEC0);
+  late Color primaryBackground = const Color(0xFF1A202C);
+  late Color secondaryBackground = const Color(0xFF2D3748);
   late Color accent1 = const Color(0x4C4B39EF);
   late Color accent2 = const Color(0x4D39D2C0);
   late Color accent3 = const Color(0x4DEE8B60);
   late Color accent4 = const Color(0xB2262D34);
-  late Color success = const Color(0xFF249689);
-  late Color warning = const Color(0xFFF9CF58);
-  late Color error = const Color(0xFFFF5963);
-  late Color info = const Color(0xFFFFFFFF);
+  late Color success = const Color(0xFF38A169);
+  late Color warning = const Color(0xFFED8936);
+  late Color error = const Color(0xFFE53E3E);
+  late Color info = const Color(0xFF3182CE);
 }
 
 extension TextStyleHelper on TextStyle {
