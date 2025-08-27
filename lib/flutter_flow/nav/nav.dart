@@ -146,6 +146,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const SuperCleanCopyWidget(),
         ),
         FFRoute(
+          name: VerificarCodigoWidget.routeName,
+          path: VerificarCodigoWidget.routePath,
+          builder: (context, params) => const VerificarCodigoWidget(),
+        ),
+        FFRoute(
           name: FaleConoscoWidget.routeName,
           path: FaleConoscoWidget.routePath,
           builder: (context, params) => const FaleConoscoWidget(),
