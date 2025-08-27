@@ -14,3 +14,6 @@ export '/pages/super_clean_copy/super_clean_copy_widget.dart'
 export '/pages/verificar_codigo/verificar_codigo_widget.dart' show VerificarCodigoWidget;
 export '/pages/fale_conosco/fale_conosco_widget.dart' show FaleConoscoWidget;
 export '/pages/editar_conta/editar_conta_widget.dart' show EditarContaWidget;
+export '/pages/configuracoes/configuracoes_widget.dart' show ConfiguracoesWidget;
+export '/pages/suporte/suporte_widget.dart' show SuporteWidget;
+export '/pages/privacidade/privacidade_widget.dart' show PrivacidadeWidget;

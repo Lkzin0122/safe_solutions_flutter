@@ -159,6 +159,21 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: EditarContaWidget.routeName,
           path: EditarContaWidget.routePath,
           builder: (context, params) => const EditarContaWidget(),
+        ),
+        FFRoute(
+          name: ConfiguracoesWidget.routeName,
+          path: ConfiguracoesWidget.routePath,
+          builder: (context, params) => const ConfiguracoesWidget(),
+        ),
+        FFRoute(
+          name: SuporteWidget.routeName,
+          path: SuporteWidget.routePath,
+          builder: (context, params) => const SuporteWidget(),
+        ),
+        FFRoute(
+          name: PrivacidadeWidget.routeName,
+          path: PrivacidadeWidget.routePath,
+          builder: (context, params) => const PrivacidadeWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
