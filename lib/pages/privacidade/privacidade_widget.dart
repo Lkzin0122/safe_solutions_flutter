@@ -37,10 +37,10 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primary,
+        backgroundColor: FlutterFlowTheme.of(context).tertiary,
         automaticallyImplyLeading: false,
         leading: InkWell(
-          onTap: () => context.pop(),
+          onTap: () => context.pushNamed('profile'),
           child: Icon(
             Icons.arrow_back_rounded,
             color: Colors.white,
@@ -134,6 +134,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                           '1. Introdução',
                           style: FlutterFlowTheme.of(context).titleMedium.override(
                                 fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -152,6 +153,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                           '2. Informações Que Coletamos',
                           style: FlutterFlowTheme.of(context).titleMedium.override(
                                 fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -170,6 +172,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                           '3. Como Usamos Suas Informações',
                           style: FlutterFlowTheme.of(context).titleMedium.override(
                                 fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -188,6 +191,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                           '4. Compartilhamento de Informações',
                           style: FlutterFlowTheme.of(context).titleMedium.override(
                                 fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -206,6 +210,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                           '5. Segurança das Informações',
                           style: FlutterFlowTheme.of(context).titleMedium.override(
                                 fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -224,6 +229,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                           '6. Seus Direitos',
                           style: FlutterFlowTheme.of(context).titleMedium.override(
                                 fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -242,6 +248,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                           '7. Cookies e Tecnologias Similares',
                           style: FlutterFlowTheme.of(context).titleMedium.override(
                                 fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -260,6 +267,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                           '8. Alterações na Política',
                           style: FlutterFlowTheme.of(context).titleMedium.override(
                                 fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -278,6 +286,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                           '9. Contato',
                           style: FlutterFlowTheme.of(context).titleMedium.override(
                                 fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primary,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),

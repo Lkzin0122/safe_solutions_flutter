@@ -37,10 +37,10 @@ class _SuporteWidgetState extends State<SuporteWidget> {
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primary,
+        backgroundColor: FlutterFlowTheme.of(context).tertiary,
         automaticallyImplyLeading: false,
         leading: InkWell(
-          onTap: () => context.pop(),
+          onTap: () => context.pushNamed('configuracoes'),
           child: Icon(
             Icons.arrow_back_rounded,
             color: Colors.white,

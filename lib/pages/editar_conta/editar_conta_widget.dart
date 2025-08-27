@@ -72,7 +72,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
       // Esconder mensagem após 2 segundos e voltar
       await Future.delayed(Duration(seconds: 2));
       if (mounted) {
-        context.pushNamed(ProfileWidget.routeName);
+        context.pushNamed('profile');
       }
     }
   }
@@ -101,7 +101,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
               size: 30.0,
             ),
             onPressed: () async {
-              context.pushNamed(ProfileWidget.routeName);
+              context.pushNamed('profile');
             },
           ),
           title: Text(
@@ -166,7 +166,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                           bottom: 0,
                           right: 0,
                           child: InkWell(
-                            onTap: () {
+                            onTap: () async {
                               setState(() {
                                 _photoChanged = true;
                               });
@@ -192,9 +192,9 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                 ],
                               ),
                               child: Icon(
-                                Icons.camera_alt,
+                                Icons.folder_open,
                                 color: Colors.white,
-                                size: 20.0,
+                                size: 18.0,
                               ),
                             ),
                           ),
@@ -487,7 +487,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                       Expanded(
                         child: FFButtonWidget(
                           onPressed: () async {
-                            context.pushNamed(ProfileWidget.routeName);
+                            context.pushNamed('profile');
                           },
                           text: 'Cancelar',
                           options: FFButtonOptions(
