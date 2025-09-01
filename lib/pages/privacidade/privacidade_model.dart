@@ -1,6 +1,6 @@
-import '/flutter_flow/flutter_flow_model.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import 'privacidade_widget.dart' show PrivacidadeWidget;
 import 'package:flutter/material.dart';
-import 'privacidade_widget.dart';
 
 class PrivacidadeModel extends FlutterFlowModel<PrivacidadeWidget> {
   @override

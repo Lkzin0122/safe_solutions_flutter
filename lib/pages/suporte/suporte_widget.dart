@@ -1,3 +1,4 @@
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,6 @@ class SuporteWidget extends StatefulWidget {
 
 class _SuporteWidgetState extends State<SuporteWidget> {
   late SuporteModel _model;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -35,266 +35,152 @@ class _SuporteWidgetState extends State<SuporteWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).tertiary,
-        automaticallyImplyLeading: false,
-        leading: InkWell(
-          onTap: () => context.pushNamed('configuracoes'),
-          child: Icon(
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        elevation: 0,
+        leading: FlutterFlowIconButton(
+          borderColor: Colors.transparent,
+          borderRadius: 30.0,
+          buttonSize: 60.0,
+          icon: Icon(
             Icons.arrow_back_rounded,
-            color: Colors.white,
+            color: FlutterFlowTheme.of(context).primaryText,
             size: 30.0,
           ),
-        ),
-        title: Text(
-          'Suporte',
-          style: FlutterFlowTheme.of(context).headlineMedium.override(
-                fontFamily: 'Montserrat',
-                color: Colors.white,
-                fontSize: 22.0,
-                fontWeight: FontWeight.w600,
-              ),
+          onPressed: () => context.pop(),
         ),
         centerTitle: true,
-        elevation: 2.0,
-      ),
-      body: SafeArea(
-        top: true,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 16.0, 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: FlutterFlowTheme.of(context).alternate,
-                      width: 1.0,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.support_agent,
-                              color: FlutterFlowTheme.of(context).primary,
-                              size: 28.0,
-                            ),
-                            SizedBox(width: 12.0),
-                            Text(
-                              'Central de Suporte',
-                              style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 16.0),
-                        Text(
-                          'Estamos aqui para ajudar você! Nossa equipe de suporte está disponível para esclarecer dúvidas e resolver problemas relacionados aos nossos serviços.',
-                          style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                fontFamily: 'Montserrat',
-                                lineHeight: 1.5,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                
-                SizedBox(height: 20.0),
-                
-                Text(
-                  'Como podemos ajudar?',
-                  style: FlutterFlowTheme.of(context).titleLarge.override(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                
-                SizedBox(height: 16.0),
-                
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: FlutterFlowTheme.of(context).alternate,
-                      width: 1.0,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.phone,
-                          color: FlutterFlowTheme.of(context).success,
-                          size: 24.0,
-                        ),
-                        SizedBox(width: 12.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Telefone',
-                              style: FlutterFlowTheme.of(context).titleMedium.override(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                            Text(
-                              '(11) 99999-9999',
-                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Montserrat',
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                            Text(
-                              'Segunda a Sexta: 8h às 18h',
-                              style: FlutterFlowTheme.of(context).bodySmall.override(
-                                    fontFamily: 'Montserrat',
-                                    color: FlutterFlowTheme.of(context).secondaryText,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                
-                SizedBox(height: 12.0),
-                
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: FlutterFlowTheme.of(context).alternate,
-                      width: 1.0,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.email,
-                          color: FlutterFlowTheme.of(context).info,
-                          size: 24.0,
-                        ),
-                        SizedBox(width: 12.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'E-mail',
-                              style: FlutterFlowTheme.of(context).titleMedium.override(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                            Text(
-                              'suporte@safesolutions.com',
-                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Montserrat',
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                            Text(
-                              'Resposta em até 24h',
-                              style: FlutterFlowTheme.of(context).bodySmall.override(
-                                    fontFamily: 'Montserrat',
-                                    color: FlutterFlowTheme.of(context).secondaryText,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                
-                SizedBox(height: 20.0),
-                
-                Text(
-                  'Perguntas Frequentes',
-                  style: FlutterFlowTheme.of(context).titleLarge.override(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                
-                SizedBox(height: 16.0),
-                
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: FlutterFlowTheme.of(context).alternate,
-                      width: 1.0,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Como solicitar um serviço?',
-                          style: FlutterFlowTheme.of(context).titleMedium.override(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                        SizedBox(height: 8.0),
-                        Text(
-                          'Acesse a seção "Serviços" no menu principal e escolha o serviço desejado. Preencha o formulário com suas informações e aguarde o contato da nossa equipe.',
-                          style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                fontFamily: 'Montserrat',
-                                lineHeight: 1.4,
-                              ),
-                        ),
-                        SizedBox(height: 16.0),
-                        Text(
-                          'Como acompanhar meu pedido?',
-                          style: FlutterFlowTheme.of(context).titleMedium.override(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                        SizedBox(height: 8.0),
-                        Text(
-                          'Você pode acompanhar o status do seu pedido na seção "Contratos" do aplicativo. Lá você encontrará todas as informações sobre o andamento do serviço.',
-                          style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                fontFamily: 'Montserrat',
-                                lineHeight: 1.4,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+        title: Text(
+          'Suporte',
+          style: FlutterFlowTheme.of(context).headlineSmall.override(
+            fontFamily: 'Montserrat',
+            color: FlutterFlowTheme.of(context).tertiary,
+            fontWeight: FontWeight.bold,
           ),
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).secondaryBackground,
+                borderRadius: BorderRadius.circular(12.0),
+                border: Border.all(
+                  color: FlutterFlowTheme.of(context).alternate,
+                  width: 1.0,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Como podemos ajudar?',
+                    style: FlutterFlowTheme.of(context).titleLarge.override(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  Text(
+                    'Nossa equipe de suporte está disponível para ajudá-lo com qualquer dúvida ou problema relacionado aos nossos serviços. Entre em contato conosco através dos canais abaixo:',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'Horário de Atendimento:',
+                    style: FlutterFlowTheme.of(context).titleMedium.override(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  Text(
+                    'Segunda a Sexta: 8h às 18h\nSábado: 8h às 12h\nDomingo: Fechado',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'Canais de Contato:',
+                    style: FlutterFlowTheme.of(context).titleMedium.override(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 12.0),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.email_outlined,
+                        color: FlutterFlowTheme.of(context).tertiary,
+                        size: 24.0,
+                      ),
+                      SizedBox(width: 12.0),
+                      Text(
+                        'suporte@safesolutions.com',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.0),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.phone_outlined,
+                        color: FlutterFlowTheme.of(context).tertiary,
+                        size: 24.0,
+                      ),
+                      SizedBox(width: 12.0),
+                      Text(
+                        '(11) 99999-9999',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.0),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.chat_outlined,
+                        color: FlutterFlowTheme.of(context).tertiary,
+                        size: 24.0,
+                      ),
+                      SizedBox(width: 12.0),
+                      Text(
+                        'Chat online disponível no app',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'Tempo médio de resposta: 2 horas durante horário comercial. Para emergências, utilize nosso telefone de suporte.',
+                    style: FlutterFlowTheme.of(context).bodySmall.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

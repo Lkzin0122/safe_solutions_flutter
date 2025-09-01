@@ -3,10 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'super_clean_model.dart';
 export 'super_clean_model.dart';
 
@@ -22,7 +19,6 @@ class SuperCleanWidget extends StatefulWidget {
 
 class _SuperCleanWidgetState extends State<SuperCleanWidget> {
   late SuperCleanModel _model;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -34,490 +30,289 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      child: Scaffold(
-        key: scaffoldKey,
+    return Scaffold(
+      key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+      appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        body: SafeArea(
-          top: true,
-          child: Stack(
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
+        elevation: 0,
+        leading: FlutterFlowIconButton(
+          borderColor: Colors.transparent,
+          borderRadius: 30.0,
+          buttonSize: 60.0,
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: FlutterFlowTheme.of(context).primaryText,
+            size: 30.0,
+          ),
+          onPressed: () => context.pop(),
+        ),
+        centerTitle: true,
+        title: Text(
+          'Super Clean',
+          style: FlutterFlowTheme.of(context).headlineSmall.override(
+            fontFamily: 'Montserrat',
+            color: FlutterFlowTheme.of(context).tertiary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            // Header com imagem e status
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: Column(
                 children: [
-                  Expanded(
-                    child: Container(
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: Image.network(
+                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/dfq8wa491iyv/image_17_(1).png',
                       width: 100.0,
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        shape: BoxShape.rectangle,
-                      ),
-                      alignment: const AlignmentDirectional(0.0, -1.0),
-                      child: Stack(
-                        children: [
-                          Stack(
-                            children: [
-                              SingleChildScrollView(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: double.infinity,
-                                      height: 140.0,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryBackground,
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(16.0),
-                                          bottomRight: Radius.circular(16.0),
-                                          topLeft: Radius.circular(0.0),
-                                          topRight: Radius.circular(0.0),
-                                        ),
-                                      ),
-                                      alignment:
-                                          const AlignmentDirectional(-1.0, 0.0),
-                                      child: Stack(
-                                        children: [
-                                          Align(
-                                            alignment: const AlignmentDirectional(
-                                                -1.04, 0.51),
-                                            child: FlutterFlowIconButton(
-                                              borderColor: Colors.transparent,
-                                              borderRadius: 30.0,
-                                              borderWidth: 1.0,
-                                              buttonSize: 60.0,
-                                              icon: Icon(
-                                                Icons.arrow_back_rounded,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                size: 30.0,
-                                              ),
-                                              onPressed: () async {
-                                                context.pop();
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(0.0, -0.65),
-                            child: Container(
-                              width: 390.0,
-                              height: 149.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: const AlignmentDirectional(0.0, -0.01),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.network(
-                                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/dfq8wa491iyv/image_17_(1).png',
-                                        width: 120.9,
-                                        height: 109.3,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(0.0, -0.38),
-                            child: Container(
-                              width: 150.0,
-                              height: 16.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Align(
-                                alignment: const AlignmentDirectional(0.0, 0.03),
-                                child: Text(
-                                  'Limpeza',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 11.0,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.8, -0.24),
-                            child: Text(
-                              'Descriçao do Orçamento',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .override(
-                                    fontFamily: FlutterFlowTheme.of(context)
-                                        .titleMediumFamily,
-                                    letterSpacing: 0.0,
-                                    useGoogleFonts:
-                                        !FlutterFlowTheme.of(context)
-                                            .titleMediumIsCustom,
-                                  ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.27, 0.01),
-                            child: Container(
-                              width: 294.7,
-                              height: 122.48,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Orçamento solicitado para a realização de serviços de limpeza em um espaço comercial. O serviço incluirá a limpeza de várias áreas, com foco na sala de reuniões e banheiros. A limpeza da sala de reuniões incluirá a remoção de poeira, limpeza das superfícies das mesas e desinfecção de equipamentos.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.27, 0.01),
-                            child: Container(
-                              width: 294.7,
-                              height: 122.5,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.27, 0.01),
-                            child: Container(
-                              width: 294.7,
-                              height: 122.5,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.27, 0.01),
-                            child: Container(
-                              width: 294.7,
-                              height: 122.5,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.27, 0.01),
-                            child: Container(
-                              width: 310.0,
-                              height: 140.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Orçamento solicitado para a realização de serviços de limpeza em um espaço comercial. O serviço incluirá a limpeza de várias áreas, com foco na sala de reuniões e banheiros. A limpeza da sala de reuniões incluirá a remoção de poeira, limpeza das superfícies das mesas e desinfecção de equipamentos. ',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.8, 0.23),
-                            child: Container(
-                              width: 100.0,
-                              height: 27.76,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Valor total',
-                                style: FlutterFlowTheme.of(context)
-                                    .titleMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .titleMediumFamily,
-                                      fontSize: 15.0,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .titleMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.75, 0.3),
-                            child: Container(
-                              width: 100.0,
-                              height: 21.85,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'R\$ 1.000,00',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.8, 0.4),
-                            child: Container(
-                              width: 100.0,
-                              height: 21.14,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Prazo: 20/11',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyLarge
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyLargeFamily,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w600,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyLargeIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                        ],
+                      height: 100.0,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: Text(
+                      'Em Andamento',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 ],
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 0.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(0.0),
-                  child: Image.network(
-                    'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                    width: 250.0,
-                    fit: BoxFit.fill,
+            ),
+            
+            SizedBox(height: 24.0),
+            
+            // Descrição
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).secondaryBackground,
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 8.0,
+                    color: Colors.black.withOpacity(0.1),
+                    offset: Offset(0.0, 4.0),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Descrição do Orçamento',
+                    style: FlutterFlowTheme.of(context).titleMedium.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).tertiary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 12.0),
+                  Text(
+                    'Orçamento solicitado para a realização de serviços de limpeza em um espaço comercial. O serviço incluirá a limpeza de várias áreas, com foco na sala de reuniões e banheiros. A limpeza da sala de reuniões incluirá a remoção de poeira, limpeza das superfícies das mesas e desinfecção de equipamentos.',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            SizedBox(height: 16.0),
+            
+            // Detalhes
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).secondaryBackground,
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 8.0,
+                    color: Colors.black.withOpacity(0.1),
+                    offset: Offset(0.0, 4.0),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Tipo de Serviço:', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat', fontWeight: FontWeight.w500)),
+                      Text('Limpeza comercial', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat')),
+                    ],
+                  ),
+                  SizedBox(height: 8.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Áreas:', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat', fontWeight: FontWeight.w500)),
+                      Text('Sala de reuniões e banheiros', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat')),
+                    ],
+                  ),
+                  SizedBox(height: 8.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Frequência:', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat', fontWeight: FontWeight.w500)),
+                      Text('Serviço único', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat')),
+                    ],
+                  ),
+                  SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Valor Total',
+                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                            ),
+                          ),
+                          Text(
+                            'R\$ 1.000,00',
+                            style: FlutterFlowTheme.of(context).headlineSmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Prazo',
+                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                            ),
+                          ),
+                          Text(
+                            '20/11/2024',
+                            style: FlutterFlowTheme.of(context).titleMedium.override(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            
+            SizedBox(height: 24.0),
+            
+            // Botão Ver Status
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: FlutterFlowTheme.of(context).primary,
+                  padding: EdgeInsets.symmetric(vertical: 12.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Text(
+                  'Ver Status do Serviço',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-            ],
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        width: double.infinity,
+        height: 80,
+        decoration: BoxDecoration(
+          color: FlutterFlowTheme.of(context).secondaryBackground,
+          border: Border.all(
+            color: FlutterFlowTheme.of(context).alternate,
+            width: 1,
           ),
         ),
-        bottomNavigationBar: Container(
-          width: double.infinity,
-          height: 80,
-          decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).secondaryBackground,
-            border: Border.all(
-              color: FlutterFlowTheme.of(context).alternate,
-              width: 1,
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.pushNamed(ContratosWidget.routeName);
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.description,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                        size: 24,
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Text(
-                          'Contratos',
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                                color: FlutterFlowTheme.of(context).secondaryText,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w600,
-                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
+        child: Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
+                onTap: () => context.pushNamed(ContratosWidget.routeName),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.description, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
+                    Text('Contratos', style: FlutterFlowTheme.of(context).bodySmall.override(
+                      fontFamily: 'Montserrat', color: FlutterFlowTheme.of(context).secondaryText, fontWeight: FontWeight.w600)),
+                  ],
                 ),
-                InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.pushNamed(FaleConoscoWidget.routeName);
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.message_outlined,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                        size: 24,
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Text(
-                          'Fale conosco',
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                                color: FlutterFlowTheme.of(context).secondaryText,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w500,
-                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
+              ),
+              InkWell(
+                onTap: () => context.pushNamed(FaleConoscoWidget.routeName),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.message_outlined, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
+                    Text('Fale conosco', style: FlutterFlowTheme.of(context).bodySmall.override(
+                      fontFamily: 'Montserrat', color: FlutterFlowTheme.of(context).secondaryText, fontWeight: FontWeight.w500)),
+                  ],
                 ),
-                InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.pushNamed(ProfileWidget.routeName);
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.person_outlined,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                        size: 24,
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Text(
-                          'Perfil',
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                                color: FlutterFlowTheme.of(context).secondaryText,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w500,
-                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
+              ),
+              InkWell(
+                onTap: () => context.pushNamed(ProfileWidget.routeName),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.person_outlined, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
+                    Text('Perfil', style: FlutterFlowTheme.of(context).bodySmall.override(
+                      fontFamily: 'Montserrat', color: FlutterFlowTheme.of(context).secondaryText, fontWeight: FontWeight.w500)),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

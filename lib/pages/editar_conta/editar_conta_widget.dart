@@ -72,7 +72,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
       // Esconder mensagem após 2 segundos e voltar
       await Future.delayed(Duration(seconds: 2));
       if (mounted) {
-        context.pushNamed('profile');
+        context.pushNamed(ConfiguracoesWidget.routeName);
       }
     }
   }
@@ -101,7 +101,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
               size: 30.0,
             ),
             onPressed: () async {
-              context.pushNamed('profile');
+              context.pushNamed(ConfiguracoesWidget.routeName);
             },
           ),
           title: Text(
@@ -487,7 +487,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                       Expanded(
                         child: FFButtonWidget(
                           onPressed: () async {
-                            context.pushNamed('profile');
+                            context.pushNamed(ConfiguracoesWidget.routeName);
                           },
                           text: 'Cancelar',
                           options: FFButtonOptions(

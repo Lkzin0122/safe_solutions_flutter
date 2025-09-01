@@ -191,28 +191,30 @@ class _ProfileWidgetState extends State<ProfileWidget>
               mainAxisSize: MainAxisSize.min,
               children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(24.0, 80.0, 24.0, 30.0),
                 child: Stack(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(0.0),
-                      child: Image.network(
-                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                        width: 250.0,
-                        fit: BoxFit.fill,
+                    Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(0.0),
+                        child: Image.network(
+                          'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                          width: 250.0,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                     Positioned(
-                      top: 16.0,
-                      right: 16.0,
+                      top: 0.0,
+                      right: 0.0,
                       child: InkWell(
-                        onTap: () => context.pushNamed('configuracoes'),
+                        onTap: () => context.pushNamed(ConfiguracoesWidget.routeName),
                         child: Container(
-                          width: 40.0,
-                          height: 40.0,
+                          width: 32.0,
+                          height: 32.0,
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context).secondaryBackground,
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(16.0),
                             boxShadow: [
                               BoxShadow(
                                 blurRadius: 4.0,
@@ -224,7 +226,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                           child: Icon(
                             Icons.settings,
                             color: FlutterFlowTheme.of(context).primaryText,
-                            size: 20.0,
+                            size: 16.0,
                           ),
                         ),
                       ),
@@ -289,40 +291,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                 endIndent: 24.0,
                 color: FlutterFlowTheme.of(context).alternate,
               ).animateOnPageLoad(animationsMap['dividerOnPageLoadAnimation']!),
-              Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 40.0, 20.0),
-                  child: FFButtonWidget(
-                    onPressed: () async {
-                      context.pushNamed(EditarContaWidget.routeName);
-                    },
-                    text: 'Editar Conta',
-                    options: FFButtonOptions(
-                      width: 150.0,
-                      height: 44.0,
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                      iconPadding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                      color: const Color(0xFF234063),
-                      textStyle:
-                          FlutterFlowTheme.of(context).bodyLarge.override(
-                                fontFamily: 'Montserrat',
-                                color: Colors.white,
-                                letterSpacing: 0.0,
-                              ),
-                      elevation: 0.0,
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).alternate,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ).animateOnPageLoad(
-                      animationsMap['buttonOnPageLoadAnimation']!),
-                ),
-              ),
+
               // Seção de informações da empresa
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),

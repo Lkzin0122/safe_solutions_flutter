@@ -4,6 +4,8 @@ import 'contratos_widget.dart' show ContratosWidget;
 import 'package:flutter/material.dart';
 
 class ContratosModel extends FlutterFlowModel<ContratosWidget> {
+  bool isCompletedExpanded = false;
+
   @override
   void initState(BuildContext context) {}
 

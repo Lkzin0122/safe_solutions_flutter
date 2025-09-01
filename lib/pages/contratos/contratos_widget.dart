@@ -172,6 +172,93 @@ class _ContratosWidgetState extends State<ContratosWidget> {
     );
   }
 
+  Widget _buildCompletedServiceCard({
+    required String title,
+    required String description,
+    required IconData icon,
+    required String completedDate,
+  }) {
+    return Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(24.0, 8.0, 24.0, 8.0),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: FlutterFlowTheme.of(context).secondaryBackground,
+          borderRadius: BorderRadius.circular(16.0),
+          border: Border.all(
+            color: FlutterFlowTheme.of(context).alternate,
+            width: 1.0,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+          child: Row(
+            children: [
+              Container(
+                width: 60.0,
+                height: 60.0,
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).secondary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Icon(
+                  icon,
+                  color: FlutterFlowTheme.of(context).secondary,
+                  size: 30.0,
+                ),
+              ),
+              SizedBox(width: 16.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 4.0),
+                    Text(
+                      description,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: FlutterFlowTheme.of(context).bodySmall.override(
+                        fontFamily: 'Montserrat',
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.check_circle,
+                          color: FlutterFlowTheme.of(context).success,
+                          size: 16.0,
+                        ),
+                        SizedBox(width: 4.0),
+                        Text(
+                          'Concluído em $completedDate',
+                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).success,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -190,12 +277,14 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                 Padding(
                   padding:
                       EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 0.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(0.0),
-                    child: Image.network(
-                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                      width: 250.0,
-                      fit: BoxFit.fill,
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(0.0),
+                      child: Image.network(
+                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                        width: 250.0,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
@@ -204,9 +293,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                 Container(
                   width: double.infinity,
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 0.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Serviços em Andamento',
@@ -217,6 +306,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                   fontWeight: FontWeight.bold,
                                 ),
                       ),
+                      SizedBox(height: 8.0),
                       Container(
                         padding: EdgeInsetsDirectional.fromSTEB(
                             12.0, 6.0, 12.0, 6.0),
@@ -236,6 +326,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     ],
                   ),
                 ),
+                
+                SizedBox(height: 10.0),
 
                 // Cards de serviços
                 _buildServiceCard(
@@ -263,6 +355,115 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   imageUrl:
                       'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/42x886euiaf7/image_20_1.png',
                   onTap: () => context.pushNamed(BratecnoWidget.routeName),
+                ),
+
+                SizedBox(height: 30.0),
+
+                // Seção de Serviços Concluídos Expansível
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        _model.isCompletedExpanded = !_model.isCompletedExpanded;
+                      });
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        borderRadius: BorderRadius.circular(12.0),
+                        border: Border.all(
+                          color: FlutterFlowTheme.of(context).alternate,
+                          width: 1.0,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Serviços Concluídos',
+                                style: FlutterFlowTheme.of(context).titleMedium.override(
+                                  fontFamily: 'Montserrat',
+                                  color: FlutterFlowTheme.of(context).tertiary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 4.0),
+                              Container(
+                                padding: EdgeInsetsDirectional.fromSTEB(8.0, 4.0, 8.0, 4.0),
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context).secondary,
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: Text(
+                                  '5 Concluídos',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10.0,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            _model.isCompletedExpanded ? Icons.expand_less : Icons.expand_more,
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            size: 24.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                
+                // Cards de serviços concluídos (expansível com animação)
+                AnimatedCrossFade(
+                  firstChild: SizedBox.shrink(),
+                  secondChild: Column(
+                    children: [
+                      SizedBox(height: 10.0),
+                      _buildCompletedServiceCard(
+                        title: 'Instalação Elétrica Residencial',
+                        description: 'Instalação completa do sistema elétrico em residência de 3 quartos.',
+                        icon: Icons.electrical_services,
+                        completedDate: '15/12/2024',
+                      ),
+                      _buildCompletedServiceCard(
+                        title: 'Manutenção de Ar Condicionado',
+                        description: 'Limpeza e manutenção preventiva de 4 unidades de ar condicionado.',
+                        icon: Icons.ac_unit,
+                        completedDate: '10/12/2024',
+                      ),
+                      _buildCompletedServiceCard(
+                        title: 'Pintura Comercial',
+                        description: 'Pintura completa de escritório comercial de 200m².',
+                        icon: Icons.format_paint,
+                        completedDate: '05/12/2024',
+                      ),
+                      _buildCompletedServiceCard(
+                        title: 'Instalação de Câmeras de Segurança',
+                        description: 'Sistema completo com 8 câmeras HD e monitoramento 24h.',
+                        icon: Icons.security,
+                        completedDate: '28/11/2024',
+                      ),
+                      _buildCompletedServiceCard(
+                        title: 'Reforma de Banheiro',
+                        description: 'Reforma completa incluindo azulejos, louças e instalações hidráulicas.',
+                        icon: Icons.bathroom,
+                        completedDate: '20/11/2024',
+                      ),
+                    ],
+                  ),
+                  crossFadeState: _model.isCompletedExpanded 
+                      ? CrossFadeState.showSecond 
+                      : CrossFadeState.showFirst,
+                  duration: Duration(milliseconds: 300),
                 ),
 
                 SizedBox(height: 20.0),
