@@ -114,15 +114,17 @@ class _VerificarCodigoWidgetState extends State<VerificarCodigoWidget> {
                             },
                           ),
                         ),
-                        Align(
-                          alignment: const AlignmentDirectional(0.03, -0.14),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(0.0),
-                            child: Image.network(
-                              'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                              width: 250.0,
-                              fit: BoxFit.fill,
-                              alignment: const Alignment(0.0, 0.0),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 0.0),
+                          child: Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(0.0),
+                              child: Image.network(
+                                'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                                width: 250.0,
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
                         ),

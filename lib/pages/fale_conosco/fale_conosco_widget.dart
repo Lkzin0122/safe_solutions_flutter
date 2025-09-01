@@ -68,10 +68,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                   // Logo no topo
                   Container(
                     width: double.infinity,
-                    height: 140.0,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
+                    padding: EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 24.0),
                     child: Center(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(0.0),
