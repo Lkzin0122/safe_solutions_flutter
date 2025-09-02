@@ -222,6 +222,9 @@ class _Login1WidgetState extends State<Login1Widget> {
                                                 BorderRadius.circular(12.0),
                                           ),
                                           filled: true,
+                                          fillColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
                                         ),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium

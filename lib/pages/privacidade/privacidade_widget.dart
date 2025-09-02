@@ -55,16 +55,15 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
           'Privacidade',
           style: FlutterFlowTheme.of(context).headlineSmall.override(
             fontFamily: 'Montserrat',
-            color: FlutterFlowTheme.of(context).tertiary,
+            color: Color(0xFF204060),
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Container(
+        child: SingleChildScrollView(
+          child: Container(
               width: double.infinity,
               padding: EdgeInsets.all(20.0),
               decoration: BoxDecoration(
@@ -75,89 +74,172 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                   width: 1.0,
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Política de Privacidade',
-                    style: FlutterFlowTheme.of(context).titleLarge.override(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Política de Privacidade',
+                      style: FlutterFlowTheme.of(context).titleLarge.override(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    'Coleta de Dados:',
-                    style: FlutterFlowTheme.of(context).titleMedium.override(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w600,
+                    SizedBox(height: 16.0),
+                    Text(
+                      'A Safe Solutions valoriza a sua privacidade e está comprometida em proteger suas informações pessoais. Esta Política de Privacidade descreve como coletamos, usamos, divulgamos e protegemos as informações de nossos usuários e parceiros.',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    'Coletamos apenas as informações necessárias para prestar nossos serviços, incluindo nome, e-mail, telefone e endereço. Todos os dados são criptografados e armazenados com segurança.',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
+                    SizedBox(height: 20.0),
+                    Text(
+                      '1. Introdução',
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF204060),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    'Uso das Informações:',
-                    style: FlutterFlowTheme.of(context).titleMedium.override(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w600,
+                    SizedBox(height: 8.0),
+                    Text(
+                      'A Safe Solutions valoriza a sua privacidade e está comprometida em proteger suas informações pessoais. Esta Política de Privacidade descreve como coletamos, usamos, divulgamos e protegemos as informações de nossos usuários e parceiros.',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    'Seus dados são utilizados exclusivamente para:\n• Prestar os serviços contratados\n• Entrar em contato sobre seus pedidos\n• Melhorar a qualidade dos nossos serviços\n• Enviar atualizações importantes',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
+                    SizedBox(height: 20.0),
+                    Text(
+                      '2. Informações Que Coletamos',
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF204060),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    'Compartilhamento:',
-                    style: FlutterFlowTheme.of(context).titleMedium.override(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w600,
+                    SizedBox(height: 8.0),
+                    Text(
+                      '• Informações de Contato: Nome da empresa, endereço, e-mail, número de telefone e outras informações de contato.\n• Informações de Negócios: Dados sobre suas operações comerciais, serviços oferecidos, contratos e transações.\n• Informações de Uso: Dados sobre como você interage com nossos serviços, incluindo registros de acesso, dados de navegação e preferências.\n• Informações de Pagamento: Informações necessárias para processar pagamentos, como dados bancários e cartões.',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    'Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros, exceto quando necessário para prestar o serviço solicitado ou quando exigido por lei.',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
+                    SizedBox(height: 20.0),
+                    Text(
+                      '3. Como Usamos Suas Informações',
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF204060),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    'Seus Direitos:',
-                    style: FlutterFlowTheme.of(context).titleMedium.override(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w600,
+                    SizedBox(height: 8.0),
+                    Text(
+                      '• Prestação de Serviços: Para fornecer e gerenciar nossos serviços e soluções, incluindo a manutenção de sua conta e a execução de contratos.\n• Comunicação: Para entrar em contato com você sobre atualizações, ofertas e informações importantes relacionadas aos nossos serviços.\n• Análise e Melhoria: Para analisar o uso dos nossos serviços e melhorar nossa plataforma e processos.\n• Segurança: Para proteger a segurança e integridade de nossos serviços e prevenir fraudes ou abusos.',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    'Você tem o direito de acessar, corrigir ou excluir seus dados pessoais a qualquer momento. Entre em contato conosco para exercer esses direitos.',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
+                    SizedBox(height: 20.0),
+                    Text(
+                      '4. Compartilhamento de Informações',
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF204060),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    'Última atualização: Janeiro de 2024',
-                    style: FlutterFlowTheme.of(context).bodySmall.override(
-                      fontFamily: 'Montserrat',
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      fontStyle: FontStyle.italic,
+                    SizedBox(height: 8.0),
+                    Text(
+                      '• Com Parceiros e Prestadores de Serviços: Podemos compartilhar suas informações com parceiros e prestadores de serviços que atuam em nosso nome, como processadores de pagamento e empresas de análise.\n• Com Autoridades Legais: Podemos divulgar informações quando exigido por lei, regulamentação ou para proteger nossos direitos e interesses legais.\n• Transferências de Negócios: Em caso de fusão, aquisição ou venda de ativos, suas informações podem ser transferidas como parte do negócio.',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 20.0),
+                    Text(
+                      '5. Segurança das Informações',
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF204060),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      'Implementamos medidas de segurança apropriadas para proteger suas informações contra acesso não autorizado, alteração, divulgação ou destruição. No entanto, nenhuma medida de segurança é totalmente infalível, e não podemos garantir a segurança absoluta de seus dados.',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Text(
+                      '6. Seus Direitos',
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF204060),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      'Você tem o direito de acessar, corrigir ou excluir suas informações pessoais.',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Text(
+                      '7. Cookies e Tecnologias Similares',
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF204060),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      'Utilizamos cookies e tecnologias semelhantes para melhorar sua experiência em nossa plataforma e analisar o uso. Você pode configurar seu navegador para recusar cookies, mas isso pode afetar sua capacidade de usar nossos serviços de forma eficaz.',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Text(
+                      '8. Alterações na Política de Privacidade',
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF204060),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      'Podemos atualizar esta Política de Privacidade ocasionalmente para refletir mudanças em nossos serviços ou requisitos legais. Notificaremos sobre qualquer alteração substancial por meio de nossos canais de comunicação habituais.',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Text(
+                      '10. Contato',
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF204060),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      'Se você tiver dúvidas ou preocupações sobre esta Política de Privacidade, entre em contato conosco em: safesolutionsempresa@gmail.com',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
         ),
       ),
     );

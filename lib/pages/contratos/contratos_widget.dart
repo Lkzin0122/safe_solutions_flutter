@@ -99,10 +99,10 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             width: double.infinity,
             height: 120.0,
             decoration: BoxDecoration(
-              color: FlutterFlowTheme.of(context).secondaryBackground,
+              color: FlutterFlowTheme.of(context).primaryText,
               borderRadius: BorderRadius.circular(16.0),
               border: Border.all(
-                color: FlutterFlowTheme.of(context).alternate,
+                color: FlutterFlowTheme.of(context).secondaryBackground,
                 width: 1.0,
               ),
             ),
@@ -135,7 +135,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                               .titleMedium
                               .override(
                                 fontFamily: 'Montserrat',
-                                color: FlutterFlowTheme.of(context).tertiary,
+                                color: FlutterFlowTheme.of(context).secondaryBackground,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -149,7 +149,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                               .override(
                                 fontFamily: 'Montserrat',
                                 color:
-                                    FlutterFlowTheme.of(context).secondaryText,
+                                    FlutterFlowTheme.of(context).primaryBackground,
                               ),
                         ),
                       ],
@@ -160,7 +160,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                   child: Icon(
                     Icons.arrow_forward_ios,
-                    color: FlutterFlowTheme.of(context).secondaryText,
+                    color: FlutterFlowTheme.of(context).primaryBackground,
                     size: 16.0,
                   ),
                 ),
@@ -268,7 +268,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        backgroundColor: FlutterFlowTheme.of(context).primaryText,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -302,7 +302,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         style:
                             FlutterFlowTheme.of(context).headlineSmall.override(
                                   fontFamily: 'Montserrat',
-                                  color: FlutterFlowTheme.of(context).tertiary,
+                                  color: FlutterFlowTheme.of(context).secondaryBackground,
                                   fontWeight: FontWeight.bold,
                                 ),
                       ),
@@ -475,9 +475,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
           width: double.infinity,
           height: 80,
           decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).secondaryBackground,
+            color: FlutterFlowTheme.of(context).primaryText,
             border: Border.all(
-              color: FlutterFlowTheme.of(context).alternate,
+              color: FlutterFlowTheme.of(context).secondaryBackground,
               width: 1,
             ),
           ),
@@ -493,17 +493,17 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   children: [
                     Icon(
                       Icons.description,
-                      color: FlutterFlowTheme.of(context).primary,
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
                       size: 24,
                     ),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                       child: Text(
-                        'Contratos',
+                        'Serviços',
                         style: FlutterFlowTheme.of(context).bodySmall.override(
                               fontFamily:
                                   FlutterFlowTheme.of(context).bodySmallFamily,
-                              color: FlutterFlowTheme.of(context).primary,
+                              color: FlutterFlowTheme.of(context).secondaryBackground,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
                               useGoogleFonts: !FlutterFlowTheme.of(context)

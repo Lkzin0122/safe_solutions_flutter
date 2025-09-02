@@ -55,7 +55,7 @@ class _SuporteWidgetState extends State<SuporteWidget> {
           'Suporte',
           style: FlutterFlowTheme.of(context).headlineSmall.override(
             fontFamily: 'Montserrat',
-            color: FlutterFlowTheme.of(context).tertiary,
+            color: Color(0xFF204060),
             fontWeight: FontWeight.bold,
           ),
         ),

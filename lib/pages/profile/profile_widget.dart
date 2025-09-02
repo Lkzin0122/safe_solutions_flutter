@@ -210,11 +210,11 @@ class _ProfileWidgetState extends State<ProfileWidget>
                       child: InkWell(
                         onTap: () => context.pushNamed(ConfiguracoesWidget.routeName),
                         child: Container(
-                          width: 32.0,
-                          height: 32.0,
+                          width: 24.0,
+                          height: 24.0,
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context).secondaryBackground,
-                            borderRadius: BorderRadius.circular(16.0),
+                            borderRadius: BorderRadius.circular(12.0),
                             boxShadow: [
                               BoxShadow(
                                 blurRadius: 4.0,
@@ -226,7 +226,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                           child: Icon(
                             Icons.settings,
                             color: FlutterFlowTheme.of(context).primaryText,
-                            size: 16.0,
+                            size: 12.0,
                           ),
                         ),
                       ),
