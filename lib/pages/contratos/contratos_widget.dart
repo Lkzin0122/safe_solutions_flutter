@@ -314,7 +314,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         child: Text(
-                          '3 Ativos',
+                          '${ContratosModel.ongoingServices.length} Ativos',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12.0,
@@ -328,33 +328,15 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                 
                 SizedBox(height: 10.0),
 
-                // Cards de serviços
-                _buildServiceCard(
-                  title: 'O Montador',
-                  description:
-                      'Serviços especializados de montagem de móveis para residências, escritórios e ambientes comerciais.',
-                  imageUrl:
-                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png',
-                  onTap: () => context.pushNamed(MontadorWidget.routeName),
-                ),
-
-                _buildServiceCard(
-                  title: 'Super Clean',
-                  description:
-                      'Serviço de limpeza profissional com soluções completas e personalizadas para manter seu ambiente impecável.',
-                  imageUrl:
-                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/dfq8wa491iyv/image_17_(1).png',
-                  onTap: () => context.pushNamed(SuperCleanWidget.routeName),
-                ),
-
-                _buildServiceCard(
-                  title: 'Bratecno',
-                  description:
-                      'Manutenção de hardware projetada para garantir desempenho ideal e confiabilidade dos seus equipamentos.',
-                  imageUrl:
-                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/42x886euiaf7/image_20_1.png',
-                  onTap: () => context.pushNamed(BratecnoWidget.routeName),
-                ),
+                // Cards de serviços dinâmicos
+                ...ContratosModel.ongoingServices.map((service) => 
+                  _buildServiceCard(
+                    title: service.title,
+                    description: service.description,
+                    imageUrl: service.imageUrl,
+                    onTap: () => context.pushNamed(service.route),
+                  ),
+                ).toList(),
 
                 SizedBox(height: 30.0),
 
@@ -400,7 +382,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: Text(
-                                  '5 Concluídos',
+                                  '${ContratosModel.completedServices.length} Concluídos',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 10.0,
@@ -427,36 +409,14 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   secondChild: Column(
                     children: [
                       SizedBox(height: 10.0),
-                      _buildCompletedServiceCard(
-                        title: 'Instalação Elétrica Residencial',
-                        description: 'Instalação completa do sistema elétrico em residência de 3 quartos.',
-                        icon: Icons.electrical_services,
-                        completedDate: '15/12/2024',
-                      ),
-                      _buildCompletedServiceCard(
-                        title: 'Manutenção de Ar Condicionado',
-                        description: 'Limpeza e manutenção preventiva de 4 unidades de ar condicionado.',
-                        icon: Icons.ac_unit,
-                        completedDate: '10/12/2024',
-                      ),
-                      _buildCompletedServiceCard(
-                        title: 'Pintura Comercial',
-                        description: 'Pintura completa de escritório comercial de 200m².',
-                        icon: Icons.format_paint,
-                        completedDate: '05/12/2024',
-                      ),
-                      _buildCompletedServiceCard(
-                        title: 'Instalação de Câmeras de Segurança',
-                        description: 'Sistema completo com 8 câmeras HD e monitoramento 24h.',
-                        icon: Icons.security,
-                        completedDate: '28/11/2024',
-                      ),
-                      _buildCompletedServiceCard(
-                        title: 'Reforma de Banheiro',
-                        description: 'Reforma completa incluindo azulejos, louças e instalações hidráulicas.',
-                        icon: Icons.bathroom,
-                        completedDate: '20/11/2024',
-                      ),
+                      ...ContratosModel.completedServices.map((service) => 
+                        _buildCompletedServiceCard(
+                          title: service.title,
+                          description: service.description,
+                          icon: service.icon,
+                          completedDate: service.completedDate,
+                        ),
+                      ).toList(),
                     ],
                   ),
                   crossFadeState: _model.isCompletedExpanded 
