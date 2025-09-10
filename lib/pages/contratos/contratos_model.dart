@@ -17,48 +17,12 @@ class CompletedService {
   });
 }
 
-class OngoingService {
-  final String id;
-  final String title;
-  final String description;
-  final String imageUrl;
-  final String route;
 
-  OngoingService({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.imageUrl,
-    required this.route,
-  });
-}
 
 class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   bool isCompletedExpanded = false;
   
-  static List<OngoingService> ongoingServices = [
-    OngoingService(
-      id: 'montador',
-      title: 'Montador',
-      description: 'Serviços de montagem e instalação profissional',
-      imageUrl: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-      route: 'montador',
-    ),
-    OngoingService(
-      id: 'super_clean',
-      title: 'Super Clean',
-      description: 'Serviços de limpeza profissional e especializada',
-      imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-      route: 'super_clean',
-    ),
-    OngoingService(
-      id: 'bratecno',
-      title: 'Bratecno',
-      description: 'Soluções tecnológicas e automação residencial',
-      imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-      route: 'bratecno',
-    ),
-  ];
+  static Set<String> completedServiceIds = {};
   
   static List<CompletedService> completedServices = [
     CompletedService(
@@ -98,35 +62,45 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   }
   
   static void completeService(String serviceId, String completedDate) {
-    final serviceIndex = ongoingServices.indexWhere((service) => service.id == serviceId);
-    if (serviceIndex != -1) {
-      final service = ongoingServices[serviceIndex];
-      
-      IconData icon;
-      switch (serviceId) {
-        case 'montador':
-          icon = Icons.build;
-          break;
-        case 'super_clean':
-          icon = Icons.cleaning_services;
-          break;
-        case 'bratecno':
-          icon = Icons.settings;
-          break;
-        default:
-          icon = Icons.check_circle;
-      }
-      
-      final completedService = CompletedService(
-        title: service.title,
-        description: service.description,
-        icon: icon,
-        completedDate: completedDate,
-      );
-      
-      ongoingServices.removeAt(serviceIndex);
-      completedServices.insert(0, completedService);
+    completedServiceIds.add(serviceId);
+    
+    String title, description;
+    IconData icon;
+    
+    switch (serviceId) {
+      case 'montador':
+        title = 'O Montador';
+        description = 'Montagem de três móveis planejados de escritório concluída com sucesso.';
+        icon = Icons.build;
+        break;
+      case 'super_clean':
+        title = 'Super Clean';
+        description = 'Limpeza profissional de espaço comercial concluída com excelência.';
+        icon = Icons.cleaning_services;
+        break;
+      case 'bratecno':
+        title = 'Bratecno';
+        description = 'Manutenção de hardware realizada com sucesso, garantindo desempenho ideal.';
+        icon = Icons.computer;
+        break;
+      default:
+        title = 'Serviço';
+        description = 'Serviço concluído com sucesso.';
+        icon = Icons.check_circle;
     }
+    
+    final completedService = CompletedService(
+      title: title,
+      description: description,
+      icon: icon,
+      completedDate: completedDate,
+    );
+    
+    completedServices.insert(0, completedService);
+  }
+  
+  static bool isServiceCompleted(String serviceId) {
+    return completedServiceIds.contains(serviceId);
   }
 
   @override

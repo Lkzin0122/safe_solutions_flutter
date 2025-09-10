@@ -476,7 +476,7 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
                     child: ElevatedButton(
                       onPressed: () => _showStatusPopup(context),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color(0xFF204060),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
@@ -499,7 +499,7 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
                     child: ElevatedButton(
                       onPressed: () => _showFinishConfirmation(context),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF204060),
+                        backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),

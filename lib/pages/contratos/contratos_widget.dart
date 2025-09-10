@@ -314,7 +314,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         child: Text(
-                          '${ContratosModel.ongoingServices.length} Ativos',
+                          '${3 - ContratosModel.completedServiceIds.length} Ativos',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12.0,
@@ -328,15 +328,36 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                 
                 SizedBox(height: 10.0),
 
-                // Cards de serviços dinâmicos
-                ...ContratosModel.ongoingServices.map((service) => 
+                // Cards de serviços (apenas os não concluídos)
+                if (!ContratosModel.isServiceCompleted('montador'))
                   _buildServiceCard(
-                    title: service.title,
-                    description: service.description,
-                    imageUrl: service.imageUrl,
-                    onTap: () => context.pushNamed(service.route),
+                    title: 'O Montador',
+                    description:
+                        'Serviços especializados de montagem de móveis para residências, escritórios e ambientes comerciais.',
+                    imageUrl:
+                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png',
+                    onTap: () => context.pushNamed('Montador'),
                   ),
-                ).toList(),
+
+                if (!ContratosModel.isServiceCompleted('super_clean'))
+                  _buildServiceCard(
+                    title: 'Super Clean',
+                    description:
+                        'Serviço de limpeza profissional com soluções completas e personalizadas para manter seu ambiente impecável.',
+                    imageUrl:
+                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/dfq8wa491iyv/image_17_(1).png',
+                    onTap: () => context.pushNamed('SuperClean'),
+                  ),
+
+                if (!ContratosModel.isServiceCompleted('bratecno'))
+                  _buildServiceCard(
+                    title: 'Bratecno',
+                    description:
+                        'Manutenção de hardware projetada para garantir desempenho ideal e confiabilidade dos seus equipamentos.',
+                    imageUrl:
+                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/42x886euiaf7/image_20_1.png',
+                    onTap: () => context.pushNamed('Bratecno'),
+                  ),
 
                 SizedBox(height: 30.0),
 
