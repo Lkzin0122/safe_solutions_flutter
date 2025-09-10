@@ -99,10 +99,10 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             width: double.infinity,
             height: 120.0,
             decoration: BoxDecoration(
-              color: FlutterFlowTheme.of(context).primaryText,
+              color: Colors.grey[100],
               borderRadius: BorderRadius.circular(16.0),
               border: Border.all(
-                color: FlutterFlowTheme.of(context).secondaryBackground,
+                color: Colors.grey[300]!,
                 width: 1.0,
               ),
             ),
@@ -135,7 +135,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                               .titleMedium
                               .override(
                                 fontFamily: 'Montserrat',
-                                color: FlutterFlowTheme.of(context).secondaryBackground,
+                                color: Colors.black,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -148,8 +148,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                               .bodySmall
                               .override(
                                 fontFamily: 'Montserrat',
-                                color:
-                                    FlutterFlowTheme.of(context).primaryBackground,
+                                color: Colors.grey[600],
                               ),
                         ),
                       ],
@@ -160,7 +159,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                   child: Icon(
                     Icons.arrow_forward_ios,
-                    color: FlutterFlowTheme.of(context).primaryBackground,
+                    color: Colors.grey[600],
                     size: 16.0,
                   ),
                 ),
@@ -268,7 +267,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryText,
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -302,7 +301,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         style:
                             FlutterFlowTheme.of(context).headlineSmall.override(
                                   fontFamily: 'Montserrat',
-                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
                       ),
@@ -475,9 +474,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
           width: double.infinity,
           height: 80,
           decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).primaryText,
+            color: Colors.white,
             border: Border.all(
-              color: FlutterFlowTheme.of(context).secondaryBackground,
+              color: Colors.grey[300]!,
               width: 1,
             ),
           ),
@@ -493,7 +492,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   children: [
                     Icon(
                       Icons.description,
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                      color: Colors.black,
                       size: 24,
                     ),
                     Padding(
@@ -503,7 +502,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         style: FlutterFlowTheme.of(context).bodySmall.override(
                               fontFamily:
                                   FlutterFlowTheme.of(context).bodySmallFamily,
-                              color: FlutterFlowTheme.of(context).secondaryBackground,
+                              color: Colors.black,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
                               useGoogleFonts: !FlutterFlowTheme.of(context)
