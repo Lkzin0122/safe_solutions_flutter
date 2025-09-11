@@ -288,10 +288,10 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   ),
                   child: Center(
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(0.0),
                       child: Image.network(
                         'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                        height: 60.0,
+                        width: 250.0,
                         fit: BoxFit.contain,
                       ),
                     ),
