@@ -258,7 +258,7 @@ class _BratecnoWidgetState extends State<BratecnoWidget> {
     );
     
     Future.delayed(Duration(milliseconds: 1500), () {
-      context.pushReplacementNamed(ContratosWidget.routeName);
+      context.goNamed(ContratosWidget.routeName);
     });
   }
 

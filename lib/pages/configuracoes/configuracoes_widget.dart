@@ -49,7 +49,7 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
             color: FlutterFlowTheme.of(context).primaryText,
             size: 30.0,
           ),
-          onPressed: () => context.pop(),
+          onPressed: () => context.pushNamed(ProfileWidget.routeName),
         ),
         centerTitle: true,
         title: Text(

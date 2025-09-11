@@ -258,7 +258,7 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
     );
     
     Future.delayed(Duration(milliseconds: 1500), () {
-      context.pushReplacementNamed(ContratosWidget.routeName);
+      context.goNamed(ContratosWidget.routeName);
     });
   }
 

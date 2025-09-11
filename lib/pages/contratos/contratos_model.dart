@@ -21,6 +21,20 @@ class CompletedService {
 
 class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   bool isCompletedExpanded = false;
+  final TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
+  
+  bool get showMontador => searchQuery.isEmpty || 'O Montador'.toLowerCase().contains(searchQuery.toLowerCase()) || 'montagem móveis'.toLowerCase().contains(searchQuery.toLowerCase());
+  bool get showSuperClean => searchQuery.isEmpty || 'Super Clean'.toLowerCase().contains(searchQuery.toLowerCase()) || 'limpeza profissional'.toLowerCase().contains(searchQuery.toLowerCase());
+  bool get showBratecno => searchQuery.isEmpty || 'Bratecno'.toLowerCase().contains(searchQuery.toLowerCase()) || 'manutenção hardware'.toLowerCase().contains(searchQuery.toLowerCase());
+  
+  int get activeServicesCount {
+    int count = 0;
+    if (!isServiceCompleted('montador') && showMontador) count++;
+    if (!isServiceCompleted('super_clean') && showSuperClean) count++;
+    if (!isServiceCompleted('bratecno') && showBratecno) count++;
+    return count;
+  }
   
   static Set<String> completedServiceIds = {};
   
@@ -106,6 +120,24 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   @override
   void initState(BuildContext context) {}
 
+  void updateSearchQuery(String query) {
+    searchQuery = query;
+  }
+
+  List<CompletedService> get filteredCompletedServices {
+    if (searchQuery.isEmpty) {
+      return completedServices;
+    }
+    return completedServices.where((service) => 
+      service.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
+      service.description.toLowerCase().contains(searchQuery.toLowerCase())
+    ).toList();
+  }
+
+
+
   @override
-  void dispose() {}
+  void dispose() {
+    searchController.dispose();
+  }
 }

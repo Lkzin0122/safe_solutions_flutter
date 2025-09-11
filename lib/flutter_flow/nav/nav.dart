@@ -174,6 +174,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: PrivacidadeWidget.routeName,
           path: PrivacidadeWidget.routePath,
           builder: (context, params) => const PrivacidadeWidget(),
+        ),
+        FFRoute(
+          name: CalendarioWidget.routeName,
+          path: CalendarioWidget.routePath,
+          builder: (context, params) => const CalendarioWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

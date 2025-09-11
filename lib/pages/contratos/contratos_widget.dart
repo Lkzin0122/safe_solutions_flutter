@@ -272,19 +272,73 @@ class _ContratosWidgetState extends State<ContratosWidget> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // Logo fora do container
-                Padding(
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 0.0),
+                // Logo padronizada
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 20.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 4.0,
+                        offset: Offset(0.0, 2.0),
+                      ),
+                    ],
+                  ),
                   child: Center(
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(0.0),
+                      borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
                         'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                        width: 250.0,
+                        height: 60.0,
                         fit: BoxFit.contain,
                       ),
                     ),
+                  ),
+                ),
+
+                // Campo de busca e botão calendário
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 0.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context).secondaryBackground,
+                            borderRadius: BorderRadius.circular(12.0),
+                            border: Border.all(color: FlutterFlowTheme.of(context).alternate),
+                          ),
+                          child: TextField(
+                            controller: _model.searchController,
+                            onChanged: (value) {
+                              setState(() {
+                                _model.updateSearchQuery(value);
+                              });
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Buscar serviços...',
+                              prefixIcon: Icon(Icons.search, color: FlutterFlowTheme.of(context).secondaryText),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(12.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 12.0),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primary,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: IconButton(
+                          onPressed: () => context.pushNamed('calendario'),
+                          icon: Icon(Icons.calendar_month, color: Colors.white),
+                          tooltip: 'Ver Calendário',
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
@@ -314,7 +368,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         child: Text(
-                          '${3 - ContratosModel.completedServiceIds.length} Ativos',
+                          _model.searchQuery.isEmpty 
+                              ? '${3 - ContratosModel.completedServiceIds.length} Ativos'
+                              : '${_model.activeServicesCount} Encontrados',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12.0,
@@ -328,8 +384,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                 
                 SizedBox(height: 10.0),
 
-                // Cards de serviços (apenas os não concluídos)
-                if (!ContratosModel.isServiceCompleted('montador'))
+                // Cards de serviços (filtrados por busca)
+                if (!ContratosModel.isServiceCompleted('montador') && _model.showMontador)
                   _buildServiceCard(
                     title: 'O Montador',
                     description:
@@ -339,7 +395,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     onTap: () => context.pushNamed('Montador'),
                   ),
 
-                if (!ContratosModel.isServiceCompleted('super_clean'))
+                if (!ContratosModel.isServiceCompleted('super_clean') && _model.showSuperClean)
                   _buildServiceCard(
                     title: 'Super Clean',
                     description:
@@ -349,7 +405,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     onTap: () => context.pushNamed('SuperClean'),
                   ),
 
-                if (!ContratosModel.isServiceCompleted('bratecno'))
+                if (!ContratosModel.isServiceCompleted('bratecno') && _model.showBratecno)
                   _buildServiceCard(
                     title: 'Bratecno',
                     description:
@@ -403,7 +459,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: Text(
-                                  '${ContratosModel.completedServices.length} Concluídos',
+                                  _model.searchQuery.isEmpty 
+                                      ? '${ContratosModel.completedServices.length} Concluídos'
+                                      : '${_model.filteredCompletedServices.length} Encontrados',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 10.0,
@@ -430,7 +488,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   secondChild: Column(
                     children: [
                       SizedBox(height: 10.0),
-                      ...ContratosModel.completedServices.map((service) => 
+                      ..._model.filteredCompletedServices.map((service) => 
                         _buildCompletedServiceCard(
                           title: service.title,
                           description: service.description,

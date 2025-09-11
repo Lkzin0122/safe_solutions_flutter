@@ -261,9 +261,9 @@ class _MontadorWidgetState extends State<MontadorWidget> {
       ),
     );
     
-    // Navegar de volta para contratos após 1.5 segundos
+    // Navegar de volta para contratos imediatamente
     Future.delayed(Duration(milliseconds: 1500), () {
-      context.pushReplacementNamed(ContratosWidget.routeName);
+      context.goNamed(ContratosWidget.routeName);
     });
   }
 

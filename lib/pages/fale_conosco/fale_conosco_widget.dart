@@ -1,8 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -56,37 +54,88 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-
-        body: SafeArea(
-          child: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Logo no topo
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 24.0),
-                    child: Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(0.0),
-                        child: Image.network(
-                          'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                          width: 250.0,
-                          fit: BoxFit.fill,
+        body: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Logo padronizada
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 20.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 4.0,
+                        offset: Offset(0.0, 2.0),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => context.pop(),
+                        icon: Icon(Icons.arrow_back, color: FlutterFlowTheme.of(context).primaryText),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(0.0),
+                            child: Image.network(
+                              'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                              width: 250.0,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      SizedBox(width: 48.0),
+                    ],
                   ),
-                  // Seção de contato rápido
-                  Container(
+                ),
+                
+                // Header com título
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Fale Conosco',
+                        style: FlutterFlowTheme.of(context).headlineMedium.override(
+                          fontFamily: 'Montserrat',
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Estamos aqui para ajudar você',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Montserrat',
+                          color: FlutterFlowTheme.of(context).secondaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Seção de contato rápido
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 24.0),
+                  child: Container(
                     width: double.infinity,
-                    padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
+                    padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                      borderRadius: BorderRadius.circular(12.0),
+                      gradient: LinearGradient(
+                        colors: [FlutterFlowTheme.of(context).primary.withOpacity(0.1), Colors.white],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(16.0),
                       border: Border.all(
                         color: FlutterFlowTheme.of(context).alternate,
                         width: 1.0,
@@ -94,55 +143,99 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                     ),
                     child: Column(
                       children: [
-                        Text(
-                          'Contato Rápido',
-                          style: FlutterFlowTheme.of(context).titleMedium.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).tertiary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        Icon(
+                          Icons.support_agent,
+                          size: 48.0,
+                          color: FlutterFlowTheme.of(context).primary,
                         ),
                         SizedBox(height: 16.0),
+                        Text(
+                          'Contato Rápido',
+                          style: FlutterFlowTheme.of(context).titleLarge.override(
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        Text(
+                          'Entre em contato conosco agora mesmo',
+                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                          ),
+                        ),
+                        SizedBox(height: 24.0),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            InkWell(
-                              onTap: () async {
-                                await launchUrl(Uri.parse('tel:+5511999999999'));
-                              },
-                              child: Container(
-                                padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context).success,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.phone, color: Colors.white, size: 20.0),
-                                    SizedBox(width: 8.0),
-                                    Text('Ligar', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-                                  ],
+                            Expanded(
+                              child: InkWell(
+                                onTap: () async {
+                                  await launchUrl(Uri.parse('tel:+5511999999999'));
+                                },
+                                child: Container(
+                                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 20.0, 16.0),
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context).success,
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: FlutterFlowTheme.of(context).success.withOpacity(0.3),
+                                        blurRadius: 8.0,
+                                        offset: Offset(0.0, 4.0),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Icon(Icons.phone, color: Colors.white, size: 24.0),
+                                      SizedBox(height: 8.0),
+                                      Text(
+                                        'Ligar Agora',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                            InkWell(
-                              onTap: () async {
-                                await launchUrl(Uri.parse('https://wa.me/5511999999999'));
-                              },
-                              child: Container(
-                                padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF25D366),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.chat, color: Colors.white, size: 20.0),
-                                    SizedBox(width: 8.0),
-                                    Text('WhatsApp', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-                                  ],
+                            SizedBox(width: 16.0),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () async {
+                                  await launchUrl(Uri.parse('https://wa.me/5511999999999'));
+                                },
+                                child: Container(
+                                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 20.0, 16.0),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF25D366),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(0xFF25D366).withOpacity(0.3),
+                                        blurRadius: 8.0,
+                                        offset: Offset(0.0, 4.0),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Icon(Icons.chat, color: Colors.white, size: 24.0),
+                                      SizedBox(height: 8.0),
+                                      Text(
+                                        'WhatsApp',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -151,19 +244,34 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 24.0),
-                  
-                  Text(
-                    'Ou envie uma mensagem:',
-                    style: FlutterFlowTheme.of(context).titleMedium.override(
-                      fontFamily: 'Montserrat',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      fontWeight: FontWeight.w600,
-                    ),
+                ),
+                
+                // Divider com texto
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 20.0),
+                  child: Row(
+                    children: [
+                      Expanded(child: Divider(color: FlutterFlowTheme.of(context).alternate)),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                        child: Text(
+                          'Ou envie uma mensagem',
+                          style: FlutterFlowTheme.of(context).titleMedium.override(
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      Expanded(child: Divider(color: FlutterFlowTheme.of(context).alternate)),
+                    ],
                   ),
-                  SizedBox(height: 20.0),
-                  // Campo Nome
-                  TextFormField(
+                ),
+                
+                // Campos do formulário
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 16.0),
+                  child: TextFormField(
                     controller: _model.nomeController,
                     focusNode: _model.nomeFocusNode,
                     validator: (val) {
@@ -188,10 +296,11 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                     ),
                     textCapitalization: TextCapitalization.words,
                   ),
-                  SizedBox(height: 16.0),
-                  
-                  // Campo Email
-                  TextFormField(
+                ),
+                
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 16.0),
+                  child: TextFormField(
                     controller: _model.emailController,
                     focusNode: _model.emailFocusNode,
                     validator: (val) {
@@ -216,10 +325,11 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  SizedBox(height: 16.0),
-                  
-                  // Campo Telefone
-                  TextFormField(
+                ),
+                
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 16.0),
+                  child: TextFormField(
                     controller: _model.telefoneController,
                     focusNode: _model.telefoneFocusNode,
                     validator: (val) {
@@ -244,10 +354,11 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                     ),
                     keyboardType: TextInputType.phone,
                   ),
-                  SizedBox(height: 16.0),
-                  
-                  // Campo Mensagem
-                  TextFormField(
+                ),
+                
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 32.0),
+                  child: TextFormField(
                     controller: _model.mensagemController,
                     focusNode: _model.mensagemFocusNode,
                     validator: (val) {
@@ -274,10 +385,12 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                     ),
                     textCapitalization: TextCapitalization.sentences,
                   ),
-                  SizedBox(height: 32.0),
-                  
-                  // Botão Enviar
-                  SizedBox(
+                ),
+                
+                // Botão Enviar
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                  child: SizedBox(
                     width: double.infinity,
                     child: FFButtonWidget(
                       onPressed: _isLoading ? null : () async {
@@ -287,7 +400,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                           await Future.delayed(Duration(seconds: 1));
                           setState(() { _isLoading = false; _showSuccessMessage = true; });
                           await Future.delayed(Duration(seconds: 2));
-                          if (mounted) context.pushNamed(ContratosWidget.routeName);
+                          if (mounted) context.pushNamed('contratos');
                         }
                       },
                       text: _isLoading ? 'Enviando...' : 'Enviar Mensagem',
@@ -314,11 +427,13 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                       ),
                     ),
                   ),
-                  
-                  // Mensagem de sucesso
-                  if (_showSuccessMessage)
-                    Container(
-                      margin: EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
+                ),
+                
+                // Mensagem de sucesso
+                if (_showSuccessMessage)
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 0.0),
+                    child: Container(
                       padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).success,
@@ -337,8 +452,10 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                         ],
                       ),
                     ),
-                ],
-              ),
+                  ),
+                
+                SizedBox(height: 24.0),
+              ],
             ),
           ),
         ),
@@ -359,90 +476,57 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.pushNamed(ContratosWidget.routeName);
-                  },
+                  onTap: () => context.pushNamed('contratos'),
                   child: Column(
-                    mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.description,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                        size: 24,
-                      ),
+                      Icon(Icons.description, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
                           'Contratos',
                           style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                                color: FlutterFlowTheme.of(context).secondaryText,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w600,
-                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
-                              ),
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
                 Column(
-                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.message_outlined,
-                      color: FlutterFlowTheme.of(context).primary,
-                      size: 24,
-                    ),
+                    Icon(Icons.message_outlined, color: FlutterFlowTheme.of(context).primary, size: 24),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                       child: Text(
                         'Fale conosco',
                         style: FlutterFlowTheme.of(context).bodySmall.override(
-                              fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                              color: FlutterFlowTheme.of(context).primary,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.w500,
-                              useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
-                            ),
+                          fontFamily: 'Montserrat',
+                          color: FlutterFlowTheme.of(context).primary,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ],
                 ),
                 InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.pushNamed(ProfileWidget.routeName);
-                  },
+                  onTap: () => context.pushNamed('profile'),
                   child: Column(
-                    mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.person_outlined,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                        size: 24,
-                      ),
+                      Icon(Icons.person_outlined, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
                           'Perfil',
                           style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
-                                color: FlutterFlowTheme.of(context).secondaryText,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w500,
-                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
-                              ),
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ],
