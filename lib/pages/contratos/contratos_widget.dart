@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'contratos_model.dart';
+import 'detalhes_servico_concluido_widget.dart';
 export 'contratos_model.dart';
 
 bool isUserLoggedIn() {
@@ -172,86 +173,109 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   }
 
   Widget _buildCompletedServiceCard({
-    required String title,
-    required String description,
-    required IconData icon,
-    required String completedDate,
+    required CompletedService service,
   }) {
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(24.0, 8.0, 24.0, 8.0),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: FlutterFlowTheme.of(context).secondaryBackground,
+      child: Material(
+        color: Colors.transparent,
+        elevation: 2.0,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
-          border: Border.all(
-            color: FlutterFlowTheme.of(context).alternate,
-            width: 1.0,
-          ),
         ),
-        child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-          child: Row(
-            children: [
-              Container(
-                width: 60.0,
-                height: 60.0,
-                decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).secondary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: Icon(
-                  icon,
-                  color: FlutterFlowTheme.of(context).secondary,
-                  size: 30.0,
-                ),
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetalhesServicoConcluido(service: service),
               ),
-              SizedBox(width: 16.0),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: FlutterFlowTheme.of(context).titleMedium.override(
-                        fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        fontWeight: FontWeight.w600,
-                      ),
+            );
+          },
+          borderRadius: BorderRadius.circular(16.0),
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: FlutterFlowTheme.of(context).secondaryBackground,
+              borderRadius: BorderRadius.circular(16.0),
+              border: Border.all(
+                color: FlutterFlowTheme.of(context).alternate,
+                width: 1.0,
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+              child: Row(
+                children: [
+                  Container(
+                    width: 60.0,
+                    height: 60.0,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
-                    SizedBox(height: 4.0),
-                    Text(
-                      description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: FlutterFlowTheme.of(context).bodySmall.override(
-                        fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
+                    child: Icon(
+                      service.icon,
+                      color: FlutterFlowTheme.of(context).secondary,
+                      size: 30.0,
                     ),
-                    SizedBox(height: 8.0),
-                    Row(
+                  ),
+                  SizedBox(width: 16.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.check_circle,
-                          color: FlutterFlowTheme.of(context).success,
-                          size: 16.0,
-                        ),
-                        SizedBox(width: 4.0),
                         Text(
-                          'Concluído em $completedDate',
+                          service.title,
+                          style: FlutterFlowTheme.of(context).titleMedium.override(
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: 4.0),
+                        Text(
+                          service.description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: FlutterFlowTheme.of(context).bodySmall.override(
                             fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).success,
-                            fontWeight: FontWeight.w500,
+                            color: FlutterFlowTheme.of(context).secondaryText,
                           ),
+                        ),
+                        SizedBox(height: 8.0),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle,
+                              color: FlutterFlowTheme.of(context).success,
+                              size: 16.0,
+                            ),
+                            SizedBox(width: 4.0),
+                            Text(
+                              'Concluído em ${service.completedDate}',
+                              style: FlutterFlowTheme.of(context).bodySmall.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).success,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                      size: 16.0,
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -489,12 +513,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     children: [
                       SizedBox(height: 10.0),
                       ..._model.filteredCompletedServices.map((service) => 
-                        _buildCompletedServiceCard(
-                          title: service.title,
-                          description: service.description,
-                          icon: service.icon,
-                          completedDate: service.completedDate,
-                        ),
+                        _buildCompletedServiceCard(service: service),
                       ).toList(),
                     ],
                   ),
