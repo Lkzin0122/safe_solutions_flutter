@@ -74,26 +74,15 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                       ),
                     ],
                   ),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () => context.pop(),
-                        icon: Icon(Icons.arrow_back, color: FlutterFlowTheme.of(context).primaryText),
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(0.0),
+                      child: Image.network(
+                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                        width: 250.0,
+                        fit: BoxFit.contain,
                       ),
-                      Expanded(
-                        child: Center(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(0.0),
-                            child: Image.network(
-                              'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                              width: 250.0,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 48.0),
-                    ],
+                    ),
                   ),
                 ),
                 
@@ -464,10 +453,17 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
           height: 80,
           decoration: BoxDecoration(
             color: FlutterFlowTheme.of(context).secondaryBackground,
-            border: Border.all(
-              color: FlutterFlowTheme.of(context).alternate,
-              width: 1,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10.0,
+                offset: Offset(0.0, -2.0),
+              ),
+            ],
           ),
           child: Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
@@ -484,7 +480,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
-                          'Contratos',
+                          'Serviços',
                           style: FlutterFlowTheme.of(context).bodySmall.override(
                             fontFamily: 'Montserrat',
                             color: FlutterFlowTheme.of(context).secondaryText,
@@ -498,7 +494,14 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.message_outlined, color: FlutterFlowTheme.of(context).primary, size: 24),
+                    Container(
+                      padding: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(Icons.message_outlined, color: FlutterFlowTheme.of(context).primary, size: 24),
+                    ),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                       child: Text(

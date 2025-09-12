@@ -514,10 +514,17 @@ class _ContratosWidgetState extends State<ContratosWidget> {
           height: 80,
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(
-              color: Colors.grey[300]!,
-              width: 1,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10.0,
+                offset: Offset(0.0, -2.0),
+              ),
+            ],
           ),
           child: Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
@@ -529,10 +536,17 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.description,
-                      color: Colors.black,
-                      size: 24,
+                    Container(
+                      padding: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.description,
+                        color: FlutterFlowTheme.of(context).primary,
+                        size: 24,
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
@@ -541,7 +555,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         style: FlutterFlowTheme.of(context).bodySmall.override(
                               fontFamily:
                                   FlutterFlowTheme.of(context).bodySmallFamily,
-                              color: Colors.black,
+                              color: FlutterFlowTheme.of(context).primary,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
                               useGoogleFonts: !FlutterFlowTheme.of(context)

@@ -525,10 +525,17 @@ class _BratecnoWidgetState extends State<BratecnoWidget> {
         height: 80,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
-          border: Border.all(
-            color: FlutterFlowTheme.of(context).alternate,
-            width: 1,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10.0,
+              offset: Offset(0.0, -2.0),
+            ),
+          ],
         ),
         child: Padding(
           padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
@@ -542,7 +549,7 @@ class _BratecnoWidgetState extends State<BratecnoWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.description, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
-                    Text('Contratos', style: FlutterFlowTheme.of(context).bodySmall.override(
+                    Text('Serviços', style: FlutterFlowTheme.of(context).bodySmall.override(
                       fontFamily: 'Montserrat', color: FlutterFlowTheme.of(context).secondaryText, fontWeight: FontWeight.w600)),
                   ],
                 ),
