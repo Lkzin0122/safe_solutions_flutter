@@ -151,6 +151,49 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
             
             SizedBox(height: 16.0),
             
+            // Termos de Uso
+            InkWell(
+              onTap: () => context.pushNamed(TermosUsoWidget.routeName),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                  borderRadius: BorderRadius.circular(12.0),
+                  border: Border.all(
+                    color: FlutterFlowTheme.of(context).alternate,
+                    width: 1.0,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.description_outlined,
+                      color: FlutterFlowTheme.of(context).tertiary,
+                      size: 24.0,
+                    ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Text(
+                        'Termos de Uso',
+                        style: FlutterFlowTheme.of(context).bodyLarge.override(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                      size: 16.0,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            
+            SizedBox(height: 16.0),
+            
             // Suporte
             InkWell(
               onTap: () => context.pushNamed(SuporteWidget.routeName),

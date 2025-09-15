@@ -181,6 +181,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const CalendarioWidget(),
         ),
         FFRoute(
+<<<<<<< HEAD
           name: ConfirmarSenhaWidget.routeName,
           path: ConfirmarSenhaWidget.routePath,
           builder: (context, params) => ConfirmarSenhaWidget(
@@ -191,6 +192,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: NovaSenhaPosValidacaoWidget.routeName,
           path: NovaSenhaPosValidacaoWidget.routePath,
           builder: (context, params) => const NovaSenhaPosValidacaoWidget(),
+=======
+          name: TermosUsoWidget.routeName,
+          path: TermosUsoWidget.routePath,
+          builder: (context, params) => const TermosUsoWidget(),
+>>>>>>> 9327ca44053c221478eb8cf4240b77d199c661e6
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
