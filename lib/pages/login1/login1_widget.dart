@@ -2,13 +2,12 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import 'dart:convert';
 import '/index.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'login1_model.dart';
+import 'package:http/http.dart' as http;
 export 'login1_model.dart';
 
 class Login1Widget extends StatefulWidget {
@@ -23,9 +22,111 @@ class Login1Widget extends StatefulWidget {
 
 class _Login1WidgetState extends State<Login1Widget> {
   late Login1Model _model;
+  bool _isLoading = false;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
+  Future<void> buscarDados(String cnpj, String senha) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Remove a formatação do CNPJ para enviar apenas números
+      final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
+
+      final response = await http.post(
+        Uri.parse("http://localhost:8080/empresa/login/$cnpjNumbers"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'senha': senha,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Login bem-sucedido
+        _showSuccessDialog();
+      } else if (response.statusCode == 401) {
+        // Credenciais inválidas
+        _showErrorDialog('CNPJ ou senha incorretos.');
+      } else {
+        // Outros erros
+        _showErrorDialog('Erro no servidor. Tente novamente mais tarde.');
+      }
+    } catch (e) {
+      // Erro de conexão
+      _showErrorDialog(
+          'Erro de conexão. Verifique sua internet e tente novamente.');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 28,
+              ),
+              SizedBox(width: 8),
+              Text('Sucesso!'),
+            ],
+          ),
+          content: Text('Login realizado com sucesso!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Aqui você pode navegar para a próxima tela
+                // context.pushNamed('home');
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(
+                Icons.error,
+                color: Colors.red,
+                size: 28,
+              ),
+              SizedBox(width: 8),
+              Text('Erro'),
+            ],
+          ),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   String? _validateCnpj(String? value) {
     if (value == null || value.isEmpty) {
@@ -374,15 +475,33 @@ class _Login1WidgetState extends State<Login1Widget> {
                                         const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 15.0, 0.0, 0.0),
                                     child: FFButtonWidget(
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          // Se passou na validação, navegue
-                                          context.pushNamed(
-                                              ContratosWidget.routeName);
-                                        }
-                                        // Se não passou, os erros aparecem automaticamente
-                                      },
-                                      text: 'Entrar',
+                                      onPressed: _isLoading
+                                          ? null
+                                          : () async {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                final cnpj = _model
+                                                    .CnpjAddressTextController
+                                                    .text;
+                                                final senha = _model
+                                                    .passwordTextController
+                                                    .text;
+                                                await buscarDados(cnpj, senha);
+                                              }
+                                            },
+                                      text: _isLoading ? '' : 'Entrar',
+                                      icon: _isLoading
+                                          ? SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(Colors.white),
+                                              ),
+                                            )
+                                          : null,
                                       options: FFButtonOptions(
                                         width: 370.0,
                                         height: 44.0,
@@ -390,8 +509,12 @@ class _Login1WidgetState extends State<Login1Widget> {
                                             .fromSTEB(0.0, 0.0, 0.0, 0.0),
                                         iconPadding: const EdgeInsetsDirectional
                                             .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                        color: FlutterFlowTheme.of(context)
-                                            .tertiary,
+                                        color: _isLoading
+                                            ? FlutterFlowTheme.of(context)
+                                                .tertiary
+                                                .withOpacity(0.7)
+                                            : FlutterFlowTheme.of(context)
+                                                .tertiary,
                                         textStyle: FlutterFlowTheme.of(context)
                                             .titleSmall
                                             .override(

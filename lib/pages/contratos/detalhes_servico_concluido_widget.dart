@@ -5,8 +5,8 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'contratos_model.dart';
 
-class DetalhesServicoConcluido extends StatelessWidget {
-  const DetalhesServicoConcluido({
+class DetalhesServicoConcluidoWidget extends StatelessWidget {
+  const DetalhesServicoConcluidoWidget({
     super.key,
     required this.service,
   });

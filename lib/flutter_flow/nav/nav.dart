@@ -179,6 +179,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: CalendarioWidget.routeName,
           path: CalendarioWidget.routePath,
           builder: (context, params) => const CalendarioWidget(),
+        ),
+        FFRoute(
+          name: ConfirmarSenhaWidget.routeName,
+          path: ConfirmarSenhaWidget.routePath,
+          builder: (context, params) => ConfirmarSenhaWidget(
+            serviceId: params.getParam('serviceId', ParamType.String),
+          ),
+        ),
+        FFRoute(
+          name: NovaSenhaPosValidacaoWidget.routeName,
+          path: NovaSenhaPosValidacaoWidget.routePath,
+          builder: (context, params) => const NovaSenhaPosValidacaoWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

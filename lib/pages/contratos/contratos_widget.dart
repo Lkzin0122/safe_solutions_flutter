@@ -188,7 +188,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DetalhesServicoConcluido(service: service),
+                builder: (context) => DetalhesServicoConcluidoWidget(service: service),
               ),
             );
           },

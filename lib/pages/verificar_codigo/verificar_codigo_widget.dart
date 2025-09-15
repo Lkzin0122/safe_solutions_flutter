@@ -268,24 +268,7 @@ class _VerificarCodigoWidgetState extends State<VerificarCodigoWidget> {
                         onPressed: () async {
                           String? error = _validateCodigo();
                           if (error == null) {
-                            // Exibir mensagem de sucesso
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Senha alterada com sucesso!',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                duration: const Duration(seconds: 2),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                            
-                            // Aguardar um pouco e navegar
-                            await Future.delayed(Duration(seconds: 2));
-                            context.goNamed('login1');
+                            context.goNamed('novaSenhaPosValidacao');
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'calendario_model.dart';
 export 'calendario_model.dart';
 
@@ -26,6 +27,7 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => CalendarioModel());
+    initializeDateFormatting('pt_BR', null);
   }
 
   @override
@@ -56,37 +58,57 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
         final hasServices = servicesForDate.isNotEmpty;
 
         return Container(
-          margin: EdgeInsets.all(2.0),
+          margin: EdgeInsets.all(3.0),
           decoration: BoxDecoration(
-            color: isToday ? FlutterFlowTheme.of(context).primary : Colors.transparent,
-            borderRadius: BorderRadius.circular(8.0),
-            border: hasServices ? Border.all(color: FlutterFlowTheme.of(context).secondary, width: 2.0) : null,
+            color: isToday 
+                ? FlutterFlowTheme.of(context).primary 
+                : hasServices 
+                    ? FlutterFlowTheme.of(context).secondary.withOpacity(0.1)
+                    : Colors.transparent,
+            borderRadius: BorderRadius.circular(12.0),
+            border: hasServices && !isToday 
+                ? Border.all(color: FlutterFlowTheme.of(context).secondary, width: 1.5) 
+                : null,
+            boxShadow: isToday ? [
+              BoxShadow(
+                blurRadius: 4.0,
+                color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
+                offset: Offset(0.0, 2.0),
+              )
+            ] : null,
           ),
           child: InkWell(
             onTap: hasServices ? () => _showServicesForDate(date, servicesForDate) : null,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '${date.day}',
-                  style: TextStyle(
-                    color: isCurrentMonth 
-                        ? (isToday ? Colors.white : Colors.black)
-                        : Colors.grey,
-                    fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
-                  ),
-                ),
-                if (hasServices)
-                  Container(
-                    width: 6.0,
-                    height: 6.0,
-                    margin: EdgeInsets.only(top: 2.0),
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondary,
-                      shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(12.0),
+            child: Container(
+              height: 48.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${date.day}',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Montserrat',
+                      color: isCurrentMonth 
+                          ? (isToday ? Colors.white : FlutterFlowTheme.of(context).primaryText)
+                          : FlutterFlowTheme.of(context).secondaryText,
+                      fontWeight: isToday ? FontWeight.bold : FontWeight.w500,
                     ),
                   ),
-              ],
+                  if (hasServices)
+                    Container(
+                      width: 6.0,
+                      height: 6.0,
+                      margin: EdgeInsets.only(top: 4.0),
+                      decoration: BoxDecoration(
+                        color: isToday 
+                            ? Colors.white 
+                            : FlutterFlowTheme.of(context).secondary,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         );
@@ -97,46 +119,204 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
   void _showServicesForDate(DateTime date, List<ScheduledService> services) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: EdgeInsets.all(16.0),
+        height: MediaQuery.of(context).size.height * 0.7,
+        decoration: BoxDecoration(
+          color: FlutterFlowTheme.of(context).secondaryBackground,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24.0),
+            topRight: Radius.circular(24.0),
+          ),
+        ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Serviços - ${DateFormat('dd/MM/yyyy').format(date)}',
-              style: FlutterFlowTheme.of(context).headlineSmall,
-            ),
-            SizedBox(height: 16.0),
-            ...services.map((service) => Container(
-              margin: EdgeInsets.only(bottom: 8.0),
-              padding: EdgeInsets.all(12.0),
+            Container(
+              width: 40.0,
+              height: 4.0,
+              margin: EdgeInsets.only(top: 12.0, bottom: 20.0),
               decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).secondaryBackground,
-                borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(color: FlutterFlowTheme.of(context).alternate),
+                color: FlutterFlowTheme.of(context).alternate,
+                borderRadius: BorderRadius.circular(2.0),
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0),
               child: Row(
                 children: [
-                  Icon(service.icon, color: FlutterFlowTheme.of(context).primary),
-                  SizedBox(width: 12.0),
+                  Container(
+                    width: 48.0,
+                    height: 48.0,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Icon(
+                      Icons.calendar_today,
+                      color: FlutterFlowTheme.of(context).primary,
+                      size: 24.0,
+                    ),
+                  ),
+                  SizedBox(width: 16.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(service.title, style: FlutterFlowTheme.of(context).titleSmall),
-                        Text(service.description, style: FlutterFlowTheme.of(context).bodySmall),
-                        Text('${service.time}', style: FlutterFlowTheme.of(context).bodySmall.override(
-                          fontFamily: 'Montserrat',
-                          color: FlutterFlowTheme.of(context).primary,
-                          fontWeight: FontWeight.w600,
-                        )),
+                        Text(
+                          'Serviços do Dia',
+                          style: FlutterFlowTheme.of(context).headlineSmall.override(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          DateFormat('EEEE, dd/MM/yyyy', 'pt_BR').format(date),
+                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
-            )).toList(),
+            ),
+            SizedBox(height: 24.0),
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 24.0),
+                itemCount: services.length,
+                itemBuilder: (context, index) {
+                  final service = services[index];
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.all(20.0),
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).primaryBackground,
+                      borderRadius: BorderRadius.circular(16.0),
+                      border: Border.all(
+                        color: FlutterFlowTheme.of(context).alternate,
+                        width: 1.0,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 4.0,
+                          color: Color(0x0F000000),
+                          offset: Offset(0.0, 2.0),
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 48.0,
+                              height: 48.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Icon(
+                                service.icon,
+                                color: FlutterFlowTheme.of(context).primary,
+                                size: 24.0,
+                              ),
+                            ),
+                            SizedBox(width: 16.0),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    service.title,
+                                    style: FlutterFlowTheme.of(context).titleMedium.override(
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(
+                                    service.description,
+                                    style: FlutterFlowTheme.of(context).bodySmall.override(
+                                      fontFamily: 'Montserrat',
+                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16.0),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).secondary.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.access_time,
+                                    size: 16.0,
+                                    color: FlutterFlowTheme.of(context).secondary,
+                                  ),
+                                  SizedBox(width: 4.0),
+                                  Text(
+                                    service.time,
+                                    style: FlutterFlowTheme.of(context).bodySmall.override(
+                                      fontFamily: 'Montserrat',
+                                      color: FlutterFlowTheme.of(context).secondary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Spacer(),
+                            if (service.status == 'agendado')
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  context.pushNamed(
+                                    'confirmarSenha',
+                                    queryParameters: {
+                                      'serviceId': service.id,
+                                    },
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: FlutterFlowTheme.of(context).primary,
+                                  foregroundColor: Colors.white,
+                                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  elevation: 2.0,
+                                ),
+                                child: Text(
+                                  'Finalizar',
+                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -149,9 +329,10 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Colors.white,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
+          elevation: 0,
           title: Text(
             'Calendário de Serviços',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
@@ -164,6 +345,19 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => context.pop(),
           ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  FlutterFlowTheme.of(context).primary,
+                  FlutterFlowTheme.of(context).secondary,
+                ],
+                stops: [0.0, 1.0],
+                begin: AlignmentDirectional(-1.0, 0.0),
+                end: AlignmentDirectional(1.0, 0),
+              ),
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -174,8 +368,14 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
                 Container(
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(color: FlutterFlowTheme.of(context).alternate),
+                    borderRadius: BorderRadius.circular(16.0),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 4.0,
+                        color: Color(0x1A000000),
+                        offset: Offset(0.0, 2.0),
+                      )
+                    ],
                   ),
                   child: TextField(
                     controller: _model.searchController,
@@ -186,9 +386,20 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
                     },
                     decoration: InputDecoration(
                       hintText: 'Buscar serviços...',
-                      prefixIcon: Icon(Icons.search, color: FlutterFlowTheme.of(context).secondaryText),
+                      hintStyle: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                        size: 20.0,
+                      ),
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(16.0),
+                      contentPadding: EdgeInsets.all(20.0),
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Montserrat',
                     ),
                   ),
                 ),
@@ -196,33 +407,67 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
                 SizedBox(height: 20.0),
                 
                 // Navegação do mês
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _model.changeMonth(-1);
-                        });
-                      },
-                      icon: Icon(Icons.chevron_left, size: 30.0),
-                    ),
-                    Text(
-                      DateFormat('MMMM yyyy', 'pt_BR').format(_model.selectedDate),
-                      style: FlutterFlowTheme.of(context).headlineSmall.override(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w600,
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                    borderRadius: BorderRadius.circular(16.0),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 4.0,
+                        color: Color(0x1A000000),
+                        offset: Offset(0.0, 2.0),
+                      )
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _model.changeMonth(-1);
+                            });
+                          },
+                          icon: Icon(
+                            Icons.chevron_left,
+                            size: 24.0,
+                            color: FlutterFlowTheme.of(context).primary,
+                          ),
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _model.changeMonth(1);
-                        });
-                      },
-                      icon: Icon(Icons.chevron_right, size: 30.0),
-                    ),
-                  ],
+                      Text(
+                        DateFormat('MMMM yyyy', 'pt_BR').format(_model.selectedDate),
+                        style: FlutterFlowTheme.of(context).headlineSmall.override(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _model.changeMonth(1);
+                            });
+                          },
+                          icon: Icon(
+                            Icons.chevron_right,
+                            size: 24.0,
+                            color: FlutterFlowTheme.of(context).primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 
                 SizedBox(height: 16.0),
