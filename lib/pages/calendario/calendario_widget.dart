@@ -116,6 +116,43 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
     );
   }
 
+  void _showPasswordDialog(String serviceId) {
+    final passwordController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirme sua senha'),
+        content: TextField(
+          controller: passwordController,
+          obscureText: true,
+          decoration: InputDecoration(
+            labelText: 'Digite sua senha',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Serviço finalizado com sucesso!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              context.goNamed('contratos');
+            },
+            child: Text('Finalizar'),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showServicesForDate(DateTime date, List<ScheduledService> services) {
     showModalBottomSheet(
       context: context,
@@ -284,12 +321,7 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
                               ElevatedButton(
                                 onPressed: () {
                                   Navigator.pop(context);
-                                  context.pushNamed(
-                                    'confirmarSenha',
-                                    queryParameters: {
-                                      'serviceId': service.id,
-                                    },
-                                  );
+                                  _showPasswordDialog(service.id);
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: FlutterFlowTheme.of(context).primary,

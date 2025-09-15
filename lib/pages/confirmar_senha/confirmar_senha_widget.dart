@@ -232,32 +232,18 @@ class _ConfirmarSenhaWidgetState extends State<ConfirmarSenhaWidget> {
                             FFButtonWidget(
                               onPressed: () async {
                                 if (_model.formKey.currentState?.validate() ?? false) {
-                                  // Simular validação da senha
-                                  if (_model.passwordTextController.text == '123456') {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Serviço finalizado com sucesso!',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        backgroundColor: Colors.green,
-                                        duration: Duration(seconds: 2),
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Serviço finalizado com sucesso!',
+                                        style: TextStyle(color: Colors.white),
                                       ),
-                                    );
-                                    await Future.delayed(Duration(seconds: 1));
-                                    context.goNamed('calendario');
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Senha incorreta. Tente novamente.',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        backgroundColor: Colors.red,
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
-                                  }
+                                      backgroundColor: Colors.green,
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                  await Future.delayed(Duration(seconds: 1));
+                                  context.goNamed('contratos');
                                 }
                               },
                               text: 'Finalizar Serviço',
