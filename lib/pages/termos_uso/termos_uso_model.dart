@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'detalhes_servico_concluido_widget.dart' show DetalhesServicoConcluido;
+import 'termos_uso_widget.dart' show TermosUsoWidget;
 import 'package:flutter/material.dart';
 
-class DetalhesServicoConcluidoModel extends FlutterFlowModel<DetalhesServicoConcluido> {
+class TermosUsoModel extends FlutterFlowModel<TermosUsoWidget> {
   @override
   void initState(BuildContext context) {}
 

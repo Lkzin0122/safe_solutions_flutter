@@ -179,6 +179,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: CalendarioWidget.routeName,
           path: CalendarioWidget.routePath,
           builder: (context, params) => const CalendarioWidget(),
+        ),
+        FFRoute(
+          name: TermosUsoWidget.routeName,
+          path: TermosUsoWidget.routePath,
+          builder: (context, params) => const TermosUsoWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

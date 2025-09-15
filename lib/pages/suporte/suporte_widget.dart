@@ -55,7 +55,7 @@ class _SuporteWidgetState extends State<SuporteWidget> {
           'Suporte',
           style: FlutterFlowTheme.of(context).headlineSmall.override(
             fontFamily: 'Montserrat',
-            color: Color(0xFF204060),
+            color: FlutterFlowTheme.of(context).primary,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -125,7 +125,7 @@ class _SuporteWidgetState extends State<SuporteWidget> {
                       ),
                       SizedBox(width: 12.0),
                       Text(
-                        'suporte@safesolutions.com',
+                        'safesolutionsempresa@gmail.com',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.w500,

@@ -18,4 +18,5 @@ export '/pages/editar_conta/editar_conta_widget.dart' show EditarContaWidget;
 export '/pages/configuracoes/configuracoes_widget.dart' show ConfiguracoesWidget;
 export '/pages/suporte/suporte_widget.dart' show SuporteWidget;
 export '/pages/privacidade/privacidade_widget.dart' show PrivacidadeWidget;
+export '/pages/termos_uso/termos_uso_widget.dart' show TermosUsoWidget;
 export '/pages/calendario/calendario_widget.dart' show CalendarioWidget;

@@ -34,7 +34,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
     _model.nomeCompletoController ??= TextEditingController(text: 'Tech Solutions');
     _model.nomeCompletoFocusNode ??= FocusNode();
     
-    _model.emailController ??= TextEditingController(text: 'techsolutions@gmail.com');
+    _model.emailController ??= TextEditingController(text: 'safesolutionsempresa@gmail.com');
     _model.emailFocusNode ??= FocusNode();
     
     _model.telefoneController ??= TextEditingController(text: '(11) 99999-9999');
@@ -411,9 +411,9 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                   ),
                   SizedBox(height: 20.0),
                   
-                  // Campo Biografia
+                  // Campo Sobre a Empresa
                   Text(
-                    'Biografia',
+                    'Sobre a Empresa',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: 'Montserrat',
                       color: FlutterFlowTheme.of(context).primaryText,

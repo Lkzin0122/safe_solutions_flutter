@@ -2,27 +2,27 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'privacidade_model.dart';
-export 'privacidade_model.dart';
+import 'termos_uso_model.dart';
+export 'termos_uso_model.dart';
 
-class PrivacidadeWidget extends StatefulWidget {
-  const PrivacidadeWidget({super.key});
+class TermosUsoWidget extends StatefulWidget {
+  const TermosUsoWidget({super.key});
 
-  static String routeName = 'privacidade';
-  static String routePath = '/privacidade';
+  static String routeName = 'termosUso';
+  static String routePath = '/termosUso';
 
   @override
-  State<PrivacidadeWidget> createState() => _PrivacidadeWidgetState();
+  State<TermosUsoWidget> createState() => _TermosUsoWidgetState();
 }
 
-class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
-  late PrivacidadeModel _model;
+class _TermosUsoWidgetState extends State<TermosUsoWidget> {
+  late TermosUsoModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => PrivacidadeModel());
+    _model = createModel(context, () => TermosUsoModel());
   }
 
   @override
@@ -52,7 +52,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
         ),
         centerTitle: true,
         title: Text(
-          'Privacidade',
+          'Termos de Uso',
           style: FlutterFlowTheme.of(context).headlineSmall.override(
             fontFamily: 'Montserrat',
             color: FlutterFlowTheme.of(context).primary,
@@ -79,7 +79,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Política de Privacidade',
+                      'Termos de Uso — Safe Solutions',
                       style: FlutterFlowTheme.of(context).titleLarge.override(
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
@@ -87,14 +87,14 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                     ),
                     SizedBox(height: 16.0),
                     Text(
-                      'A Safe Solutions valoriza a sua privacidade e está comprometida em proteger suas informações pessoais. Esta Política de Privacidade descreve como coletamos, usamos, divulgamos e protegemos as informações de nossos usuários e parceiros.',
+                      'Safe Solutions, pessoa jurídica de direito privado descreve, através deste documento, as regras de uso do site www.safesolutions.com e qualquer outro site, loja ou aplicativo operado pelo proprietário. Ao navegar neste website, consideramos que você está de acordo com os Termos de Uso abaixo. Caso você não esteja de acordo com as condições deste contrato, pedimos que não faça mais uso deste website, muito menos cadastre-se ou envie os seus dados pessoais. Se modificarmos nossos Termos de Uso, publicaremos o novo texto neste website, com a data de revisão atualizada. Podemos alterar este documento a qualquer momento. Caso haja alteração significativa nos termos deste contrato, podemos informá-lo por meio das informações de contato que tivermos em nosso banco de dados ou por meio de notificações. A utilização deste website após as alterações significa que você aceitou os Termos de Uso revisados. Caso, após a leitura da versão revisada, você não esteja de acordo com seus termos, favor encerrar o seu acesso.',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                       ),
                     ),
                     SizedBox(height: 20.0),
                     Text(
-                      '1. Introdução',
+                      'Seção 1 - Usuário',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
                         color: FlutterFlowTheme.of(context).primary,
@@ -103,14 +103,14 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      'A Safe Solutions valoriza a sua privacidade e está comprometida em proteger suas informações pessoais. Esta Política de Privacidade descreve como coletamos, usamos, divulgamos e protegemos as informações de nossos usuários e parceiros.',
+                      'A utilização deste website atribui de forma automática a condição de Usuário e implica a plena aceitação de todas as diretrizes e condições incluídas nestes Termos.',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                       ),
                     ),
                     SizedBox(height: 20.0),
                     Text(
-                      '2. Informações Que Coletamos',
+                      'Seção 2 - Adesão em conjunto com a Política de Privacidade',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
                         color: FlutterFlowTheme.of(context).primary,
@@ -119,14 +119,14 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      '• Informações de Contato: Nome da empresa, endereço, e-mail, número de telefone e outras informações de contato.\n• Informações de Negócios: Dados sobre suas operações comerciais, serviços oferecidos e contratos.\n• Informações de Uso: Dados sobre como você interage com nossos serviços, incluindo registros de acesso, dados de navegação e preferências.',
+                      'A utilização deste website acarreta a adesão aos presentes Termos de Uso e a versão mais atualizada da Política de Privacidade de Safe Solutions.',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                       ),
                     ),
                     SizedBox(height: 20.0),
                     Text(
-                      '3. Como Usamos Suas Informações',
+                      'Seção 3 - Condições de acesso',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
                         color: FlutterFlowTheme.of(context).primary,
@@ -135,14 +135,14 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      '• Prestação de Serviços: Para fornecer e gerenciar nossos serviços e soluções, incluindo a manutenção de sua conta e a execução de contratos.\n• Comunicação: Para entrar em contato com você sobre atualizações, ofertas e informações importantes relacionadas aos nossos serviços.\n• Análise e Melhoria: Para analisar o uso dos nossos serviços e melhorar nossa plataforma e processos.\n• Segurança: Para proteger a segurança e integridade de nossos serviços e prevenir fraudes ou abusos.',
+                      'Em geral, o acesso ao website da Safe Solutions possui caráter gratuito e não exige prévia inscrição ou registro.\n\nContudo, para usufruir de algumas funcionalidades, o usuário poderá precisar efetuar um cadastro, criando uma conta de usuário com login e senha próprios para acesso.\n\nÉ de total responsabilidade do usuário fornecer apenas informações corretas, autênticas, válidas, completas e atualizadas, bem como não divulgar o seu login e senha para terceiros.\n\nPartes deste website oferecem ao usuário a opção de publicar comentários em determinadas áreas. Safe Solutions não consente com a publicação de conteúdos que tenham natureza discriminatória, ofensiva ou ilícita, ou ainda infrinjam direitos de autor ou quaisquer outros direitos de terceiros.\n\nA publicação de quaisquer conteúdos pelo usuário deste website, incluindo mensagens e comentários, implica em licença não-exclusiva, irrevogável e irretratável, para sua utilização, reprodução e publicação pela Safe Solutions no seu website, plataformas e aplicações de internet, ou ainda em outras plataformas, sem qualquer restrição ou limitação.',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                       ),
                     ),
                     SizedBox(height: 20.0),
                     Text(
-                      '4. Compartilhamento de Informações',
+                      'Seção 4 - Cookies',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
                         color: FlutterFlowTheme.of(context).primary,
@@ -151,14 +151,14 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      '• Com Parceiros e Prestadores de Serviços: Podemos compartilhar suas informações com parceiros e prestadores de serviços que atuam em nosso nome, como empresas de análise e suporte técnico.\n• Com Autoridades Legais: Podemos divulgar informações quando exigido por lei, regulamentação ou para proteger nossos direitos e interesses legais.\n• Transferências de Negócios: Em caso de fusão, aquisição ou venda de ativos, suas informações podem ser transferidas como parte do negócio.',
+                      'Informações sobre o seu uso neste website podem ser coletadas a partir de cookies. Cookies são informações armazenadas diretamente no computador que você está utilizando. Os cookies permitem a coleta de informações tais como o tipo de navegador, o tempo despendido no website, as páginas visitadas, as preferências de idioma, e outros dados de tráfego anônimos. Nós e nossos prestadores de serviços utilizamos informações para proteção de segurança, para facilitar a navegação, exibir informações de modo mais eficiente, e personalizar sua experiência ao utilizar este website, assim como para rastreamento online. Também coletamos informações estatísticas sobre o uso do website para aprimoramento contínuo do nosso design e funcionalidade, para entender como o website é utilizado e para auxiliá-lo a solucionar questões relevantes.\n\nCaso não deseje que suas informações sejam coletadas por meio de cookies, há um procedimento simples na maior parte dos navegadores que permite que os cookies sejam automaticamente rejeitados, ou oferece a opção de aceitar ou rejeitar a transferência de um cookie (ou cookies) específico(s) de um site determinado para o seu computador. Entretanto, isso pode gerar inconvenientes no uso do website.\n\nAs definições que escolher podem afetar a sua experiência de navegação e o funcionamento que exige a utilização de cookies. Neste sentido, rejeitamos qualquer responsabilidade pelas consequências resultantes do funcionamento limitado deste website provocado pela desativação de cookies no seu dispositivo (incapacidade de definir ou ler um cookie).',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                       ),
                     ),
                     SizedBox(height: 20.0),
                     Text(
-                      '5. Segurança das Informações',
+                      'Seção 5 - Propriedade Intelectual',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
                         color: FlutterFlowTheme.of(context).primary,
@@ -167,14 +167,14 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      'Implementamos medidas de segurança apropriadas para proteger suas informações contra acesso não autorizado, alteração, divulgação ou destruição. No entanto, nenhuma medida de segurança é totalmente infalível, e não podemos garantir a segurança absoluta de seus dados.',
+                      'Todos os elementos de Safe Solutions são de propriedade intelectual da mesma ou de seus licenciados. Estes Termos ou a utilização do website não concede a você qualquer licença ou direito de uso dos direitos de propriedade intelectual da Safe Solutions ou de terceiros.',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                       ),
                     ),
                     SizedBox(height: 20.0),
                     Text(
-                      '6. Seus Direitos',
+                      'Seção 6 - Links para sites de terceiros',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
                         color: FlutterFlowTheme.of(context).primary,
@@ -183,14 +183,14 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      'Você tem o direito de acessar, corrigir ou excluir suas informações pessoais.',
+                      'Este website poderá, de tempos a tempos, conter links de hipertexto que redirecionará você para sites das redes dos nossos parceiros, anunciantes, fornecedores etc. Se você clicar em um desses links para qualquer um desses sites, lembre-se que cada site possui as suas próprias práticas de privacidade e que não somos responsáveis por essas políticas. Consulte as referidas políticas antes de enviar quaisquer Dados Pessoais para esses sites.\n\nNão nos responsabilizamos pelas políticas e práticas de coleta, uso e divulgação (incluindo práticas de proteção de dados) de outras organizações, tais como Facebook, Apple, Google, Microsoft, ou de qualquer outro desenvolvedor de software ou provedor de aplicativo, loja de mídia social, sistema operacional, prestador de serviços de internet sem fio ou fabricante de dispositivos, incluindo todos os Dados Pessoais que divulgar para outras organizações por meio dos aplicativos, relacionadas a tais aplicativos, ou publicadas em nossas páginas em mídias sociais. Nós recomendamos que você se informe sobre a política de privacidade e termos de uso de cada site visitado ou de cada prestador de serviço utilizado.',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                       ),
                     ),
                     SizedBox(height: 20.0),
                     Text(
-                      '7. Cookies e Tecnologias Similares',
+                      'Seção 7 - Prazos e alterações',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
                         color: FlutterFlowTheme.of(context).primary,
@@ -199,14 +199,14 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      'Utilizamos cookies e tecnologias semelhantes para melhorar sua experiência em nossa plataforma e analisar o uso. Você pode configurar seu navegador para recusar cookies, mas isso pode afetar sua capacidade de usar nossos serviços de forma eficaz.',
+                      'O funcionamento deste website se dá por prazo indeterminado.\n\nO website no todo ou em cada uma das suas seções, pode ser encerrado, suspenso ou interrompido unilateralmente por Safe Solutions, a qualquer momento e sem necessidade de prévio aviso.',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                       ),
                     ),
                     SizedBox(height: 20.0),
                     Text(
-                      '8. Alterações na Política de Privacidade',
+                      'Seção 8 - Dados pessoais',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
                         color: FlutterFlowTheme.of(context).primary,
@@ -215,14 +215,14 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      'Podemos atualizar esta Política de Privacidade ocasionalmente para refletir mudanças em nossos serviços ou requisitos legais. Notificaremos sobre qualquer alteração substancial por meio de nossos canais de comunicação habituais.',
+                      'Durante a utilização deste website, certos dados pessoais serão coletados e tratados por Safe Solutions e/ou pelos Parceiros. As regras relacionadas ao tratamento de dados pessoais de Safe Solutions estão estipuladas na Política de Privacidade.',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                       ),
                     ),
                     SizedBox(height: 20.0),
                     Text(
-                      '10. Contato',
+                      'Seção 9 - Contato',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
                         color: FlutterFlowTheme.of(context).primary,
@@ -231,7 +231,7 @@ class _PrivacidadeWidgetState extends State<PrivacidadeWidget> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      'Se você tiver dúvidas ou preocupações sobre esta Política de Privacidade, entre em contato conosco em: safesolutionsempresa@gmail.com',
+                      'Caso você tenha qualquer dúvida sobre os Termos de Uso, por favor, entre em contato pelo e-mail safesolutionsempresa@gmail.com.',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                       ),

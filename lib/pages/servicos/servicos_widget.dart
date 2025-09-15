@@ -45,10 +45,35 @@ class _ServicosWidgetState extends State<ServicosWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        body: const SafeArea(
-          top: true,
-          child: Stack(
-            children: [],
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: false,
+          leading: InkWell(
+            onTap: () => context.pop(),
+            child: Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+          title: Text(
+            'Serviços',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+              fontFamily: 'Montserrat',
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          centerTitle: true,
+          elevation: 2,
+        ),
+        body: SafeArea(
+          child: Center(
+            child: Text(
+              'Página de Serviços em Desenvolvimento',
+              style: FlutterFlowTheme.of(context).headlineSmall,
+            ),
           ),
         ),
       ),
