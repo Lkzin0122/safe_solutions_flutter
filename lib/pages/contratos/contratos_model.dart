@@ -1,7 +1,10 @@
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import '/index.dart';
 import 'contratos_widget.dart' show ContratosWidget;
 import 'package:flutter/material.dart';
+
+
 
 class CompletedService {
   final String title;

@@ -210,56 +210,7 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
   }
 
   void _showFinishConfirmation(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Finalizar Serviço'),
-          content: Text('Tem certeza que deseja finalizar este serviço?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _finishService(context);
-              },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-              child: Text('Confirmar', style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _finishService(BuildContext context) {
-    final now = DateTime.now();
-    final dateStr = '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year}';
-    
-    // Usar o novo método que remove da lista de em andamento e adiciona aos concluídos
-    ContratosModel.completeService('super_clean', dateStr);
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.white),
-            SizedBox(width: 8),
-            Text('Serviço finalizado com sucesso!'),
-          ],
-        ),
-        backgroundColor: Colors.green,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-    );
-    
-    Future.delayed(Duration(milliseconds: 1500), () {
-      context.goNamed(ContratosWidget.routeName);
-    });
+    context.pushNamed('ConfirmarSenha', extra: {'serviceId': 'super_clean'});
   }
 
   @override

@@ -2,6 +2,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/pages/contratos/contratos_model.dart';
 import 'package:flutter/material.dart';
 import 'confirmar_senha_model.dart';
 export 'confirmar_senha_model.dart';
@@ -232,18 +233,32 @@ class _ConfirmarSenhaWidgetState extends State<ConfirmarSenhaWidget> {
                             FFButtonWidget(
                               onPressed: () async {
                                 if (_model.formKey.currentState?.validate() ?? false) {
+                                  // Finalizar o serviço
+                                  final now = DateTime.now();
+                                  final dateStr = '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year}';
+                                  
+                                  if (_model.serviceId != null) {
+                                    ContratosModel.completeService(_model.serviceId!, dateStr);
+                                  }
+                                  
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(
-                                        'Serviço finalizado com sucesso!',
-                                        style: TextStyle(color: Colors.white),
+                                      content: Row(
+                                        children: [
+                                          Icon(Icons.check_circle, color: Colors.white),
+                                          SizedBox(width: 8),
+                                          Text('Serviço finalizado com sucesso!'),
+                                        ],
                                       ),
                                       backgroundColor: Colors.green,
-                                      duration: Duration(seconds: 2),
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                     ),
                                   );
-                                  await Future.delayed(Duration(seconds: 1));
-                                  context.goNamed('contratos');
+                                  
+                                  await Future.delayed(Duration(milliseconds: 1500));
+                                  // Navegar diretamente para a aba de serviços concluídos
+                                  context.goNamed('Contratos', extra: {'initialTab': 1});
                                 }
                               },
                               text: 'Finalizar Serviço',

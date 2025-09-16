@@ -15,7 +15,12 @@ bool isUserLoggedIn() {
 }
 
 class ContratosWidget extends StatefulWidget {
-  const ContratosWidget({super.key});
+  const ContratosWidget({
+    super.key,
+    this.initialTab,
+  });
+
+  final int? initialTab;
 
   static String routeName = 'contratos';
   static String routePath = '/contratos';
@@ -32,9 +37,15 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ContratosModel());
+    
+    // Se initialTab for 1, expandir automaticamente a seção de serviços concluídos
+    if (widget.initialTab == 1) {
+      _model.isCompletedExpanded = true;
+    }
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!isUserLoggedIn()) {
-        context.pushNamed('login1');
+        context.pushNamed('Login1');
       }
     });
   }
@@ -357,7 +368,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           borderRadius: BorderRadius.circular(12.0),
                         ),
                         child: IconButton(
-                          onPressed: () => context.pushNamed('calendario'),
+                          onPressed: () => context.pushNamed('Calendario'),
                           icon: Icon(Icons.calendar_month, color: Colors.white),
                           tooltip: 'Ver Calendário',
                         ),
@@ -590,7 +601,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(FaleConoscoWidget.routeName);
+                    context.pushNamed('FaleConosco');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -628,7 +639,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(ProfileWidget.routeName);
+                    context.pushNamed('Profile');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
