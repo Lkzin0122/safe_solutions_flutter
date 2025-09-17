@@ -35,14 +35,11 @@ class _Login1WidgetState extends State<Login1Widget> {
       // Remove a formatação do CNPJ para enviar apenas números
       final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
 
-      final response = await http.post(
-        Uri.parse("http://localhost:8080/empresa/login/$cnpjNumbers"),
+      final response = await http.get(
+        Uri.parse("http://localhost:8080/empresa/login/$cnpjNumbers?senha=$senha"),
         headers: {
           'Content-Type': 'application/json',
         },
-        body: jsonEncode({
-          'senha': senha,
-        }),
       );
 
       if (response.statusCode == 200) {
