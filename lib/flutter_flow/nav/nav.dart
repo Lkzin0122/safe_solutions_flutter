@@ -94,7 +94,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         ),
         GoRoute(
           name: 'Contratos',
-          path: '/contratos',
+          path: '/servicos',
           builder: (context, state) {
             final extra = state.extra as Map<String, dynamic>?;
             return ContratosWidget(

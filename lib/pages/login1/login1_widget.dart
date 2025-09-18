@@ -84,8 +84,7 @@ class _Login1WidgetState extends State<Login1Widget> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // Aqui você pode navegar para a próxima tela
-                // context.pushNamed('home');
+                context.goNamed('Servicos');
               },
               child: Text('OK'),
             ),

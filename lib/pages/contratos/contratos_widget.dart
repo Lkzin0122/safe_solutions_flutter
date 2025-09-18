@@ -23,7 +23,7 @@ class ContratosWidget extends StatefulWidget {
   final int? initialTab;
 
   static String routeName = 'contratos';
-  static String routePath = '/contratos';
+  static String routePath = '/servicos';
 
   @override
   State<ContratosWidget> createState() => _ContratosWidgetState();
