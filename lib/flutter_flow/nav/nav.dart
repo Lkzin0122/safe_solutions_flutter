@@ -56,8 +56,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
-      errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const ContratosWidget() : const InicialWidget(),
+      errorBuilder: (context, state) => appStateNotifier.loggedIn
+          ? const ContratosWidget()
+          : const InicialWidget(),
       routes: [
         GoRoute(
           name: '_initialize',
@@ -66,7 +67,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             if (appStateNotifier.loading) {
               return const InicialWidget();
             }
-            return appStateNotifier.loggedIn ? const ContratosWidget() : const InicialWidget();
+            return appStateNotifier.loggedIn
+                ? const ContratosWidget()
+                : const InicialWidget();
           },
         ),
         GoRoute(
@@ -170,7 +173,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, state) {
             final extra = state.extra as Map<String, dynamic>?;
             return ConfirmarSenhaWidget(
-              serviceId: extra?['serviceId'] ?? state.uri.queryParameters['serviceId'],
+              serviceId:
+                  extra?['serviceId'] ?? state.uri.queryParameters['serviceId'],
             );
           },
         ),
