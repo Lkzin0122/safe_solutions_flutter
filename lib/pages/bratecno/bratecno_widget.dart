@@ -495,7 +495,7 @@ class _BratecnoWidgetState extends State<BratecnoWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               InkWell(
-                onTap: () => context.pushNamed(ContratosWidget.routeName),
+                onTap: () => context.pushNamed('Contratos'),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -506,7 +506,7 @@ class _BratecnoWidgetState extends State<BratecnoWidget> {
                 ),
               ),
               InkWell(
-                onTap: () => context.pushNamed(FaleConoscoWidget.routeName),
+                onTap: () => context.pushNamed('FaleConosco'),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -517,7 +517,7 @@ class _BratecnoWidgetState extends State<BratecnoWidget> {
                 ),
               ),
               InkWell(
-                onTap: () => context.pushNamed(ProfileWidget.routeName),
+                onTap: () => context.pushNamed('Profile'),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

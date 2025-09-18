@@ -22,7 +22,7 @@ class ContratosWidget extends StatefulWidget {
 
   final int? initialTab;
 
-  static String routeName = 'contratos';
+  static String routeName = 'servicos';
   static String routePath = '/servicos';
 
   @override
@@ -37,15 +37,15 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ContratosModel());
-    
+
     // Se initialTab for 1, expandir automaticamente a seção de serviços concluídos
     if (widget.initialTab == 1) {
       _model.isCompletedExpanded = true;
     }
-    
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!isUserLoggedIn()) {
-        context.pushNamed('Login1');
+        context.pushNamed('Login');
       }
     });
   }
@@ -143,25 +143,23 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       children: [
                         Text(
                           title,
-                          style: FlutterFlowTheme.of(context)
-                              .titleMedium
-                              .override(
-                                fontFamily: 'Montserrat',
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          style:
+                              FlutterFlowTheme.of(context).titleMedium.override(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                         ),
                         SizedBox(height: 8.0),
                         Text(
                           description,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          style: FlutterFlowTheme.of(context)
-                              .bodySmall
-                              .override(
-                                fontFamily: 'Montserrat',
-                                color: Colors.grey[600],
-                              ),
+                          style:
+                              FlutterFlowTheme.of(context).bodySmall.override(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.grey[600],
+                                  ),
                         ),
                       ],
                     ),
@@ -199,7 +197,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DetalhesServicoConcluidoWidget(service: service),
+                builder: (context) =>
+                    DetalhesServicoConcluidoWidget(service: service),
               ),
             );
           },
@@ -222,7 +221,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     width: 60.0,
                     height: 60.0,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondary.withOpacity(0.1),
+                      color: FlutterFlowTheme.of(context)
+                          .secondary
+                          .withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: Icon(
@@ -238,21 +239,26 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       children: [
                         Text(
                           service.title,
-                          style: FlutterFlowTheme.of(context).titleMedium.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .titleMedium
+                              .override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                         SizedBox(height: 4.0),
                         Text(
                           service.description,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodySmall
+                              .override(
+                                fontFamily: 'Montserrat',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                              ),
                         ),
                         SizedBox(height: 8.0),
                         Row(
@@ -265,11 +271,13 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             SizedBox(width: 4.0),
                             Text(
                               'Concluído em ${service.completedDate}',
-                              style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily: 'Montserrat',
-                                color: FlutterFlowTheme.of(context).success,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodySmall
+                                  .override(
+                                    fontFamily: 'Montserrat',
+                                    color: FlutterFlowTheme.of(context).success,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                             ),
                           ],
                         ),
@@ -310,7 +318,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                 // Logo padronizada
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 20.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 20.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
@@ -335,15 +344,18 @@ class _ContratosWidgetState extends State<ContratosWidget> {
 
                 // Campo de busca e botão calendário
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 0.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 0.0),
                   child: Row(
                     children: [
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).secondaryBackground,
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
                             borderRadius: BorderRadius.circular(12.0),
-                            border: Border.all(color: FlutterFlowTheme.of(context).alternate),
+                            border: Border.all(
+                                color: FlutterFlowTheme.of(context).alternate),
                           ),
                           child: TextField(
                             controller: _model.searchController,
@@ -354,7 +366,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             },
                             decoration: InputDecoration(
                               hintText: 'Buscar serviços...',
-                              prefixIcon: Icon(Icons.search, color: FlutterFlowTheme.of(context).secondaryText),
+                              prefixIcon: Icon(Icons.search,
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText),
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.all(12.0),
                             ),
@@ -403,7 +417,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         child: Text(
-                          _model.searchQuery.isEmpty 
+                          _model.searchQuery.isEmpty
                               ? '${3 - ContratosModel.completedServiceIds.length} Ativos'
                               : '${_model.activeServicesCount} Encontrados',
                           style: TextStyle(
@@ -416,11 +430,12 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     ],
                   ),
                 ),
-                
+
                 SizedBox(height: 10.0),
 
                 // Cards de serviços (filtrados por busca)
-                if (!ContratosModel.isServiceCompleted('montador') && _model.showMontador)
+                if (!ContratosModel.isServiceCompleted('montador') &&
+                    _model.showMontador)
                   _buildServiceCard(
                     title: 'O Montador',
                     description:
@@ -430,7 +445,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     onTap: () => context.pushNamed('Montador'),
                   ),
 
-                if (!ContratosModel.isServiceCompleted('super_clean') && _model.showSuperClean)
+                if (!ContratosModel.isServiceCompleted('super_clean') &&
+                    _model.showSuperClean)
                   _buildServiceCard(
                     title: 'Super Clean',
                     description:
@@ -440,7 +456,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     onTap: () => context.pushNamed('SuperClean'),
                   ),
 
-                if (!ContratosModel.isServiceCompleted('bratecno') && _model.showBratecno)
+                if (!ContratosModel.isServiceCompleted('bratecno') &&
+                    _model.showBratecno)
                   _buildServiceCard(
                     title: 'Bratecno',
                     description:
@@ -458,12 +475,14 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   child: InkWell(
                     onTap: () {
                       setState(() {
-                        _model.isCompletedExpanded = !_model.isCompletedExpanded;
+                        _model.isCompletedExpanded =
+                            !_model.isCompletedExpanded;
                       });
                     },
                     child: Container(
                       width: double.infinity,
-                      padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          16.0, 16.0, 16.0, 16.0),
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                         borderRadius: BorderRadius.circular(12.0),
@@ -480,21 +499,25 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             children: [
                               Text(
                                 'Serviços Concluídos',
-                                style: FlutterFlowTheme.of(context).titleMedium.override(
-                                  fontFamily: 'Montserrat',
-                                  color: FlutterFlowTheme.of(context).tertiary,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .titleMedium
+                                    .override(
+                                      fontFamily: 'Montserrat',
+                                      color:
+                                          FlutterFlowTheme.of(context).tertiary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                               ),
                               SizedBox(height: 4.0),
                               Container(
-                                padding: EdgeInsetsDirectional.fromSTEB(8.0, 4.0, 8.0, 4.0),
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    8.0, 4.0, 8.0, 4.0),
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context).secondary,
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: Text(
-                                  _model.searchQuery.isEmpty 
+                                  _model.searchQuery.isEmpty
                                       ? '${ContratosModel.completedServices.length} Concluídos'
                                       : '${_model.filteredCompletedServices.length} Encontrados',
                                   style: TextStyle(
@@ -507,7 +530,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             ],
                           ),
                           Icon(
-                            _model.isCompletedExpanded ? Icons.expand_less : Icons.expand_more,
+                            _model.isCompletedExpanded
+                                ? Icons.expand_less
+                                : Icons.expand_more,
                             color: FlutterFlowTheme.of(context).secondaryText,
                             size: 24.0,
                           ),
@@ -516,20 +541,23 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     ),
                   ),
                 ),
-                
+
                 // Cards de serviços concluídos (expansível com animação)
                 AnimatedCrossFade(
                   firstChild: SizedBox.shrink(),
                   secondChild: Column(
                     children: [
                       SizedBox(height: 10.0),
-                      ..._model.filteredCompletedServices.map((service) => 
-                        _buildCompletedServiceCard(service: service),
-                      ).toList(),
+                      ..._model.filteredCompletedServices
+                          .map(
+                            (service) =>
+                                _buildCompletedServiceCard(service: service),
+                          )
+                          .toList(),
                     ],
                   ),
-                  crossFadeState: _model.isCompletedExpanded 
-                      ? CrossFadeState.showSecond 
+                  crossFadeState: _model.isCompletedExpanded
+                      ? CrossFadeState.showSecond
                       : CrossFadeState.showFirst,
                   duration: Duration(milliseconds: 300),
                 ),
@@ -569,7 +597,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     Container(
                       padding: EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                        color: FlutterFlowTheme.of(context)
+                            .primary
+                            .withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(

@@ -268,7 +268,7 @@ class _VerificarCodigoWidgetState extends State<VerificarCodigoWidget> {
                         onPressed: () async {
                           String? error = _validateCodigo();
                           if (error == null) {
-                            context.goNamed('novaSenhaPosValidacao');
+                            context.goNamed('NovaSenhaPosValidacao');
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

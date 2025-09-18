@@ -285,7 +285,7 @@ class _NovaSenhaPosValidacaoWidgetState extends State<NovaSenhaPosValidacaoWidge
                               ),
                             );
                             await Future.delayed(Duration(seconds: 1));
-                            context.goNamed('login1');
+                            context.goNamed('Login');
                           }
                         },
                         text: 'Alterar Senha',

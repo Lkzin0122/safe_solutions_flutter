@@ -286,7 +286,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                     child: FFButtonWidget(
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
-                          context.pushNamed('verificarCodigo');
+                          context.pushNamed('VerificarCodigo');
                         }
                       },
                       text: 'Verificar',

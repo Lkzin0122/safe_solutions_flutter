@@ -389,7 +389,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                           await Future.delayed(Duration(seconds: 1));
                           setState(() { _isLoading = false; _showSuccessMessage = true; });
                           await Future.delayed(Duration(seconds: 2));
-                          if (mounted) context.pushNamed('contratos');
+                          if (mounted) context.pushNamed('Contratos');
                         }
                       },
                       text: _isLoading ? 'Enviando...' : 'Enviar Mensagem',
@@ -472,7 +472,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  onTap: () => context.pushNamed('contratos'),
+                  onTap: () => context.pushNamed('Contratos'),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -516,7 +516,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                   ],
                 ),
                 InkWell(
-                  onTap: () => context.pushNamed('profile'),
+                  onTap: () => context.pushNamed('Profile'),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

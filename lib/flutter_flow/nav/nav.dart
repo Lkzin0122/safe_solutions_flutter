@@ -109,7 +109,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         ),
         GoRoute(
           name: 'Servicos',
-          path: '/servicos',
+          path: '/servicospage',
           builder: (context, state) => const ServicosWidget(),
         ),
         GoRoute(

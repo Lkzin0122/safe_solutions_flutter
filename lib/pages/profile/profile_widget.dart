@@ -208,7 +208,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                       top: 0.0,
                       right: 0.0,
                       child: InkWell(
-                        onTap: () => context.pushNamed(ConfiguracoesWidget.routeName),
+                        onTap: () => context.pushNamed('Configuracoes'),
                         child: Container(
                           width: 24.0,
                           height: 24.0,
@@ -469,7 +469,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(ContratosWidget.routeName);
+                    context.pushNamed('Contratos');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -504,7 +504,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(FaleConoscoWidget.routeName);
+                    context.pushNamed('FaleConosco');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -539,7 +539,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed(ProfileWidget.routeName);
+                    context.pushNamed('Profile');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
