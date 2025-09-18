@@ -67,7 +67,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         ),
         GoRoute(
           name: 'Login1',
-          path: '/login1',
+          path: '/login',
           builder: (context, state) => const Login1Widget(),
         ),
         GoRoute(
