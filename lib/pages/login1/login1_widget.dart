@@ -84,7 +84,7 @@ class _Login1WidgetState extends State<Login1Widget> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                context.goNamed('Servicos');
+                context.goNamed('Contratos');
               },
               child: Text('OK'),
             ),
@@ -448,8 +448,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        context.pushNamed(
-                                            EsqueciSenhaWidget.routeName);
+                                        context.pushNamed('EsqueciSenha');
                                       },
                                       child: Text(
                                         '*esqueci minha senha',

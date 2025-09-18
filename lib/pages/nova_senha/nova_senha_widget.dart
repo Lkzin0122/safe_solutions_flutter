@@ -351,7 +351,7 @@ class _NovaSenhaWidgetState extends State<NovaSenhaWidget> {
                                       0.0, 16.0, 0.0, 0.0),
                                   child: FFButtonWidget(
                                     onPressed: () async {
-                                      context.pushNamed(Login1Widget.routeName);
+                                      context.pushNamed('Login');
                                     },
                                     text: 'redefinir senha',
                                     options: FFButtonOptions(
