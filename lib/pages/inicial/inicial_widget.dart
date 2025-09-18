@@ -66,14 +66,16 @@ class _InicialWidgetState extends State<InicialWidget> with TickerProviderStateM
 
   void _startAnimation() async {
     await Future.delayed(const Duration(milliseconds: 500));
+    if (!mounted) return;
     _logoController.forward();
     
     await Future.delayed(const Duration(milliseconds: 800));
+    if (!mounted) return;
     _progressController.forward();
     
-    await Future.delayed(const Duration(milliseconds: 2500));
+    await Future.delayed(const Duration(milliseconds: 2000));
     if (mounted) {
-      context.pushReplacementNamed(Login1Widget.routeName);
+      context.goNamed('Login');
     }
   }
 

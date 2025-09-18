@@ -13,8 +13,8 @@ export 'login1_model.dart';
 class Login1Widget extends StatefulWidget {
   const Login1Widget({super.key});
 
-  static String routeName = 'login1';
-  static String routePath = '/login1';
+  static String routeName = 'Login';
+  static String routePath = '/login';
 
   @override
   State<Login1Widget> createState() => _Login1WidgetState();

@@ -62,12 +62,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         GoRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, state) =>
-              appStateNotifier.loggedIn ? const ContratosWidget() : const InicialWidget(),
+          builder: (context, state) {
+            if (appStateNotifier.loading) {
+              return const InicialWidget();
+            }
+            return appStateNotifier.loggedIn ? const ContratosWidget() : const InicialWidget();
+          },
         ),
         GoRoute(
-          name: 'Login1',
-          path: '/login1',
+          name: 'Login',
+          path: '/login',
           builder: (context, state) => const Login1Widget(),
         ),
         GoRoute(
