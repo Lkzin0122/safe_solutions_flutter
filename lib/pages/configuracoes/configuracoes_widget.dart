@@ -49,7 +49,7 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
             color: FlutterFlowTheme.of(context).primaryText,
             size: 30.0,
           ),
-          onPressed: () => context.pushNamed(ProfileWidget.routeName),
+          onPressed: () => context.pushNamed('Profile'),
         ),
         centerTitle: true,
         title: Text(
@@ -67,7 +67,7 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
           children: [
             // Editar Conta
             InkWell(
-              onTap: () => context.pushNamed(EditarContaWidget.routeName),
+              onTap: () => context.pushNamed('EditarConta'),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
@@ -110,7 +110,7 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
             
             // Privacidade
             InkWell(
-              onTap: () => context.pushNamed(PrivacidadeWidget.routeName),
+              onTap: () => context.pushNamed('Privacidade'),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
@@ -153,7 +153,7 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
             
             // Termos de Uso
             InkWell(
-              onTap: () => context.pushNamed(TermosUsoWidget.routeName),
+              onTap: () => context.pushNamed('TermosUso'),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
@@ -196,7 +196,7 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
             
             // Suporte
             InkWell(
-              onTap: () => context.pushNamed(SuporteWidget.routeName),
+              onTap: () => context.pushNamed('Suporte'),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
