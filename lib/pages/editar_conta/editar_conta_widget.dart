@@ -101,7 +101,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
               size: 30.0,
             ),
             onPressed: () async {
-              context.pushNamed(ConfiguracoesWidget.routeName);
+              context.pop();
             },
           ),
           title: Text(
@@ -156,9 +156,13 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                       color: Colors.white,
                                     ),
                                   )
-                                : Image.network(
-                                    'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/k8xruzgiy7xp/vecteezy_profile-icon-avatar-icon-user-icon-person-icon_20911732.png',
-                                    fit: BoxFit.cover,
+                                : Container(
+                                    color: FlutterFlowTheme.of(context).tertiary,
+                                    child: Icon(
+                                      Icons.account_circle,
+                                      size: 80.0,
+                                      color: Colors.white,
+                                    ),
                                   ),
                           ),
                         ),
@@ -487,7 +491,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                       Expanded(
                         child: FFButtonWidget(
                           onPressed: () async {
-                            context.pushNamed(ConfiguracoesWidget.routeName);
+                            context.pop();
                           },
                           text: 'Cancelar',
                           options: FFButtonOptions(

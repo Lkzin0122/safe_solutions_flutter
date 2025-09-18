@@ -249,9 +249,10 @@ class _ProfileWidgetState extends State<ProfileWidget>
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      child: Image.network(
-                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/k8xruzgiy7xp/vecteezy_profile-icon-avatar-icon-user-icon-person-icon_20911732.png',
-                        fit: BoxFit.cover,
+                      child: Icon(
+                        Icons.account_circle,
+                        size: 95.0,
+                        color: Colors.white,
                       ),
                     ),
                   ],
