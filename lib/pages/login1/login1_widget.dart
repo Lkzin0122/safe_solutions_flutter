@@ -29,12 +29,12 @@ class _Login1WidgetState extends State<Login1Widget> {
     try {
       final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
       final response = await http.get(
-        Uri.parse('https://www.receitaws.com.br/v1/cnpj/$cnpjNumbers'),
+        Uri.parse('https://publica.cnpj.ws/cnpj/$cnpjNumbers'),
       );
       
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        return data['status'] == 'OK';
+        return data['status'] == 200;
       }
       return false;
     } catch (e) {
