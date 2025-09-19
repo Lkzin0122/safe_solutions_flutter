@@ -1,13 +1,11 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import 'dart:convert';
-import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'login1_model.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 export 'login1_model.dart';
 
 class Login1Widget extends StatefulWidget {
@@ -26,12 +24,37 @@ class _Login1WidgetState extends State<Login1Widget> {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
+
+  Future<bool> _verificarCnpjReceitaWS(String cnpj) async {
+    try {
+      final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
+      final response = await http.get(
+        Uri.parse('https://www.receitaws.com.br/v1/cnpj/$cnpjNumbers'),
+      );
+      
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['status'] == 'OK';
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> buscarDados(String cnpj, String senha) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
+      // Primeiro verifica se o CNPJ existe na ReceitaWS
+      final cnpjValido = await _verificarCnpjReceitaWS(cnpj);
+      if (!cnpjValido) {
+        _showErrorDialog('CNPJ não encontrado ou inválido.');
+        return;
+      }
+
       // Remove a formatação do CNPJ para enviar apenas números
       final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
 
