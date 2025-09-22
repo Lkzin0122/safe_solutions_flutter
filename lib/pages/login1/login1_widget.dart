@@ -31,7 +31,7 @@ class _Login1WidgetState extends State<Login1Widget> {
       final response = await http.get(
         Uri.parse('https://publica.cnpj.ws/cnpj/$cnpjNumbers'),
       );
-      
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         return data['status'] == 200;
@@ -48,18 +48,12 @@ class _Login1WidgetState extends State<Login1Widget> {
     });
 
     try {
-      // Primeiro verifica se o CNPJ existe na ReceitaWS
-      final cnpjValido = await _verificarCnpjReceitaWS(cnpj);
-      if (!cnpjValido) {
-        _showErrorDialog('CNPJ não encontrado ou inválido.');
-        return;
-      }
-
       // Remove a formatação do CNPJ para enviar apenas números
       final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
 
       final response = await http.get(
-        Uri.parse("http://localhost:8080/empresa/login/$cnpjNumbers?senha=$senha"),
+        Uri.parse("http://localhost:8080/empresa/login/$cnpjNumbers")
+            .replace(queryParameters: {'senha': senha}),
         headers: {
           'Content-Type': 'application/json',
         },
