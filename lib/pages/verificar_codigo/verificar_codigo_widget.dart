@@ -99,19 +99,22 @@ class _VerificarCodigoWidgetState extends State<VerificarCodigoWidget> {
                       children: [
                         Align(
                           alignment: const AlignmentDirectional(-1.02, -0.27),
-                          child: FlutterFlowIconButton(
-                            borderColor: Colors.transparent,
-                            borderRadius: 30.0,
-                            borderWidth: 1.0,
-                            buttonSize: 60.0,
-                            icon: Icon(
-                              Icons.arrow_back_rounded,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 30.0,
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
+                            child: FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 25.0,
+                              borderWidth: 1.0,
+                              buttonSize: 45.0,
+                              icon: Icon(
+                                Icons.arrow_back_rounded,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 22.0,
+                              ),
+                              onPressed: () async {
+                                context.pop();
+                              },
                             ),
-                            onPressed: () async {
-                              context.pop();
-                            },
                           ),
                         ),
                         Container(

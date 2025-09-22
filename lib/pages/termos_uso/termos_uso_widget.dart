@@ -45,9 +45,12 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
               // Botão de voltar
               Align(
                 alignment: Alignment.centerLeft,
-                child: IconButton(
-                  onPressed: () => context.pop(),
-                  icon: Icon(Icons.arrow_back, size: 24),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
+                  child: IconButton(
+                    onPressed: () => context.pop(),
+                    icon: Icon(Icons.arrow_back, size: 22),
+                  ),
                 ),
               ),
               Container(

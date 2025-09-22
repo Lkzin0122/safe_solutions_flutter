@@ -45,9 +45,12 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
             // Botão de voltar
             Align(
               alignment: Alignment.centerLeft,
-              child: IconButton(
-                onPressed: () => context.pushNamed('Profile'),
-                icon: Icon(Icons.arrow_back, size: 24),
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
+                child: IconButton(
+                  onPressed: () => context.pushNamed('Profile'),
+                  icon: Icon(Icons.arrow_back, size: 20),
+                ),
               ),
             ),
             // Editar Conta
