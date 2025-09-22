@@ -97,35 +97,21 @@ class _StatusServicoWidgetState extends State<StatusServicoWidget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primary,
-        automaticallyImplyLeading: false,
-        leading: InkWell(
-          onTap: () => context.pop(),
-          child: Icon(
-            Icons.arrow_back_rounded,
-            color: Colors.white,
-            size: 30,
-          ),
-        ),
-        title: Text(
-          'Status do Serviço',
-          style: FlutterFlowTheme.of(context).headlineMedium.override(
-            fontFamily: 'Montserrat',
-            color: Colors.white,
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: false,
-        elevation: 2,
-      ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsetsDirectional.fromSTEB(24, 20, 24, 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Botão de voltar
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  onPressed: () => context.pop(),
+                  icon: Icon(Icons.arrow_back, size: 24),
+                ),
+              ),
               // Informações do contrato
               Container(
                 width: double.infinity,

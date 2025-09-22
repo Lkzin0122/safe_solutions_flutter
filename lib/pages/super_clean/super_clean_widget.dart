@@ -218,34 +218,19 @@ class _SuperCleanWidgetState extends State<SuperCleanWidget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        elevation: 0,
-        leading: FlutterFlowIconButton(
-          borderColor: Colors.transparent,
-          borderRadius: 30.0,
-          buttonSize: 60.0,
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: FlutterFlowTheme.of(context).primaryText,
-            size: 30.0,
-          ),
-          onPressed: () => context.pop(),
-        ),
-        centerTitle: true,
-        title: Text(
-          'Super Clean',
-          style: FlutterFlowTheme.of(context).headlineSmall.override(
-            fontFamily: 'Montserrat',
-            color: FlutterFlowTheme.of(context).tertiary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
         child: Column(
           children: [
+            // Botão de voltar
+            Align(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                onPressed: () => context.pop(),
+                icon: Icon(Icons.arrow_back, size: 24),
+              ),
+            ),
             // Header com imagem e status
             Container(
               width: double.infinity,

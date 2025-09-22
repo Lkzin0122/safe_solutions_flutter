@@ -37,34 +37,19 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        elevation: 0,
-        leading: FlutterFlowIconButton(
-          borderColor: Colors.transparent,
-          borderRadius: 30.0,
-          buttonSize: 60.0,
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: FlutterFlowTheme.of(context).primaryText,
-            size: 30.0,
-          ),
-          onPressed: () => context.pushNamed('Profile'),
-        ),
-        centerTitle: true,
-        title: Text(
-          'Configurações',
-          style: FlutterFlowTheme.of(context).headlineSmall.override(
-            fontFamily: 'Montserrat',
-            color: FlutterFlowTheme.of(context).tertiary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: Column(
           children: [
+            // Botão de voltar
+            Align(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                onPressed: () => context.pushNamed('Profile'),
+                icon: Icon(Icons.arrow_back, size: 24),
+              ),
+            ),
             // Editar Conta
             InkWell(
               onTap: () => context.pushNamed('EditarConta'),

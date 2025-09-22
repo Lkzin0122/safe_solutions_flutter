@@ -506,40 +506,20 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: Text(
-            'Calendário de Serviços',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-              fontFamily: 'Montserrat',
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 20.0),
-            onPressed: () => context.pop(),
-          ),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  FlutterFlowTheme.of(context).primary,
-                  FlutterFlowTheme.of(context).secondary,
-                ],
-                stops: [0.0, 1.0],
-                begin: AlignmentDirectional(-1.0, -1.0),
-                end: AlignmentDirectional(1.0, 1.0),
-              ),
-            ),
-          ),
-        ),
+
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(20.0),
             child: Column(
               children: [
+                // Botão de voltar
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    onPressed: () => context.pop(),
+                    icon: Icon(Icons.arrow_back, size: 24),
+                  ),
+                ),
                 // Campo de busca estilizado
                 Container(
                   decoration: BoxDecoration(

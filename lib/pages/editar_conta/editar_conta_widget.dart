@@ -87,35 +87,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).tertiary,
-          automaticallyImplyLeading: false,
-          leading: FlutterFlowIconButton(
-            borderColor: Colors.transparent,
-            borderRadius: 30.0,
-            borderWidth: 1.0,
-            buttonSize: 60.0,
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.white,
-              size: 30.0,
-            ),
-            onPressed: () async {
-              context.pop();
-            },
-          ),
-          title: Text(
-            'Editar Conta',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-              fontFamily: 'Montserrat',
-              color: Colors.white,
-              fontSize: 22.0,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          centerTitle: true,
-          elevation: 2.0,
-        ),
+
         body: SafeArea(
           child: Form(
             key: _model.formKey,
@@ -125,6 +97,14 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Botão de voltar
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: () => context.pop(),
+                      icon: Icon(Icons.arrow_back, size: 24),
+                    ),
+                  ),
                   // Foto de perfil
                   Center(
                     child: Stack(

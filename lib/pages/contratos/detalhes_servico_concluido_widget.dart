@@ -17,41 +17,21 @@ class DetalhesServicoConcluidoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primary,
-        automaticallyImplyLeading: false,
-        leading: FlutterFlowIconButton(
-          borderColor: Colors.transparent,
-          borderRadius: 30.0,
-          borderWidth: 1.0,
-          buttonSize: 60.0,
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: Colors.white,
-            size: 30.0,
-          ),
-          onPressed: () async {
-            context.pop();
-          },
-        ),
-        title: Text(
-          'Detalhes do Serviço',
-          style: FlutterFlowTheme.of(context).headlineMedium.override(
-                fontFamily: 'Montserrat',
-                color: Colors.white,
-                fontSize: 22.0,
-                fontWeight: FontWeight.w600,
-              ),
-        ),
-        centerTitle: true,
-        elevation: 2.0,
-      ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Botão de voltar
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  onPressed: () => context.pop(),
+                  icon: Icon(Icons.arrow_back, size: 24),
+                ),
+              ),
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
