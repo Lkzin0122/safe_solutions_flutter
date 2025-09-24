@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login1_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -60,6 +61,8 @@ class _Login1WidgetState extends State<Login1Widget> {
       );
 
       if (response.statusCode == 200) {
+        // Salvar CNPJ do usuário logado
+        await _salvarCnpjUsuario(cnpjNumbers);
         // Login bem-sucedido
         _showSuccessDialog();
       } else if (response.statusCode == 401) {
@@ -78,6 +81,11 @@ class _Login1WidgetState extends State<Login1Widget> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<void> _salvarCnpjUsuario(String cnpj) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_cnpj', cnpj);
   }
 
   void _showSuccessDialog() {

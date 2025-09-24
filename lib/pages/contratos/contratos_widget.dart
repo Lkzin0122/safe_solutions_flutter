@@ -1,11 +1,10 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
+import 'dart:convert';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'contratos_model.dart';
 import 'detalhes_servico_concluido_widget.dart';
 export 'contratos_model.dart';
@@ -13,6 +12,40 @@ export 'contratos_model.dart';
 bool isUserLoggedIn() {
   return true;
 }
+
+class ServicoModel {
+  final String id;
+  final String nome;
+  final String descricao;
+  final String status;
+  final String? imageUrl;
+  final String? dataContratacao;
+  final String? dataConclusao;
+
+  ServicoModel({
+    required this.id,
+    required this.nome,
+    required this.descricao,
+    required this.status,
+    this.imageUrl,
+    this.dataContratacao,
+    this.dataConclusao,
+  });
+
+  factory ServicoModel.fromJson(Map<String, dynamic> json) {
+    return ServicoModel(
+      id: json['id']?.toString() ?? '',
+      nome: json['nome']?.toString() ?? '',
+      descricao: json['descricao']?.toString() ?? '',
+      status: json['status']?.toString() ?? '',
+      imageUrl: json['imageUrl']?.toString(),
+      dataContratacao: json['dataContratacao']?.toString(),
+      dataConclusao: json['dataConclusao']?.toString(),
+    );
+  }
+}
+
+// Removed CompletedService class - using the one from contratos_model.dart instead
 
 class ContratosWidget extends StatefulWidget {
   const ContratosWidget({
@@ -33,19 +66,29 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   late ContratosModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  List<ServicoModel> _servicos = [];
+  bool _isLoading = true;
+  String? _error;
+  String? _userCnpj;
+  String _searchQuery = '';
+
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ContratosModel());
 
-    // Se initialTab for 1, expandir automaticamente a seção de serviços concluídos
     if (widget.initialTab == 1) {
       _model.isCompletedExpanded = true;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!isUserLoggedIn()) {
         context.pushNamed('Login');
+      } else {
+        await _loadUserCnpj();
+        if (_userCnpj != null) {
+          _loadServicos();
+        }
       }
     });
   }
@@ -56,36 +99,223 @@ class _ContratosWidgetState extends State<ContratosWidget> {
     super.dispose();
   }
 
-  Widget _buildStatCard(String value, String label, IconData icon) {
-    return Container(
-      padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12.0),
+  Future<void> _loadUserCnpj() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userCnpj = prefs.getString('user_cnpj');
+    });
+  }
+
+  Future<void> _loadServicos() async {
+    if (_userCnpj == null) return;
+    
+    try {
+      setState(() {
+        _isLoading = true;
+        _error = null;
+      });
+
+      final servicos = await fetchServicosEmpresa(_userCnpj!);
+
+      setState(() {
+        _servicos = servicos;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<List<ServicoModel>> fetchServicosEmpresa(String cnpj) async {
+    final url = Uri.parse('http://localhost:8080/servico/empresa/$cnpj');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        return data.map((json) => ServicoModel.fromJson(json)).toList();
+      } else {
+        throw Exception('Erro ao buscar serviços: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Erro de conexão: $e');
+    }
+  }
+
+  List<ServicoModel> get _servicosAtivos {
+    var servicos = _servicos
+        .where((servico) =>
+            servico.status.toLowerCase() != 'concluido' &&
+            servico.status.toLowerCase() != 'finalizado')
+        .toList();
+
+    if (_searchQuery.isNotEmpty) {
+      servicos = servicos
+          .where((servico) =>
+              servico.nome.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+              servico.descricao
+                  .toLowerCase()
+                  .contains(_searchQuery.toLowerCase()))
+          .toList();
+    }
+
+    return servicos;
+  }
+
+  List<ServicoModel> get _servicosConcluidos {
+    var servicos = _servicos
+        .where((servico) =>
+            servico.status.toLowerCase() == 'concluido' ||
+            servico.status.toLowerCase() == 'finalizado')
+        .toList();
+
+    if (_searchQuery.isNotEmpty) {
+      servicos = servicos
+          .where((servico) =>
+              servico.nome.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+              servico.descricao
+                  .toLowerCase()
+                  .contains(_searchQuery.toLowerCase()))
+          .toList();
+    }
+
+    return servicos;
+  }
+
+  void _updateSearchQuery(String query) {
+    setState(() {
+      _searchQuery = query;
+    });
+  }
+
+  Widget _buildServicoFromBackend(ServicoModel servico,
+      {bool isCompleted = false}) {
+    String imageUrl =
+        servico.imageUrl ?? _getDefaultImageForService(servico.nome);
+
+    if (isCompleted) {
+      final completedService = CompletedService.fromServicoModel(servico);
+      return _buildCompletedServiceCard(service: completedService);
+    }
+
+    return _buildServiceCard(
+      title: servico.nome,
+      description: servico.descricao,
+      imageUrl: imageUrl,
+      onTap: () {
+        context.pushNamed(
+          'DetalhesServico',
+          pathParameters: {'servicoId': servico.id},
+        );
+      },
+    );
+  }
+
+  String _getDefaultImageForService(String serviceName) {
+    final name = serviceName.toLowerCase();
+    if (name.contains('montador') || name.contains('montagem')) {
+      return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png';
+    } else if (name.contains('clean') || name.contains('limpeza')) {
+      return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/dfq8wa491iyv/image_17_(1).png';
+    } else if (name.contains('tecno') || name.contains('hardware')) {
+      return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/42x886euiaf7/image_20_1.png';
+    }
+    return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png';
+  }
+
+  Widget _buildLoadingWidget() {
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 40.0),
+      child: Center(
+        child: Column(
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 16.0),
+            Text(
+              'Carregando serviços...',
+              style: FlutterFlowTheme.of(context).bodyMedium,
+            ),
+          ],
+        ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: Colors.white, size: 24.0),
-          SizedBox(height: 8.0),
-          Text(
-            value,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
+    );
+  }
+
+  Widget _buildErrorWidget() {
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 40.0),
+      child: Center(
+        child: Column(
+          children: [
+            const Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 48.0,
             ),
-          ),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10.0,
-              fontWeight: FontWeight.w500,
+            const SizedBox(height: 16.0),
+            Text(
+              'Erro ao carregar serviços',
+              style: FlutterFlowTheme.of(context).titleMedium.override(
+                    fontFamily: 'Montserrat',
+                    color: Colors.red,
+                  ),
             ),
-          ),
-        ],
+            const SizedBox(height: 8.0),
+            Text(
+              _error ?? 'Erro desconhecido',
+              textAlign: TextAlign.center,
+              style: FlutterFlowTheme.of(context).bodySmall,
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _loadServicos,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: FlutterFlowTheme.of(context).primary,
+              ),
+              child: const Text('Tentar Novamente',
+                  style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyWidget() {
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 40.0),
+      child: Center(
+        child: Column(
+          children: [
+            Icon(
+              Icons.description_outlined,
+              color: FlutterFlowTheme.of(context).secondaryText,
+              size: 48.0,
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Nenhum serviço encontrado',
+              style: FlutterFlowTheme.of(context).titleMedium,
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              _searchQuery.isNotEmpty
+                  ? 'Não encontramos serviços com o termo "$_searchQuery"'
+                  : 'Você ainda não possui serviços contratados.',
+              textAlign: TextAlign.center,
+              style: FlutterFlowTheme.of(context).bodySmall,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -97,7 +327,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(24.0, 8.0, 24.0, 8.0),
+      padding: const EdgeInsetsDirectional.fromSTEB(24.0, 8.0, 24.0, 8.0),
       child: Material(
         color: Colors.transparent,
         elevation: 4.0,
@@ -121,8 +351,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             child: Row(
               children: [
                 Padding(
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 16.0, 16.0, 16.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12.0),
                     child: Image.network(
@@ -130,13 +360,24 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       width: 80.0,
                       height: 80.0,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: 80.0,
+                          height: 80.0,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: Icon(Icons.image, color: Colors.grey[600]),
+                        );
+                      },
                     ),
                   ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 16.0, 16.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 16.0, 16.0, 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +391,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                     fontWeight: FontWeight.w600,
                                   ),
                         ),
-                        SizedBox(height: 8.0),
+                        const SizedBox(height: 8.0),
                         Text(
                           description,
                           maxLines: 3,
@@ -166,7 +407,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                   child: Icon(
                     Icons.arrow_forward_ios,
                     color: Colors.grey[600],
@@ -185,7 +427,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
     required CompletedService service,
   }) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(24.0, 8.0, 24.0, 8.0),
+      padding: const EdgeInsetsDirectional.fromSTEB(24.0, 8.0, 24.0, 8.0),
       child: Material(
         color: Colors.transparent,
         elevation: 2.0,
@@ -214,7 +456,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
               ),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
               child: Row(
                 children: [
                   Container(
@@ -232,7 +475,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       size: 30.0,
                     ),
                   ),
-                  SizedBox(width: 16.0),
+                  const SizedBox(width: 16.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,7 +490,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
-                        SizedBox(height: 4.0),
+                        const SizedBox(height: 4.0),
                         Text(
                           service.description,
                           maxLines: 2,
@@ -260,7 +503,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                     FlutterFlowTheme.of(context).secondaryText,
                               ),
                         ),
-                        SizedBox(height: 8.0),
+                        const SizedBox(height: 8.0),
                         Row(
                           children: [
                             Icon(
@@ -268,7 +511,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                               color: FlutterFlowTheme.of(context).success,
                               size: 16.0,
                             ),
-                            SizedBox(width: 4.0),
+                            const SizedBox(width: 4.0),
                             Text(
                               'Concluído em ${service.completedDate}',
                               style: FlutterFlowTheme.of(context)
@@ -285,7 +528,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        8.0, 0.0, 0.0, 0.0),
                     child: Icon(
                       Icons.arrow_forward_ios,
                       color: FlutterFlowTheme.of(context).secondaryText,
@@ -312,258 +556,256 @@ class _ContratosWidgetState extends State<ContratosWidget> {
         key: scaffoldKey,
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // Logo padronizada
-                Container(
-                  width: double.infinity,
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 20.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 4.0,
-                        offset: Offset(0.0, 2.0),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(0.0),
-                      child: Image.network(
-                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                        width: 250.0,
-                        fit: BoxFit.contain,
+          child: RefreshIndicator(
+            onRefresh: _loadServicos,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  // Logo padronizada
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        24.0, 20.0, 24.0, 20.0),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0x0D000000),
+                          blurRadius: 4.0,
+                          offset: Offset(0.0, 2.0),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(0.0),
+                        child: Image.network(
+                          'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                          width: 250.0,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),
-                ),
-
-                // Campo de busca e botão calendário
-                Padding(
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 0.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            borderRadius: BorderRadius.circular(12.0),
-                            border: Border.all(
-                                color: FlutterFlowTheme.of(context).alternate),
-                          ),
-                          child: TextField(
-                            controller: _model.searchController,
-                            onChanged: (value) {
-                              setState(() {
-                                _model.updateSearchQuery(value);
-                              });
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'Buscar serviços...',
-                              prefixIcon: Icon(Icons.search,
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(12.0),
+                  // Campo de busca e botão calendário
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        24.0, 20.0, 24.0, 0.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              borderRadius: BorderRadius.circular(12.0),
+                              border: Border.all(
+                                  color:
+                                      FlutterFlowTheme.of(context).alternate),
+                            ),
+                            child: TextField(
+                              onChanged: _updateSearchQuery,
+                              decoration: InputDecoration(
+                                hintText: 'Buscar serviços...',
+                                prefixIcon: Icon(Icons.search,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText),
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.all(12.0),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 12.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).primary,
-                          borderRadius: BorderRadius.circular(12.0),
+                        const SizedBox(width: 12.0),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context).primary,
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: IconButton(
+                            onPressed: () => context.pushNamed('Calendario'),
+                            icon: const Icon(Icons.calendar_month,
+                                color: Colors.white),
+                            tooltip: 'Ver Calendário',
+                          ),
                         ),
-                        child: IconButton(
-                          onPressed: () => context.pushNamed('Calendario'),
-                          icon: Icon(Icons.calendar_month, color: Colors.white),
-                          tooltip: 'Ver Calendário',
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-
-                // Título da seção
-                Container(
-                  width: double.infinity,
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(24.0, 20.0, 24.0, 0.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Serviços em Andamento',
-                        style:
-                            FlutterFlowTheme.of(context).headlineSmall.override(
+                  if (_isLoading)
+                    _buildLoadingWidget()
+                  else if (_error != null)
+                    _buildErrorWidget()
+                  else if (_servicos.isEmpty)
+                    _buildEmptyWidget()
+                  else ...[
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          24.0, 20.0, 24.0, 0.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Serviços em Andamento',
+                            style: FlutterFlowTheme.of(context)
+                                .headlineSmall
+                                .override(
                                   fontFamily: 'Montserrat',
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
-                      ),
-                      SizedBox(height: 8.0),
-                      Container(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            12.0, 6.0, 12.0, 6.0),
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).success,
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Text(
-                          _model.searchQuery.isEmpty
-                              ? '${3 - ContratosModel.completedServiceIds.length} Ativos'
-                              : '${_model.activeServicesCount} Encontrados',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w600,
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 10.0),
-
-                // Cards de serviços (filtrados por busca)
-                if (!ContratosModel.isServiceCompleted('montador') &&
-                    _model.showMontador)
-                  _buildServiceCard(
-                    title: 'O Montador',
-                    description:
-                        'Serviços especializados de montagem de móveis para residências, escritórios e ambientes comerciais.',
-                    imageUrl:
-                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png',
-                    onTap: () => context.pushNamed('Montador'),
-                  ),
-
-                if (!ContratosModel.isServiceCompleted('super_clean') &&
-                    _model.showSuperClean)
-                  _buildServiceCard(
-                    title: 'Super Clean',
-                    description:
-                        'Serviço de limpeza profissional com soluções completas e personalizadas para manter seu ambiente impecável.',
-                    imageUrl:
-                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/dfq8wa491iyv/image_17_(1).png',
-                    onTap: () => context.pushNamed('SuperClean'),
-                  ),
-
-                if (!ContratosModel.isServiceCompleted('bratecno') &&
-                    _model.showBratecno)
-                  _buildServiceCard(
-                    title: 'Bratecno',
-                    description:
-                        'Manutenção de hardware projetada para garantir desempenho ideal e confiabilidade dos seus equipamentos.',
-                    imageUrl:
-                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/42x886euiaf7/image_20_1.png',
-                    onTap: () => context.pushNamed('Bratecno'),
-                  ),
-
-                SizedBox(height: 30.0),
-
-                // Seção de Serviços Concluídos Expansível
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        _model.isCompletedExpanded =
-                            !_model.isCompletedExpanded;
-                      });
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsetsDirectional.fromSTEB(
-                          16.0, 16.0, 16.0, 16.0),
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        borderRadius: BorderRadius.circular(12.0),
-                        border: Border.all(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Serviços Concluídos',
-                                style: FlutterFlowTheme.of(context)
-                                    .titleMedium
-                                    .override(
-                                      fontFamily: 'Montserrat',
-                                      color:
-                                          FlutterFlowTheme.of(context).tertiary,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                          const SizedBox(height: 8.0),
+                          Container(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                12.0, 6.0, 12.0, 6.0),
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).success,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Text(
+                              _searchQuery.isEmpty
+                                  ? '${_servicosAtivos.length} Ativos'
+                                  : '${_servicosAtivos.length} Encontrados',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w600,
                               ),
-                              SizedBox(height: 4.0),
-                              Container(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    8.0, 4.0, 8.0, 4.0),
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context).secondary,
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                child: Text(
-                                  _model.searchQuery.isEmpty
-                                      ? '${ContratosModel.completedServices.length} Concluídos'
-                                      : '${_model.filteredCompletedServices.length} Encontrados',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10.0,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Icon(
-                            _model.isCompletedExpanded
-                                ? Icons.expand_less
-                                : Icons.expand_more,
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                            size: 24.0,
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ),
-
-                // Cards de serviços concluídos (expansível com animação)
-                AnimatedCrossFade(
-                  firstChild: SizedBox.shrink(),
-                  secondChild: Column(
-                    children: [
-                      SizedBox(height: 10.0),
-                      ..._model.filteredCompletedServices
-                          .map(
-                            (service) =>
-                                _buildCompletedServiceCard(service: service),
-                          )
-                          .toList(),
+                    const SizedBox(height: 10.0),
+                    if (_servicosAtivos.isEmpty && _searchQuery.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            24.0, 20.0, 24.0, 20.0),
+                        child: Text(
+                          'Nenhum serviço ativo encontrado com "$_searchQuery"',
+                          style: FlutterFlowTheme.of(context).bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    else
+                      ..._servicosAtivos
+                          .map((servico) => _buildServicoFromBackend(servico)),
+                    const SizedBox(height: 30.0),
+                    if (_servicosConcluidos.isNotEmpty ||
+                        _searchQuery.isNotEmpty) ...[
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            24.0, 0.0, 24.0, 0.0),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _model.isCompletedExpanded =
+                                  !_model.isCompletedExpanded;
+                            });
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 16.0, 16.0, 16.0),
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              borderRadius: BorderRadius.circular(12.0),
+                              border: Border.all(
+                                color: FlutterFlowTheme.of(context).alternate,
+                                width: 1.0,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Serviços Concluídos',
+                                      style: FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .override(
+                                            fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context)
+                                                .tertiary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    const SizedBox(height: 4.0),
+                                    Container(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              8.0, 4.0, 8.0, 4.0),
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondary,
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                      child: Text(
+                                        _searchQuery.isEmpty
+                                            ? '${_servicosConcluidos.length} Concluídos'
+                                            : '${_servicosConcluidos.length} Encontrados',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Icon(
+                                  _model.isCompletedExpanded
+                                      ? Icons.expand_less
+                                      : Icons.expand_more,
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  size: 24.0,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      AnimatedCrossFade(
+                        firstChild: const SizedBox.shrink(),
+                        secondChild: Column(
+                          children: [
+                            const SizedBox(height: 10.0),
+                            if (_servicosConcluidos.isEmpty &&
+                                _searchQuery.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    24.0, 20.0, 24.0, 20.0),
+                                child: Text(
+                                  'Nenhum serviço concluído encontrado com "$_searchQuery"',
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            else
+                              ..._servicosConcluidos.map((servico) =>
+                                  _buildServicoFromBackend(servico,
+                                      isCompleted: true)),
+                          ],
+                        ),
+                        crossFadeState: _model.isCompletedExpanded
+                            ? CrossFadeState.showSecond
+                            : CrossFadeState.showFirst,
+                        duration: const Duration(milliseconds: 300),
+                      ),
                     ],
-                  ),
-                  crossFadeState: _model.isCompletedExpanded
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: Duration(milliseconds: 300),
-                ),
-
-                SizedBox(height: 20.0),
-              ],
+                  ],
+                  const SizedBox(height: 20.0),
+                ],
+              ),
             ),
           ),
         ),
@@ -572,7 +814,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
           height: 80,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20.0),
               topRight: Radius.circular(20.0),
             ),
@@ -580,12 +822,12 @@ class _ContratosWidgetState extends State<ContratosWidget> {
               BoxShadow(
                 color: Colors.black.withOpacity(0.1),
                 blurRadius: 10.0,
-                offset: Offset(0.0, -2.0),
+                offset: const Offset(0.0, -2.0),
               ),
             ],
           ),
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -595,7 +837,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context)
                             .primary
@@ -609,7 +851,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                       child: Text(
                         'Serviços',
                         style: FlutterFlowTheme.of(context).bodySmall.override(
@@ -637,13 +879,14 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.message_outlined,
-                        color: FlutterFlowTheme.of(context).secondaryText,
+                        color: Color(0xFF888888),
                         size: 24,
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
                           'Fale conosco',
                           style: FlutterFlowTheme.of(context)
@@ -675,13 +918,14 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.person_outlined,
-                        color: FlutterFlowTheme.of(context).secondaryText,
+                        color: Color(0xFF888888),
                         size: 24,
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
                           'Perfil',
                           style: FlutterFlowTheme.of(context)

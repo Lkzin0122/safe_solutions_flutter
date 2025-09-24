@@ -18,6 +18,15 @@ class CompletedService {
     required this.icon,
     required this.completedDate,
   });
+
+  static CompletedService fromServicoModel(dynamic servico) {
+    return CompletedService(
+      title: servico.nome ?? 'Serviço',
+      description: servico.descricao ?? 'Descrição não disponível',
+      icon: Icons.check_circle,
+      completedDate: DateTime.now().toString().substring(0, 10),
+    );
+  }
 }
 
 
