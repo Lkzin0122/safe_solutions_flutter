@@ -186,10 +186,18 @@ class _ProfileWidgetState extends State<ProfileWidget>
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         body: SafeArea(
           top: true,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
+          child: _model.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      FlutterFlowTheme.of(context).primary,
+                    ),
+                  ),
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(24.0, 80.0, 24.0, 30.0),
                 child: Stack(
@@ -261,7 +269,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: Text(
-                  'Tech Solutions',
+                  _model.userProfile?.companyName ?? 'Tech Solutions',
                   style: FlutterFlowTheme.of(context).headlineSmall.override(
                         fontFamily:
                             FlutterFlowTheme.of(context).headlineSmallFamily,
@@ -274,7 +282,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                 child: Text(
-                  'techsolutions@gmail.com',
+                  _model.userProfile?.companyEmail ?? 'techsolutions@gmail.com',
                   style: FlutterFlowTheme.of(context).titleSmall.override(
                         fontFamily:
                             FlutterFlowTheme.of(context).titleSmallFamily,
@@ -340,7 +348,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                           ),
                           SizedBox(height: 12.0),
                           Text(
-                            'Empresa especializada em soluções tecnológicas inovadoras para segurança residencial e empresarial.',
+                            _model.userProfile?.companyDescription ?? 'Empresa especializada em soluções tecnológicas inovadoras para segurança residencial e empresarial.',
                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Montserrat',
                               letterSpacing: 0.0,
@@ -352,7 +360,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                     
                     SizedBox(height: 16.0),
                     
-                    // Cards de informações de contato
+                    // Cards de informações de contato da empresa
                     Row(
                       children: [
                         Expanded(
@@ -383,7 +391,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                   ),
                                 ),
                                 Text(
-                                  '(11) 99999-9999',
+                                  _model.userProfile?.companyPhone ?? '(11) 99999-9999',
                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.w600,
@@ -408,13 +416,13 @@ class _ProfileWidgetState extends State<ProfileWidget>
                             child: Column(
                               children: [
                                 Icon(
-                                  Icons.location_on_outlined,
+                                  Icons.business_outlined,
                                   color: FlutterFlowTheme.of(context).tertiary,
                                   size: 24.0,
                                 ),
                                 SizedBox(height: 8.0),
                                 Text(
-                                  'Localização',
+                                  'CNPJ',
                                   style: FlutterFlowTheme.of(context).bodySmall.override(
                                     fontFamily: 'Montserrat',
                                     color: FlutterFlowTheme.of(context).secondaryText,
@@ -422,7 +430,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                   ),
                                 ),
                                 Text(
-                                  'São Paulo, SP',
+                                  _model.userProfile?.companyCnpj ?? '12.345.678/0001-90',
                                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.w600,
@@ -434,13 +442,292 @@ class _ProfileWidgetState extends State<ProfileWidget>
                         ),
                       ],
                     ),
+                    
+                    SizedBox(height: 12.0),
+                    
+                    // Card de localização
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        borderRadius: BorderRadius.circular(12.0),
+                        border: Border.all(
+                          color: FlutterFlowTheme.of(context).alternate,
+                          width: 1.0,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: FlutterFlowTheme.of(context).tertiary,
+                            size: 24.0,
+                          ),
+                          SizedBox(width: 12.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Localização',
+                                  style: FlutterFlowTheme.of(context).bodySmall.override(
+                                    fontFamily: 'Montserrat',
+                                    color: FlutterFlowTheme.of(context).secondaryText,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  _model.userProfile?.companyAddress ?? 'São Paulo, SP',
+                                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    // Seção de dados pessoais (visível apenas para o próprio usuário)
+                    if (_model.isOwner && _model.userProfile?.personalName != null) ..[
+                      SizedBox(height: 24.0),
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).secondaryBackground,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(
+                            color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
+                            width: 1.0,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 4.0,
+                              color: Colors.black.withOpacity(0.1),
+                              offset: Offset(0.0, 2.0),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.lock_outline,
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  size: 20.0,
+                                ),
+                                SizedBox(width: 8.0),
+                                Text(
+                                  'Dados Pessoais (Privado)',
+                                  style: FlutterFlowTheme.of(context).titleMedium.override(
+                                    fontFamily: 'Montserrat',
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 16.0),
+                            
+                            // Nome pessoal
+                            if (_model.userProfile?.personalName != null)
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.person_outline,
+                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                      size: 18.0,
+                                    ),
+                                    SizedBox(width: 12.0),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Nome',
+                                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                                              fontFamily: 'Montserrat',
+                                              color: FlutterFlowTheme.of(context).secondaryText,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            _model.userProfile!.personalName!,
+                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            
+                            // CPF
+                            if (_model.userProfile?.personalCpf != null)
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.badge_outlined,
+                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                      size: 18.0,
+                                    ),
+                                    SizedBox(width: 12.0),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'CPF',
+                                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                                              fontFamily: 'Montserrat',
+                                              color: FlutterFlowTheme.of(context).secondaryText,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            _model.userProfile!.personalCpf!,
+                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            
+                            // Telefone pessoal
+                            if (_model.userProfile?.personalPhone != null)
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.phone_android_outlined,
+                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                      size: 18.0,
+                                    ),
+                                    SizedBox(width: 12.0),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Telefone Pessoal',
+                                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                                              fontFamily: 'Montserrat',
+                                              color: FlutterFlowTheme.of(context).secondaryText,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            _model.userProfile!.personalPhone!,
+                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            
+                            // Email pessoal
+                            if (_model.userProfile?.personalEmail != null)
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.email_outlined,
+                                    color: FlutterFlowTheme.of(context).secondaryText,
+                                    size: 18.0,
+                                  ),
+                                  SizedBox(width: 12.0),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Email Pessoal',
+                                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                            fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        Text(
+                                          _model.userProfile!.personalEmail!,
+                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
-              ],
-            ),
-          ),
-        ),
+              
+              // Botão para editar dados pessoais (apenas para o próprio usuário)
+              if (_model.isOwner)
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 24.0, 16.0, 24.0),
+                  child: FFButtonWidget(
+                    onPressed: () {
+                      // Navegar para tela de edição de dados pessoais
+                      context.pushNamed('EditarConta');
+                    },
+                    text: 'Editar Dados Pessoais',
+                    icon: Icon(
+                      Icons.edit_outlined,
+                      size: 18.0,
+                    ),
+                    options: FFButtonOptions(
+                      width: double.infinity,
+                      height: 50.0,
+                      padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      color: FlutterFlowTheme.of(context).primary,
+                      textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      elevation: 2.0,
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ).animateOnPageLoad(animationsMap['buttonOnPageLoadAnimation']!),
+                ),
+                    ],
+                  ),
+                ),
         bottomNavigationBar: Container(
           width: double.infinity,
           height: 80,
