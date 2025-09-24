@@ -22,3 +22,5 @@ export '/pages/termos_uso/termos_uso_widget.dart' show TermosUsoWidget;
 export '/pages/calendario/calendario_widget.dart' show CalendarioWidget;
 export '/pages/confirmar_senha/confirmar_senha_widget.dart' show ConfirmarSenhaWidget;
 export '/pages/nova_senha_pos_validacao/nova_senha_pos_validacao_widget.dart' show NovaSenhaPosValidacaoWidget;
+export '/models/user_profile.dart' show UserProfile;
+export '/services/profile_service.dart' show ProfileService;
