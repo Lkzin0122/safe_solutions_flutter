@@ -1,18 +1,18 @@
 import 'package:rxdart/rxdart.dart';
 
-import 'custom_auth_manager.dart';
-
 class SafeSolutionsAuthUser {
-  SafeSolutionsAuthUser({required this.loggedIn, this.uid});
-
-  bool loggedIn;
-  String? uid;
+  final bool loggedIn;
+  
+  SafeSolutionsAuthUser({required this.loggedIn});
 }
 
-/// Generates a stream of the authenticated user.
-BehaviorSubject<SafeSolutionsAuthUser> safeSolutionsAuthUserSubject =
-    BehaviorSubject.seeded(SafeSolutionsAuthUser(loggedIn: false));
-Stream<SafeSolutionsAuthUser> safeSolutionsAuthUserStream() =>
-    safeSolutionsAuthUserSubject
-        .asBroadcastStream()
-        .map((user) => currentUser = user);
+class SafeSolutionsAuthUserProvider {
+  final _userSubject = BehaviorSubject.seeded(SafeSolutionsAuthUser(loggedIn: false));
+  
+  Stream<SafeSolutionsAuthUser> get user => _userSubject.stream;
+  SafeSolutionsAuthUser get currentUser => _userSubject.value;
+  
+  void dispose() {
+    _userSubject.close();
+  }
+}

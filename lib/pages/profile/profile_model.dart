@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import '../../models/user_profile.dart';
 import '../../services/profile_service.dart';
 
-class ProfileModel extends FlutterFlowModel<ProfileWidget> {
+class ProfileModel extends FlutterFlowModel<ProfileWidget> with ChangeNotifier {
   UserProfile? userProfile;
   bool isLoading = true;
-  bool isOwner = true; // Para controlar se é o próprio usuário
+  bool isOwner = true;
 
   @override
   void initState(BuildContext context) {
@@ -16,16 +16,20 @@ class ProfileModel extends FlutterFlowModel<ProfileWidget> {
   }
 
   Future<void> loadUserProfile() async {
+    if (!isLoading) return;
+    
     try {
       userProfile = await ProfileService.getUserProfile();
-      isLoading = false;
-      notifyListeners();
     } catch (e) {
+      print('Error loading profile: $e');
+    } finally {
       isLoading = false;
       notifyListeners();
     }
   }
 
   @override
-  void dispose() {}
+  void dispose() {
+    super.dispose();
+  }
 }

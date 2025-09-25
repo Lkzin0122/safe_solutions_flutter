@@ -1,688 +1,238 @@
-// ignore_for_file: overridden_fields, annotate_overrides
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
-const kThemeModeKey = '__theme_mode__';
-
-SharedPreferences? _prefs;
-
-enum DeviceSize {
-  mobile,
-  tablet,
-  desktop,
-}
-
-abstract class FlutterFlowTheme {
-  static DeviceSize deviceSize = DeviceSize.mobile;
-
-  static Future initialize() async =>
-      _prefs = await SharedPreferences.getInstance();
-
-  static ThemeMode get themeMode {
-    final darkMode = _prefs?.getBool(kThemeModeKey);
-    return darkMode == null
-        ? ThemeMode.system
-        : darkMode
-            ? ThemeMode.dark
-            : ThemeMode.light;
-  }
-
-  static void saveThemeMode(ThemeMode mode) => mode == ThemeMode.system
-      ? _prefs?.remove(kThemeModeKey)
-      : _prefs?.setBool(kThemeModeKey, mode == ThemeMode.dark);
-
+class FlutterFlowTheme {
   static FlutterFlowTheme of(BuildContext context) {
-    deviceSize = getDeviceSize(context);
-    return Theme.of(context).brightness == Brightness.dark
-        ? DarkModeTheme()
-        : LightModeTheme();
+    return FlutterFlowTheme();
   }
+  static const Color primaryColor = Color(0xFF4B39EF);
+  static const Color secondaryColor = Color(0xFF39D2C0);
+  static const Color tertiaryColor = Color(0xFFEE8B60);
+  static const Color alternate = Color(0xFFE0E3E7);
+  static const Color primaryBackground = Color(0xFFF1F4F8);
+  static const Color secondaryBackground = Color(0xFFFFFFFF);
+  static const Color primaryText = Color(0xFF14181B);
+  static const Color secondaryText = Color(0xFF57636C);
+  static const Color accent1 = Color(0xFF616161);
+  static const Color accent2 = Color(0xFF757575);
+  static const Color accent3 = Color(0xFFE0E0E0);
+  static const Color accent4 = Color(0xFFEEEEEE);
+  static const Color success = Color(0xFF04A24C);
+  static const Color error = Color(0xFFE21C3D);
+  static const Color warning = Color(0xFFFCDC0C);
+  static const Color info = Color(0xFF1C4494);
 
-  @Deprecated('Use primary instead')
-  Color get primaryColor => primary;
-  @Deprecated('Use secondary instead')
-  Color get secondaryColor => secondary;
-  @Deprecated('Use tertiary instead')
-  Color get tertiaryColor => tertiary;
+  // Getters para compatibilidade
+  TextStyle get displayLarge => FlutterFlowTheme.displayLarge;
+  TextStyle get displayMedium => FlutterFlowTheme.displayMedium;
+  TextStyle get displaySmall => FlutterFlowTheme.displaySmall;
+  TextStyle get headlineLarge => FlutterFlowTheme.headlineLarge;
+  TextStyle get headlineMedium => FlutterFlowTheme.headlineMedium;
+  TextStyle get headlineSmall => FlutterFlowTheme.headlineSmall;
+  TextStyle get titleLarge => FlutterFlowTheme.titleLarge;
+  TextStyle get titleMedium => FlutterFlowTheme.titleMedium;
+  TextStyle get titleSmall => FlutterFlowTheme.titleSmall;
+  TextStyle get labelLarge => FlutterFlowTheme.labelLarge;
+  TextStyle get labelMedium => FlutterFlowTheme.labelMedium;
+  TextStyle get labelSmall => FlutterFlowTheme.labelSmall;
+  TextStyle get bodyLarge => FlutterFlowTheme.bodyLarge;
+  TextStyle get bodyMedium => FlutterFlowTheme.bodyMedium;
+  TextStyle get bodySmall => FlutterFlowTheme.bodySmall;
 
-  late Color primary;
-  late Color secondary;
-  late Color tertiary;
-  late Color alternate;
-  late Color primaryText;
-  late Color secondaryText;
-  late Color primaryBackground;
-  late Color secondaryBackground;
-  late Color accent1;
-  late Color accent2;
-  late Color accent3;
-  late Color accent4;
-  late Color success;
-  late Color warning;
-  late Color error;
-  late Color info;
+  String get displayLargeFamily => FlutterFlowTheme.displayLargeFamily;
+  String get displayMediumFamily => FlutterFlowTheme.displayMediumFamily;
+  String get displaySmallFamily => FlutterFlowTheme.displaySmallFamily;
+  String get headlineLargeFamily => FlutterFlowTheme.headlineLargeFamily;
+  String get headlineMediumFamily => FlutterFlowTheme.headlineMediumFamily;
+  String get headlineSmallFamily => FlutterFlowTheme.headlineSmallFamily;
+  String get titleLargeFamily => FlutterFlowTheme.titleLargeFamily;
+  String get titleMediumFamily => FlutterFlowTheme.titleMediumFamily;
+  String get titleSmallFamily => FlutterFlowTheme.titleSmallFamily;
+  String get labelLargeFamily => FlutterFlowTheme.labelLargeFamily;
+  String get labelMediumFamily => FlutterFlowTheme.labelMediumFamily;
+  String get labelSmallFamily => FlutterFlowTheme.labelSmallFamily;
+  String get bodyLargeFamily => FlutterFlowTheme.bodyLargeFamily;
+  String get bodyMediumFamily => FlutterFlowTheme.bodyMediumFamily;
+  String get bodySmallFamily => FlutterFlowTheme.bodySmallFamily;
 
-  @Deprecated('Use displaySmallFamily instead')
-  String get title1Family => displaySmallFamily;
-  @Deprecated('Use displaySmall instead')
-  TextStyle get title1 => typography.displaySmall;
-  @Deprecated('Use headlineMediumFamily instead')
-  String get title2Family => typography.headlineMediumFamily;
-  @Deprecated('Use headlineMedium instead')
-  TextStyle get title2 => typography.headlineMedium;
-  @Deprecated('Use headlineSmallFamily instead')
-  String get title3Family => typography.headlineSmallFamily;
-  @Deprecated('Use headlineSmall instead')
-  TextStyle get title3 => typography.headlineSmall;
-  @Deprecated('Use titleMediumFamily instead')
-  String get subtitle1Family => typography.titleMediumFamily;
-  @Deprecated('Use titleMedium instead')
-  TextStyle get subtitle1 => typography.titleMedium;
-  @Deprecated('Use titleSmallFamily instead')
-  String get subtitle2Family => typography.titleSmallFamily;
-  @Deprecated('Use titleSmall instead')
-  TextStyle get subtitle2 => typography.titleSmall;
-  @Deprecated('Use bodyMediumFamily instead')
-  String get bodyText1Family => typography.bodyMediumFamily;
-  @Deprecated('Use bodyMedium instead')
-  TextStyle get bodyText1 => typography.bodyMedium;
-  @Deprecated('Use bodySmallFamily instead')
-  String get bodyText2Family => typography.bodySmallFamily;
-  @Deprecated('Use bodySmall instead')
-  TextStyle get bodyText2 => typography.bodySmall;
+  bool get displayLargeIsCustom => FlutterFlowTheme.displayLargeIsCustom;
+  bool get displayMediumIsCustom => FlutterFlowTheme.displayMediumIsCustom;
+  bool get displaySmallIsCustom => FlutterFlowTheme.displaySmallIsCustom;
+  bool get headlineLargeIsCustom => FlutterFlowTheme.headlineLargeIsCustom;
+  bool get headlineMediumIsCustom => FlutterFlowTheme.headlineMediumIsCustom;
+  bool get headlineSmallIsCustom => FlutterFlowTheme.headlineSmallIsCustom;
+  bool get titleLargeIsCustom => FlutterFlowTheme.titleLargeIsCustom;
+  bool get titleMediumIsCustom => FlutterFlowTheme.titleMediumIsCustom;
+  bool get titleSmallIsCustom => FlutterFlowTheme.titleSmallIsCustom;
+  bool get labelLargeIsCustom => FlutterFlowTheme.labelLargeIsCustom;
+  bool get labelMediumIsCustom => FlutterFlowTheme.labelMediumIsCustom;
+  bool get labelSmallIsCustom => FlutterFlowTheme.labelSmallIsCustom;
+  bool get bodyLargeIsCustom => FlutterFlowTheme.bodyLargeIsCustom;
+  bool get bodyMediumIsCustom => FlutterFlowTheme.bodyMediumIsCustom;
+  bool get bodySmallIsCustom => FlutterFlowTheme.bodySmallIsCustom;
 
-  String get displayLargeFamily => typography.displayLargeFamily;
-  bool get displayLargeIsCustom => typography.displayLargeIsCustom;
-  TextStyle get displayLarge => typography.displayLarge;
-  String get displayMediumFamily => typography.displayMediumFamily;
-  bool get displayMediumIsCustom => typography.displayMediumIsCustom;
-  TextStyle get displayMedium => typography.displayMedium;
-  String get displaySmallFamily => typography.displaySmallFamily;
-  bool get displaySmallIsCustom => typography.displaySmallIsCustom;
-  TextStyle get displaySmall => typography.displaySmall;
-  String get headlineLargeFamily => typography.headlineLargeFamily;
-  bool get headlineLargeIsCustom => typography.headlineLargeIsCustom;
-  TextStyle get headlineLarge => typography.headlineLarge;
-  String get headlineMediumFamily => typography.headlineMediumFamily;
-  bool get headlineMediumIsCustom => typography.headlineMediumIsCustom;
-  TextStyle get headlineMedium => typography.headlineMedium;
-  String get headlineSmallFamily => typography.headlineSmallFamily;
-  bool get headlineSmallIsCustom => typography.headlineSmallIsCustom;
-  TextStyle get headlineSmall => typography.headlineSmall;
-  String get titleLargeFamily => typography.titleLargeFamily;
-  bool get titleLargeIsCustom => typography.titleLargeIsCustom;
-  TextStyle get titleLarge => typography.titleLarge;
-  String get titleMediumFamily => typography.titleMediumFamily;
-  bool get titleMediumIsCustom => typography.titleMediumIsCustom;
-  TextStyle get titleMedium => typography.titleMedium;
-  String get titleSmallFamily => typography.titleSmallFamily;
-  bool get titleSmallIsCustom => typography.titleSmallIsCustom;
-  TextStyle get titleSmall => typography.titleSmall;
-  String get labelLargeFamily => typography.labelLargeFamily;
-  bool get labelLargeIsCustom => typography.labelLargeIsCustom;
-  TextStyle get labelLarge => typography.labelLarge;
-  String get labelMediumFamily => typography.labelMediumFamily;
-  bool get labelMediumIsCustom => typography.labelMediumIsCustom;
-  TextStyle get labelMedium => typography.labelMedium;
-  String get labelSmallFamily => typography.labelSmallFamily;
-  bool get labelSmallIsCustom => typography.labelSmallIsCustom;
-  TextStyle get labelSmall => typography.labelSmall;
-  String get bodyLargeFamily => typography.bodyLargeFamily;
-  bool get bodyLargeIsCustom => typography.bodyLargeIsCustom;
-  TextStyle get bodyLarge => typography.bodyLarge;
-  String get bodyMediumFamily => typography.bodyMediumFamily;
-  bool get bodyMediumIsCustom => typography.bodyMediumIsCustom;
-  TextStyle get bodyMedium => typography.bodyMedium;
-  String get bodySmallFamily => typography.bodySmallFamily;
-  bool get bodySmallIsCustom => typography.bodySmallIsCustom;
-  TextStyle get bodySmall => typography.bodySmall;
+  // Cores como getters
+  Color get primaryColor => FlutterFlowTheme.primaryColor;
+  Color get secondaryColor => FlutterFlowTheme.secondaryColor;
+  Color get tertiaryColor => FlutterFlowTheme.tertiaryColor;
+  Color get alternate => FlutterFlowTheme.alternate;
+  Color get primaryBackground => FlutterFlowTheme.primaryBackground;
+  Color get secondaryBackground => FlutterFlowTheme.secondaryBackground;
+  Color get primaryText => FlutterFlowTheme.primaryText;
+  Color get secondaryText => FlutterFlowTheme.secondaryText;
+  Color get accent1 => FlutterFlowTheme.accent1;
+  Color get accent2 => FlutterFlowTheme.accent2;
+  Color get accent3 => FlutterFlowTheme.accent3;
+  Color get accent4 => FlutterFlowTheme.accent4;
+  Color get success => FlutterFlowTheme.success;
+  Color get error => FlutterFlowTheme.error;
+  Color get warning => FlutterFlowTheme.warning;
+  Color get info => FlutterFlowTheme.info;
 
-  Typography get typography => {
-        DeviceSize.mobile: MobileTypography(this),
-        DeviceSize.tablet: TabletTypography(this),
-        DeviceSize.desktop: DesktopTypography(this),
-      }[deviceSize]!;
-}
+  static TextStyle get displayLarge => GoogleFonts.outfit(
+    fontSize: 57,
+    fontWeight: FontWeight.w400,
+    color: primaryText,
+  );
 
-DeviceSize getDeviceSize(BuildContext context) {
-  final width = MediaQuery.sizeOf(context).width;
-  if (width < 479) {
-    return DeviceSize.mobile;
-  } else if (width < 991) {
-    return DeviceSize.tablet;
-  } else {
-    return DeviceSize.desktop;
-  }
-}
+  static TextStyle get displayMedium => GoogleFonts.outfit(
+    fontSize: 45,
+    fontWeight: FontWeight.w400,
+    color: primaryText,
+  );
 
-class LightModeTheme extends FlutterFlowTheme {
-  @Deprecated('Use primary instead')
-  Color get primaryColor => primary;
-  @Deprecated('Use secondary instead')
-  Color get secondaryColor => secondary;
-  @Deprecated('Use tertiary instead')
-  Color get tertiaryColor => tertiary;
+  static TextStyle get displaySmall => GoogleFonts.outfit(
+    fontSize: 36,
+    fontWeight: FontWeight.w400,
+    color: primaryText,
+  );
 
-  late Color primary = const Color(0xFF1A365D);
-  late Color secondary = const Color(0xFF2C5282);
-  late Color tertiary = const Color(0xFF2A4A6B);
-  late Color alternate = const Color(0xFFE8F0F0);
-  late Color primaryText = const Color(0xFF282840);
-  late Color secondaryText = const Color(0xFF57636C);
-  late Color primaryBackground = const Color(0xFFF1F4F8);
-  late Color secondaryBackground = const Color(0xFFFFFFFF);
-  late Color accent1 = const Color(0x4C4B39EF);
-  late Color accent2 = const Color(0x4D39D2C0);
-  late Color accent3 = const Color(0x4DEE8B60);
-  late Color accent4 = const Color(0xCCFFFFFF);
-  late Color success = const Color(0xFF249689);
-  late Color warning = const Color(0xFFF9CF58);
-  late Color error = const Color(0xFFFF5963);
-  late Color info = const Color(0xFFFFFFFF);
-}
+  static TextStyle get headlineLarge => GoogleFonts.outfit(
+    fontSize: 32,
+    fontWeight: FontWeight.w400,
+    color: primaryText,
+  );
 
-abstract class Typography {
-  String get displayLargeFamily;
-  bool get displayLargeIsCustom;
-  TextStyle get displayLarge;
-  String get displayMediumFamily;
-  bool get displayMediumIsCustom;
-  TextStyle get displayMedium;
-  String get displaySmallFamily;
-  bool get displaySmallIsCustom;
-  TextStyle get displaySmall;
-  String get headlineLargeFamily;
-  bool get headlineLargeIsCustom;
-  TextStyle get headlineLarge;
-  String get headlineMediumFamily;
-  bool get headlineMediumIsCustom;
-  TextStyle get headlineMedium;
-  String get headlineSmallFamily;
-  bool get headlineSmallIsCustom;
-  TextStyle get headlineSmall;
-  String get titleLargeFamily;
-  bool get titleLargeIsCustom;
-  TextStyle get titleLarge;
-  String get titleMediumFamily;
-  bool get titleMediumIsCustom;
-  TextStyle get titleMedium;
-  String get titleSmallFamily;
-  bool get titleSmallIsCustom;
-  TextStyle get titleSmall;
-  String get labelLargeFamily;
-  bool get labelLargeIsCustom;
-  TextStyle get labelLarge;
-  String get labelMediumFamily;
-  bool get labelMediumIsCustom;
-  TextStyle get labelMedium;
-  String get labelSmallFamily;
-  bool get labelSmallIsCustom;
-  TextStyle get labelSmall;
-  String get bodyLargeFamily;
-  bool get bodyLargeIsCustom;
-  TextStyle get bodyLarge;
-  String get bodyMediumFamily;
-  bool get bodyMediumIsCustom;
-  TextStyle get bodyMedium;
-  String get bodySmallFamily;
-  bool get bodySmallIsCustom;
-  TextStyle get bodySmall;
-}
+  static TextStyle get headlineMedium => GoogleFonts.outfit(
+    fontSize: 28,
+    fontWeight: FontWeight.w400,
+    color: primaryText,
+  );
 
-class MobileTypography extends Typography {
-  MobileTypography(this.theme);
+  static TextStyle get headlineSmall => GoogleFonts.outfit(
+    fontSize: 24,
+    fontWeight: FontWeight.w400,
+    color: primaryText,
+  );
 
-  final FlutterFlowTheme theme;
+  static TextStyle get titleLarge => GoogleFonts.outfit(
+    fontSize: 22,
+    fontWeight: FontWeight.w500,
+    color: primaryText,
+  );
 
-  String get displayLargeFamily => 'Montserrat';
-  bool get displayLargeIsCustom => true;
-  TextStyle get displayLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 64.0,
-        fontStyle: FontStyle.normal,
-      );
-  String get displayMediumFamily => 'Montserrat';
-  bool get displayMediumIsCustom => true;
-  TextStyle get displayMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 44.0,
-      );
-  String get displaySmallFamily => 'Montserrat';
-  bool get displaySmallIsCustom => true;
-  TextStyle get displaySmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 36.0,
-      );
-  String get headlineLargeFamily => 'Montserrat';
-  bool get headlineLargeIsCustom => true;
-  TextStyle get headlineLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 32.0,
-      );
-  String get headlineMediumFamily => 'Montserrat';
-  bool get headlineMediumIsCustom => true;
-  TextStyle get headlineMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 28.0,
-      );
-  String get headlineSmallFamily => 'Montserrat';
-  bool get headlineSmallIsCustom => true;
-  TextStyle get headlineSmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 24.0,
-      );
-  String get titleLargeFamily => 'Montserrat';
-  bool get titleLargeIsCustom => true;
-  TextStyle get titleLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 20.0,
-      );
-  String get titleMediumFamily => 'Montserrat';
-  bool get titleMediumIsCustom => true;
-  TextStyle get titleMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 18.0,
-      );
-  String get titleSmallFamily => 'Montserrat';
-  bool get titleSmallIsCustom => true;
-  TextStyle get titleSmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 16.0,
-      );
-  String get labelLargeFamily => 'Montserrat';
-  bool get labelLargeIsCustom => true;
-  TextStyle get labelLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.secondaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 16.0,
-      );
-  String get labelMediumFamily => 'Montserrat';
-  bool get labelMediumIsCustom => true;
-  TextStyle get labelMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.secondaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 14.0,
-      );
-  String get labelSmallFamily => 'Montserrat';
-  bool get labelSmallIsCustom => true;
-  TextStyle get labelSmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.secondaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 12.0,
-      );
-  String get bodyLargeFamily => 'Montserrat';
-  bool get bodyLargeIsCustom => true;
-  TextStyle get bodyLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 16.0,
-      );
-  String get bodyMediumFamily => 'Montserrat';
-  bool get bodyMediumIsCustom => true;
-  TextStyle get bodyMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 14.0,
-      );
-  String get bodySmallFamily => 'Montserrat';
-  bool get bodySmallIsCustom => true;
-  TextStyle get bodySmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 12.0,
-      );
-}
+  static TextStyle get titleMedium => GoogleFonts.outfit(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: primaryText,
+  );
 
-class TabletTypography extends Typography {
-  TabletTypography(this.theme);
+  static TextStyle get titleSmall => GoogleFonts.outfit(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: primaryText,
+  );
 
-  final FlutterFlowTheme theme;
+  static TextStyle get labelLarge => GoogleFonts.outfit(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: primaryText,
+  );
 
-  String get displayLargeFamily => 'Montserrat';
-  bool get displayLargeIsCustom => true;
-  TextStyle get displayLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 64.0,
-      );
-  String get displayMediumFamily => 'Montserrat';
-  bool get displayMediumIsCustom => true;
-  TextStyle get displayMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 44.0,
-      );
-  String get displaySmallFamily => 'Montserrat';
-  bool get displaySmallIsCustom => true;
-  TextStyle get displaySmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 36.0,
-      );
-  String get headlineLargeFamily => 'Montserrat';
-  bool get headlineLargeIsCustom => true;
-  TextStyle get headlineLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 32.0,
-      );
-  String get headlineMediumFamily => 'Montserrat';
-  bool get headlineMediumIsCustom => true;
-  TextStyle get headlineMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 28.0,
-      );
-  String get headlineSmallFamily => 'Montserrat';
-  bool get headlineSmallIsCustom => true;
-  TextStyle get headlineSmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 24.0,
-      );
-  String get titleLargeFamily => 'Montserrat';
-  bool get titleLargeIsCustom => true;
-  TextStyle get titleLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 20.0,
-      );
-  String get titleMediumFamily => 'Montserrat';
-  bool get titleMediumIsCustom => true;
-  TextStyle get titleMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 18.0,
-      );
-  String get titleSmallFamily => 'Montserrat';
-  bool get titleSmallIsCustom => true;
-  TextStyle get titleSmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 16.0,
-      );
-  String get labelLargeFamily => 'Montserrat';
-  bool get labelLargeIsCustom => true;
-  TextStyle get labelLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.secondaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 16.0,
-      );
-  String get labelMediumFamily => 'Montserrat';
-  bool get labelMediumIsCustom => true;
-  TextStyle get labelMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.secondaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 14.0,
-      );
-  String get labelSmallFamily => 'Montserrat';
-  bool get labelSmallIsCustom => true;
-  TextStyle get labelSmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.secondaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 12.0,
-      );
-  String get bodyLargeFamily => 'Montserrat';
-  bool get bodyLargeIsCustom => true;
-  TextStyle get bodyLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 16.0,
-      );
-  String get bodyMediumFamily => 'Montserrat';
-  bool get bodyMediumIsCustom => true;
-  TextStyle get bodyMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 14.0,
-      );
-  String get bodySmallFamily => 'Montserrat';
-  bool get bodySmallIsCustom => true;
-  TextStyle get bodySmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 12.0,
-      );
-}
+  static TextStyle get labelMedium => GoogleFonts.outfit(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: primaryText,
+  );
 
-class DesktopTypography extends Typography {
-  DesktopTypography(this.theme);
+  static TextStyle get labelSmall => GoogleFonts.outfit(
+    fontSize: 11,
+    fontWeight: FontWeight.w500,
+    color: primaryText,
+  );
 
-  final FlutterFlowTheme theme;
+  static TextStyle get bodyLarge => GoogleFonts.outfit(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: primaryText,
+  );
 
-  String get displayLargeFamily => 'Montserrat';
-  bool get displayLargeIsCustom => true;
-  TextStyle get displayLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 64.0,
-      );
-  String get displayMediumFamily => 'Montserrat';
-  bool get displayMediumIsCustom => true;
-  TextStyle get displayMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 44.0,
-      );
-  String get displaySmallFamily => 'Montserrat';
-  bool get displaySmallIsCustom => true;
-  TextStyle get displaySmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 36.0,
-      );
-  String get headlineLargeFamily => 'Montserrat';
-  bool get headlineLargeIsCustom => true;
-  TextStyle get headlineLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 32.0,
-      );
-  String get headlineMediumFamily => 'Montserrat';
-  bool get headlineMediumIsCustom => true;
-  TextStyle get headlineMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 28.0,
-      );
-  String get headlineSmallFamily => 'Montserrat';
-  bool get headlineSmallIsCustom => true;
-  TextStyle get headlineSmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 24.0,
-      );
-  String get titleLargeFamily => 'Montserrat';
-  bool get titleLargeIsCustom => true;
-  TextStyle get titleLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 20.0,
-      );
-  String get titleMediumFamily => 'Montserrat';
-  bool get titleMediumIsCustom => true;
-  TextStyle get titleMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 18.0,
-      );
-  String get titleSmallFamily => 'Montserrat';
-  bool get titleSmallIsCustom => true;
-  TextStyle get titleSmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.w600,
-        fontSize: 16.0,
-      );
-  String get labelLargeFamily => 'Montserrat';
-  bool get labelLargeIsCustom => true;
-  TextStyle get labelLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.secondaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 16.0,
-      );
-  String get labelMediumFamily => 'Montserrat';
-  bool get labelMediumIsCustom => true;
-  TextStyle get labelMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.secondaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 14.0,
-      );
-  String get labelSmallFamily => 'Montserrat';
-  bool get labelSmallIsCustom => true;
-  TextStyle get labelSmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.secondaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 12.0,
-      );
-  String get bodyLargeFamily => 'Montserrat';
-  bool get bodyLargeIsCustom => true;
-  TextStyle get bodyLarge => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 16.0,
-      );
-  String get bodyMediumFamily => 'Montserrat';
-  bool get bodyMediumIsCustom => true;
-  TextStyle get bodyMedium => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 14.0,
-      );
-  String get bodySmallFamily => 'Montserrat';
-  bool get bodySmallIsCustom => true;
-  TextStyle get bodySmall => TextStyle(
-        fontFamily: 'Montserrat',
-        color: theme.primaryText,
-        fontWeight: FontWeight.normal,
-        fontSize: 12.0,
-      );
-}
+  static TextStyle get bodyMedium => GoogleFonts.outfit(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: primaryText,
+  );
 
-class DarkModeTheme extends FlutterFlowTheme {
-  @Deprecated('Use primary instead')
-  Color get primaryColor => primary;
-  @Deprecated('Use secondary instead')
-  Color get secondaryColor => secondary;
-  @Deprecated('Use tertiary instead')
-  Color get tertiaryColor => tertiary;
+  static TextStyle get bodySmall => GoogleFonts.outfit(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: primaryText,
+  );
 
-  late Color primary = const Color(0xFF2C5282);
-  late Color secondary = const Color(0xFF3182CE);
-  late Color tertiary = const Color(0xFF4299E1);
-  late Color alternate = const Color(0xFF2D3748);
-  late Color primaryText = const Color(0xFFFFFFFF);
-  late Color secondaryText = const Color(0xFFA0AEC0);
-  late Color primaryBackground = const Color(0xFF1A202C);
-  late Color secondaryBackground = const Color(0xFF2D3748);
-  late Color accent1 = const Color(0x4C4B39EF);
-  late Color accent2 = const Color(0x4D39D2C0);
-  late Color accent3 = const Color(0x4DEE8B60);
-  late Color accent4 = const Color(0xB2262D34);
-  late Color success = const Color(0xFF38A169);
-  late Color warning = const Color(0xFFED8936);
-  late Color error = const Color(0xFFE53E3E);
-  late Color info = const Color(0xFF3182CE);
+  static String get displayLargeFamily => 'Outfit';
+  static String get displayMediumFamily => 'Outfit';
+  static String get displaySmallFamily => 'Outfit';
+  static String get headlineLargeFamily => 'Outfit';
+  static String get headlineMediumFamily => 'Outfit';
+  static String get headlineSmallFamily => 'Outfit';
+  static String get titleLargeFamily => 'Outfit';
+  static String get titleMediumFamily => 'Outfit';
+  static String get titleSmallFamily => 'Outfit';
+  static String get labelLargeFamily => 'Outfit';
+  static String get labelMediumFamily => 'Outfit';
+  static String get labelSmallFamily => 'Outfit';
+  static String get bodyLargeFamily => 'Outfit';
+  static String get bodyMediumFamily => 'Outfit';
+  static String get bodySmallFamily => 'Outfit';
+
+  static bool get displayLargeIsCustom => false;
+  static bool get displayMediumIsCustom => false;
+  static bool get displaySmallIsCustom => false;
+  static bool get headlineLargeIsCustom => false;
+  static bool get headlineMediumIsCustom => false;
+  static bool get headlineSmallIsCustom => false;
+  static bool get titleLargeIsCustom => false;
+  static bool get titleMediumIsCustom => false;
+  static bool get titleSmallIsCustom => false;
+  static bool get labelLargeIsCustom => false;
+  static bool get labelMediumIsCustom => false;
+  static bool get labelSmallIsCustom => false;
+  static bool get bodyLargeIsCustom => false;
+  static bool get bodyMediumIsCustom => false;
+  static bool get bodySmallIsCustom => false;
 }
 
 extension TextStyleHelper on TextStyle {
   TextStyle override({
-    TextStyle? font,
     String? fontFamily,
     Color? color,
     double? fontSize,
     FontWeight? fontWeight,
     double? letterSpacing,
     FontStyle? fontStyle,
-    bool useGoogleFonts = false,
+    bool useGoogleFonts = true,
     TextDecoration? decoration,
     double? lineHeight,
-    List<Shadow>? shadows,
-    String? package,
   }) {
-    if (useGoogleFonts && fontFamily != null) {
-      font = GoogleFonts.getFont(fontFamily,
-          fontWeight: fontWeight ?? this.fontWeight,
-          fontStyle: fontStyle ?? this.fontStyle);
-    }
-
-    return font != null
-        ? font.copyWith(
-            color: color ?? this.color,
-            fontSize: fontSize ?? this.fontSize,
-            letterSpacing: letterSpacing ?? this.letterSpacing,
-            fontWeight: fontWeight ?? this.fontWeight,
-            fontStyle: fontStyle ?? this.fontStyle,
-            decoration: decoration,
-            height: lineHeight,
-            shadows: shadows,
-          )
-        : copyWith(
-            fontFamily: fontFamily,
-            package: package,
-            color: color,
-            fontSize: fontSize,
-            letterSpacing: letterSpacing,
-            fontWeight: fontWeight,
-            fontStyle: fontStyle,
-            decoration: decoration,
-            height: lineHeight,
-            shadows: shadows,
-          );
+    return copyWith(
+      fontFamily: fontFamily,
+      color: color,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      letterSpacing: letterSpacing,
+      fontStyle: fontStyle,
+      decoration: decoration,
+      height: lineHeight,
+    );
   }
 }

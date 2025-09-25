@@ -30,20 +30,38 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
     super.initState();
     _model = createModel(context, () => EditarContaModel());
     
-    // Inicializar controladores com dados existentes
-    _model.nomeCompletoController ??= TextEditingController(text: 'Tech Solutions');
+    // Initialize controllers
+    _model.nomeCompletoController ??= TextEditingController();
     _model.nomeCompletoFocusNode ??= FocusNode();
     
-    _model.emailController ??= TextEditingController(text: 'safesolutionsempresa@gmail.com');
+    _model.emailController ??= TextEditingController();
     _model.emailFocusNode ??= FocusNode();
     
-    _model.telefoneController ??= TextEditingController(text: '(11) 99999-9999');
+    _model.telefoneController ??= TextEditingController();
     _model.telefoneFocusNode ??= FocusNode();
     
-    _model.biografiaController ??= TextEditingController(
-      text: 'Empresa especializada em soluções tecnológicas inovadoras para segurança residencial e empresarial.'
-    );
+    _model.cpfController ??= TextEditingController();
+    _model.cpfFocusNode ??= FocusNode();
+    
+    _model.biografiaController ??= TextEditingController();
     _model.biografiaFocusNode ??= FocusNode();
+    
+    // Load user data (example with email)
+    _loadUserData();
+  }
+  
+  void _loadUserData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    
+    // Example: load user by email or CPF
+    const String userIdentifier = 'safesolutionsempresa@gmail.com'; // or CPF
+    await _model.loadUserData(userIdentifier);
+    
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -58,21 +76,39 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
         _isLoading = true;
       });
       
-      // Simular salvamento
-      await Future.delayed(Duration(seconds: 1));
-      
-      setState(() {
-        _isLoading = false;
-        _showSuccessMessage = true;
-      });
-      
-      // Feedback háptico
-      HapticFeedback.lightImpact();
-      
-      // Esconder mensagem após 2 segundos e voltar
-      await Future.delayed(Duration(seconds: 2));
-      if (mounted) {
-        context.pushNamed(ConfiguracoesWidget.routeName);
+      try {
+        bool success = await _model.saveUserData();
+        
+        if (success) {
+          setState(() {
+            _showSuccessMessage = true;
+          });
+          
+          HapticFeedback.lightImpact();
+          
+          await Future.delayed(Duration(seconds: 2));
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erro ao salvar dados. Tente novamente.'),
+              backgroundColor: FlutterFlowTheme.of(context).error,
+            ),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro de conexão. Verifique sua internet.'),
+            backgroundColor: FlutterFlowTheme.of(context).error,
+          ),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
@@ -91,7 +127,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
           backgroundColor: FlutterFlowTheme.of(context).tertiary,
           automaticallyImplyLeading: false,
           leading: IconButton(
-            onPressed: () => context.pop(),
+            onPressed: () => Navigator.of(context).pop(),
             icon: Icon(
               Icons.arrow_back_rounded,
               color: Colors.white,
@@ -410,6 +446,75 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                   ),
                   SizedBox(height: 20.0),
                   
+                  // Campo CPF
+                  Text(
+                    'CPF',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).primaryText,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  TextFormField(
+                    controller: _model.cpfController,
+                    focusNode: _model.cpfFocusNode,
+                    validator: _model.cpfValidator?.asValidator(context),
+                    decoration: InputDecoration(
+                      hintText: '000.000.000-00',
+                      hintStyle: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Montserrat',
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                      ),
+                      filled: true,
+                      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).alternate,
+                          width: 1.0,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).alternate,
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).tertiary,
+                          width: 2.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).error,
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).error,
+                          width: 2.0,
+                        ),
+                      ),
+                      contentPadding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                      prefixIcon: Icon(
+                        Icons.badge_outlined,
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                      ),
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyMedium,
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: 20.0),
+                  
                   // Campo Sobre a Empresa
                   Text(
                     'Sobre a Empresa',
@@ -486,7 +591,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                       Expanded(
                         child: FFButtonWidget(
                           onPressed: () async {
-                            context.pop();
+                            Navigator.of(context).pop();
                           },
                           text: 'Cancelar',
                           options: FFButtonOptions(

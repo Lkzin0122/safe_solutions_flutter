@@ -17,8 +17,8 @@ class ProfileService {
     return UserProfile(
       companyName: 'Tech Solutions',
       companyEmail: 'techsolutions@gmail.com',
-      companyCnpj: '12.345.678/0001-90',
-      companyPhone: '(11) 99999-9999',
+      companyCnpj: '22.222.222/2222-22',
+      companyPhone: '(11) 97880-3756',
       companyAddress: 'São Paulo, SP',
       companyDescription: 'Empresa especializada em soluções tecnológicas inovadoras para segurança residencial e empresarial.',
       personalName: 'João Silva Santos',
