@@ -1,3 +1,4 @@
+import '/flutter_flow/flutter_flow_model.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'profile_widget.dart' show ProfileWidget;

@@ -1,3 +1,4 @@
+import '/flutter_flow/flutter_flow_model.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import '../../services/user_service.dart';

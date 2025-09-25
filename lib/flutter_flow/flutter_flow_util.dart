@@ -25,10 +25,7 @@ T createModel<T>(BuildContext context, T Function() create) {
   return create();
 }
 
-abstract class FlutterFlowModel<T> {
-  void initState(BuildContext context) {}
-  void dispose() {}
-}
+
 
 Future<void> launchURL(String url) async {
   // URL launcher implementation
@@ -92,6 +89,8 @@ extension ResponsiveVisibilityExtension<T extends StatefulWidget> on State<T> {
 extension ValidatorExtension on String? Function(String?)? {
   String? Function(String?)? get asValidator => this;
 }
+
+
 
 String? Function(String?)? createRequiredValidator(String fieldName) {
   return (val) {

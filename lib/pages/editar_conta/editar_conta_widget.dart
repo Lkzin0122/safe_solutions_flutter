@@ -1,3 +1,4 @@
+import '/flutter_flow/flutter_flow_model.dart' as ffm;
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -28,7 +29,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => EditarContaModel());
+    _model = ffm.createModel(context, () => EditarContaModel());
     
     // Initialize controllers
     _model.nomeCompletoController ??= TextEditingController();

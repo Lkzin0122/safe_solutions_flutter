@@ -5,211 +5,186 @@ class FlutterFlowTheme {
   static FlutterFlowTheme of(BuildContext context) {
     return FlutterFlowTheme();
   }
+  
+  // Color constants
   static const Color primaryColor = Color(0xFF4B39EF);
   static const Color secondaryColor = Color(0xFF39D2C0);
   static const Color tertiaryColor = Color(0xFFEE8B60);
-  static const Color alternate = Color(0xFFE0E3E7);
-  static const Color primaryBackground = Color(0xFFF1F4F8);
-  static const Color secondaryBackground = Color(0xFFFFFFFF);
-  static const Color primaryText = Color(0xFF14181B);
-  static const Color secondaryText = Color(0xFF57636C);
-  static const Color accent1 = Color(0xFF616161);
-  static const Color accent2 = Color(0xFF757575);
-  static const Color accent3 = Color(0xFFE0E0E0);
-  static const Color accent4 = Color(0xFFEEEEEE);
-  static const Color success = Color(0xFF04A24C);
-  static const Color error = Color(0xFFE21C3D);
-  static const Color warning = Color(0xFFFCDC0C);
-  static const Color info = Color(0xFF1C4494);
+  static const Color alternateColor = Color(0xFFE0E3E7);
+  static const Color primaryBackgroundColor = Color(0xFFF1F4F8);
+  static const Color secondaryBackgroundColor = Color(0xFFFFFFFF);
+  static const Color primaryTextColor = Color(0xFF14181B);
+  static const Color secondaryTextColor = Color(0xFF57636C);
+  static const Color accent1Color = Color(0xFF616161);
+  static const Color accent2Color = Color(0xFF757575);
+  static const Color accent3Color = Color(0xFFE0E0E0);
+  static const Color accent4Color = Color(0xFFEEEEEE);
+  static const Color successColor = Color(0xFF04A24C);
+  static const Color errorColor = Color(0xFFE21C3D);
+  static const Color warningColor = Color(0xFFFCDC0C);
+  static const Color infoColor = Color(0xFF1C4494);
 
-  // Getters para compatibilidade
-  TextStyle get displayLarge => FlutterFlowTheme.displayLarge;
-  TextStyle get displayMedium => FlutterFlowTheme.displayMedium;
-  TextStyle get displaySmall => FlutterFlowTheme.displaySmall;
-  TextStyle get headlineLarge => FlutterFlowTheme.headlineLarge;
-  TextStyle get headlineMedium => FlutterFlowTheme.headlineMedium;
-  TextStyle get headlineSmall => FlutterFlowTheme.headlineSmall;
-  TextStyle get titleLarge => FlutterFlowTheme.titleLarge;
-  TextStyle get titleMedium => FlutterFlowTheme.titleMedium;
-  TextStyle get titleSmall => FlutterFlowTheme.titleSmall;
-  TextStyle get labelLarge => FlutterFlowTheme.labelLarge;
-  TextStyle get labelMedium => FlutterFlowTheme.labelMedium;
-  TextStyle get labelSmall => FlutterFlowTheme.labelSmall;
-  TextStyle get bodyLarge => FlutterFlowTheme.bodyLarge;
-  TextStyle get bodyMedium => FlutterFlowTheme.bodyMedium;
-  TextStyle get bodySmall => FlutterFlowTheme.bodySmall;
+  // Instance color getters
+  Color get primary => primaryColor;
+  Color get secondary => secondaryColor;
+  Color get tertiary => tertiaryColor;
+  Color get alternate => alternateColor;
+  Color get primaryBackground => primaryBackgroundColor;
+  Color get secondaryBackground => secondaryBackgroundColor;
+  Color get primaryText => primaryTextColor;
+  Color get secondaryText => secondaryTextColor;
+  Color get accent1 => accent1Color;
+  Color get accent2 => accent2Color;
+  Color get accent3 => accent3Color;
+  Color get accent4 => accent4Color;
+  Color get success => successColor;
+  Color get error => errorColor;
+  Color get warning => warningColor;
+  Color get info => infoColor;
 
-  String get displayLargeFamily => FlutterFlowTheme.displayLargeFamily;
-  String get displayMediumFamily => FlutterFlowTheme.displayMediumFamily;
-  String get displaySmallFamily => FlutterFlowTheme.displaySmallFamily;
-  String get headlineLargeFamily => FlutterFlowTheme.headlineLargeFamily;
-  String get headlineMediumFamily => FlutterFlowTheme.headlineMediumFamily;
-  String get headlineSmallFamily => FlutterFlowTheme.headlineSmallFamily;
-  String get titleLargeFamily => FlutterFlowTheme.titleLargeFamily;
-  String get titleMediumFamily => FlutterFlowTheme.titleMediumFamily;
-  String get titleSmallFamily => FlutterFlowTheme.titleSmallFamily;
-  String get labelLargeFamily => FlutterFlowTheme.labelLargeFamily;
-  String get labelMediumFamily => FlutterFlowTheme.labelMediumFamily;
-  String get labelSmallFamily => FlutterFlowTheme.labelSmallFamily;
-  String get bodyLargeFamily => FlutterFlowTheme.bodyLargeFamily;
-  String get bodyMediumFamily => FlutterFlowTheme.bodyMediumFamily;
-  String get bodySmallFamily => FlutterFlowTheme.bodySmallFamily;
+  // Text style getters
+  TextStyle get displayLarge => _displayLarge;
+  TextStyle get displayMedium => _displayMedium;
+  TextStyle get displaySmall => _displaySmall;
+  TextStyle get headlineLarge => _headlineLarge;
+  TextStyle get headlineMedium => _headlineMedium;
+  TextStyle get headlineSmall => _headlineSmall;
+  TextStyle get titleLarge => _titleLarge;
+  TextStyle get titleMedium => _titleMedium;
+  TextStyle get titleSmall => _titleSmall;
+  TextStyle get labelLarge => _labelLarge;
+  TextStyle get labelMedium => _labelMedium;
+  TextStyle get labelSmall => _labelSmall;
+  TextStyle get bodyLarge => _bodyLarge;
+  TextStyle get bodyMedium => _bodyMedium;
+  TextStyle get bodySmall => _bodySmall;
 
-  bool get displayLargeIsCustom => FlutterFlowTheme.displayLargeIsCustom;
-  bool get displayMediumIsCustom => FlutterFlowTheme.displayMediumIsCustom;
-  bool get displaySmallIsCustom => FlutterFlowTheme.displaySmallIsCustom;
-  bool get headlineLargeIsCustom => FlutterFlowTheme.headlineLargeIsCustom;
-  bool get headlineMediumIsCustom => FlutterFlowTheme.headlineMediumIsCustom;
-  bool get headlineSmallIsCustom => FlutterFlowTheme.headlineSmallIsCustom;
-  bool get titleLargeIsCustom => FlutterFlowTheme.titleLargeIsCustom;
-  bool get titleMediumIsCustom => FlutterFlowTheme.titleMediumIsCustom;
-  bool get titleSmallIsCustom => FlutterFlowTheme.titleSmallIsCustom;
-  bool get labelLargeIsCustom => FlutterFlowTheme.labelLargeIsCustom;
-  bool get labelMediumIsCustom => FlutterFlowTheme.labelMediumIsCustom;
-  bool get labelSmallIsCustom => FlutterFlowTheme.labelSmallIsCustom;
-  bool get bodyLargeIsCustom => FlutterFlowTheme.bodyLargeIsCustom;
-  bool get bodyMediumIsCustom => FlutterFlowTheme.bodyMediumIsCustom;
-  bool get bodySmallIsCustom => FlutterFlowTheme.bodySmallIsCustom;
+  // Font family getters
+  String get displayLargeFamily => 'Outfit';
+  String get displayMediumFamily => 'Outfit';
+  String get displaySmallFamily => 'Outfit';
+  String get headlineLargeFamily => 'Outfit';
+  String get headlineMediumFamily => 'Outfit';
+  String get headlineSmallFamily => 'Outfit';
+  String get titleLargeFamily => 'Outfit';
+  String get titleMediumFamily => 'Outfit';
+  String get titleSmallFamily => 'Outfit';
+  String get labelLargeFamily => 'Outfit';
+  String get labelMediumFamily => 'Outfit';
+  String get labelSmallFamily => 'Outfit';
+  String get bodyLargeFamily => 'Outfit';
+  String get bodyMediumFamily => 'Outfit';
+  String get bodySmallFamily => 'Outfit';
 
-  // Cores como getters
-  Color get primaryColor => FlutterFlowTheme.primaryColor;
-  Color get secondaryColor => FlutterFlowTheme.secondaryColor;
-  Color get tertiaryColor => FlutterFlowTheme.tertiaryColor;
-  Color get alternate => FlutterFlowTheme.alternate;
-  Color get primaryBackground => FlutterFlowTheme.primaryBackground;
-  Color get secondaryBackground => FlutterFlowTheme.secondaryBackground;
-  Color get primaryText => FlutterFlowTheme.primaryText;
-  Color get secondaryText => FlutterFlowTheme.secondaryText;
-  Color get accent1 => FlutterFlowTheme.accent1;
-  Color get accent2 => FlutterFlowTheme.accent2;
-  Color get accent3 => FlutterFlowTheme.accent3;
-  Color get accent4 => FlutterFlowTheme.accent4;
-  Color get success => FlutterFlowTheme.success;
-  Color get error => FlutterFlowTheme.error;
-  Color get warning => FlutterFlowTheme.warning;
-  Color get info => FlutterFlowTheme.info;
+  // Custom font getters
+  bool get displayLargeIsCustom => false;
+  bool get displayMediumIsCustom => false;
+  bool get displaySmallIsCustom => false;
+  bool get headlineLargeIsCustom => false;
+  bool get headlineMediumIsCustom => false;
+  bool get headlineSmallIsCustom => false;
+  bool get titleLargeIsCustom => false;
+  bool get titleMediumIsCustom => false;
+  bool get titleSmallIsCustom => false;
+  bool get labelLargeIsCustom => false;
+  bool get labelMediumIsCustom => false;
+  bool get labelSmallIsCustom => false;
+  bool get bodyLargeIsCustom => false;
+  bool get bodyMediumIsCustom => false;
+  bool get bodySmallIsCustom => false;
 
-  static TextStyle get displayLarge => GoogleFonts.outfit(
+  // Private text style definitions
+  static TextStyle get _displayLarge => GoogleFonts.outfit(
     fontSize: 57,
     fontWeight: FontWeight.w400,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get displayMedium => GoogleFonts.outfit(
+  static TextStyle get _displayMedium => GoogleFonts.outfit(
     fontSize: 45,
     fontWeight: FontWeight.w400,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get displaySmall => GoogleFonts.outfit(
+  static TextStyle get _displaySmall => GoogleFonts.outfit(
     fontSize: 36,
     fontWeight: FontWeight.w400,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get headlineLarge => GoogleFonts.outfit(
+  static TextStyle get _headlineLarge => GoogleFonts.outfit(
     fontSize: 32,
     fontWeight: FontWeight.w400,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get headlineMedium => GoogleFonts.outfit(
+  static TextStyle get _headlineMedium => GoogleFonts.outfit(
     fontSize: 28,
     fontWeight: FontWeight.w400,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get headlineSmall => GoogleFonts.outfit(
+  static TextStyle get _headlineSmall => GoogleFonts.outfit(
     fontSize: 24,
     fontWeight: FontWeight.w400,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get titleLarge => GoogleFonts.outfit(
+  static TextStyle get _titleLarge => GoogleFonts.outfit(
     fontSize: 22,
     fontWeight: FontWeight.w500,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get titleMedium => GoogleFonts.outfit(
+  static TextStyle get _titleMedium => GoogleFonts.outfit(
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get titleSmall => GoogleFonts.outfit(
+  static TextStyle get _titleSmall => GoogleFonts.outfit(
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get labelLarge => GoogleFonts.outfit(
+  static TextStyle get _labelLarge => GoogleFonts.outfit(
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get labelMedium => GoogleFonts.outfit(
+  static TextStyle get _labelMedium => GoogleFonts.outfit(
     fontSize: 12,
     fontWeight: FontWeight.w500,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get labelSmall => GoogleFonts.outfit(
+  static TextStyle get _labelSmall => GoogleFonts.outfit(
     fontSize: 11,
     fontWeight: FontWeight.w500,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get bodyLarge => GoogleFonts.outfit(
+  static TextStyle get _bodyLarge => GoogleFonts.outfit(
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get bodyMedium => GoogleFonts.outfit(
+  static TextStyle get _bodyMedium => GoogleFonts.outfit(
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static TextStyle get bodySmall => GoogleFonts.outfit(
+  static TextStyle get _bodySmall => GoogleFonts.outfit(
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    color: primaryText,
+    color: primaryTextColor,
   );
 
-  static String get displayLargeFamily => 'Outfit';
-  static String get displayMediumFamily => 'Outfit';
-  static String get displaySmallFamily => 'Outfit';
-  static String get headlineLargeFamily => 'Outfit';
-  static String get headlineMediumFamily => 'Outfit';
-  static String get headlineSmallFamily => 'Outfit';
-  static String get titleLargeFamily => 'Outfit';
-  static String get titleMediumFamily => 'Outfit';
-  static String get titleSmallFamily => 'Outfit';
-  static String get labelLargeFamily => 'Outfit';
-  static String get labelMediumFamily => 'Outfit';
-  static String get labelSmallFamily => 'Outfit';
-  static String get bodyLargeFamily => 'Outfit';
-  static String get bodyMediumFamily => 'Outfit';
-  static String get bodySmallFamily => 'Outfit';
 
-  static bool get displayLargeIsCustom => false;
-  static bool get displayMediumIsCustom => false;
-  static bool get displaySmallIsCustom => false;
-  static bool get headlineLargeIsCustom => false;
-  static bool get headlineMediumIsCustom => false;
-  static bool get headlineSmallIsCustom => false;
-  static bool get titleLargeIsCustom => false;
-  static bool get titleMediumIsCustom => false;
-  static bool get titleSmallIsCustom => false;
-  static bool get labelLargeIsCustom => false;
-  static bool get labelMediumIsCustom => false;
-  static bool get labelSmallIsCustom => false;
-  static bool get bodyLargeIsCustom => false;
-  static bool get bodyMediumIsCustom => false;
-  static bool get bodySmallIsCustom => false;
 }
 
 extension TextStyleHelper on TextStyle {
