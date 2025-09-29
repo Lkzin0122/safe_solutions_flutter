@@ -315,9 +315,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
+                                              color: Colors.blue[800]!,
                                               width: 2.0,
                                             ),
                                             borderRadius:
@@ -402,9 +400,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
+                                              color: Colors.blue[800]!,
                                               width: 2.0,
                                             ),
                                             borderRadius:
@@ -482,9 +478,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                             .bodyMedium
                                             .override(
                                               fontFamily: 'Montserrat',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .tertiary,
+                                              color: Colors.blue[800]!,
                                               letterSpacing: 0.0,
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -529,11 +523,8 @@ class _Login1WidgetState extends State<Login1Widget> {
                                         iconPadding: const EdgeInsetsDirectional
                                             .fromSTEB(0.0, 0.0, 0.0, 0.0),
                                         color: _isLoading
-                                            ? FlutterFlowTheme.of(context)
-                                                .tertiary
-                                                .withOpacity(0.7)
-                                            : FlutterFlowTheme.of(context)
-                                                .tertiary,
+                                            ? Colors.blue[800]!.withOpacity(0.7)
+                                            : Colors.blue[800]!,
                                         textStyle: FlutterFlowTheme.of(context)
                                             .titleSmall
                                             .override(
@@ -572,8 +563,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                     .override(
                                       fontFamily: FlutterFlowTheme.of(context)
                                           .bodyMediumFamily,
-                                      color:
-                                          FlutterFlowTheme.of(context).tertiary,
+                                      color: Colors.blue[800]!,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w600,
                                       useGoogleFonts:
@@ -586,7 +576,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Montserrat',
-                                  color: FlutterFlowTheme.of(context).tertiary,
+                                  color: Colors.blue[800]!,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.w600,
                                 ),

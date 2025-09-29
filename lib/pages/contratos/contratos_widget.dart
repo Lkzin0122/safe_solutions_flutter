@@ -624,7 +624,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           child: IconButton(
-                            onPressed: () => context.pushNamed('Calendario'),
+                            onPressed: () => context.goNamed('Calendario'),
                             icon: const Icon(Icons.calendar_month,
                                 color: Colors.white),
                             tooltip: 'Ver Calendário',
@@ -873,7 +873,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed('FaleConosco');
+                    context.goNamed('FaleConosco');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -912,7 +912,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.pushNamed('Profile');
+                    context.goNamed('Profile');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
