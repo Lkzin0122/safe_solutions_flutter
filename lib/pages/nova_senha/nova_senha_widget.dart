@@ -358,7 +358,7 @@ class _NovaSenhaWidgetState extends State<NovaSenhaWidget> {
                                           const EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
                                       color:
-                                          FlutterFlowTheme.of(context).tertiary,
+                                          FlutterFlowTheme.of(context).primary,
                                       textStyle: FlutterFlowTheme.of(context)
                                           .titleSmall
                                           .override(

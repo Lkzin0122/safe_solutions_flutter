@@ -158,6 +158,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                           ),
                         ),
                         SizedBox(height: 24.0),
+<<<<<<< HEAD
                         InkWell(
                           onTap: () async {
                             await launchUrl(Uri.parse('https://wa.me/5511978803756'));
@@ -190,6 +191,40 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                                   ),
                                 ),
                               ],
+=======
+                        Center(
+                          child: InkWell(
+                            onTap: () async {
+                              await launchUrl(Uri.parse('https://wa.me/5511999999999'));
+                            },
+                            child: Container(
+                              padding: EdgeInsetsDirectional.fromSTEB(40.0, 16.0, 40.0, 16.0),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF25D366),
+                                borderRadius: BorderRadius.circular(12.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0xFF25D366).withOpacity(0.3),
+                                    blurRadius: 8.0,
+                                    offset: Offset(0.0, 4.0),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.chat, color: Colors.white, size: 24.0),
+                                  SizedBox(height: 8.0),
+                                  Text(
+                                    'WhatsApp',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+>>>>>>> e0f663c38a9d11d8ad8f878c19d4a779d772c51e
                             ),
                           ),
                         ),
@@ -368,7 +403,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                         : Icon(Icons.send, color: Colors.white),
                       options: FFButtonOptions(
                         height: 50.0,
-                        color: FlutterFlowTheme.of(context).tertiary,
+                        color: FlutterFlowTheme.of(context).primary,
                         textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                           fontFamily: 'Montserrat',
                           color: Colors.white,

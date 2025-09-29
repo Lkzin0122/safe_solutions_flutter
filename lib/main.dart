@@ -4,7 +4,7 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'flutter_flow/nav/nav.dart';
 
 void main() {
-  usePathUrlStrategy();
+  setUrlStrategy(PathUrlStrategy());
   runApp(const MyApp());
 }
 

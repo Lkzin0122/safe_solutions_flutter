@@ -27,23 +27,6 @@ class _Login1WidgetState extends State<Login1Widget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
-  Future<bool> _verificarCnpjReceitaWS(String cnpj) async {
-    try {
-      final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
-      final response = await http.get(
-        Uri.parse('https://publica.cnpj.ws/cnpj/$cnpjNumbers'),
-      );
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return data['status'] == 200;
-      }
-      return false;
-    } catch (e) {
-      return false;
-    }
-  }
-
   Future<void> buscarDados(String cnpj, String senha) async {
     setState(() {
       _isLoading = true;
@@ -94,7 +77,7 @@ class _Login1WidgetState extends State<Login1Widget> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Row(
+          title: const Row(
             children: [
               Icon(
                 Icons.check_circle,
@@ -105,14 +88,14 @@ class _Login1WidgetState extends State<Login1Widget> {
               Text('Sucesso!'),
             ],
           ),
-          content: Text('Login realizado com sucesso!'),
+          content: const Text('Login realizado com sucesso!'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 GoRouter.of(context).goNamed('servicos');
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -125,7 +108,7 @@ class _Login1WidgetState extends State<Login1Widget> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Row(
+          title: const Row(
             children: [
               Icon(
                 Icons.error,
@@ -142,7 +125,7 @@ class _Login1WidgetState extends State<Login1Widget> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -164,12 +147,15 @@ class _Login1WidgetState extends State<Login1Widget> {
   String _formatCnpj(String value) {
     value = value.replaceAll(RegExp(r'[^0-9]'), '');
     if (value.length <= 2) return value;
-    if (value.length <= 5)
+    if (value.length <= 5) {
       return '${value.substring(0, 2)}.${value.substring(2)}';
-    if (value.length <= 8)
+    }
+    if (value.length <= 8) {
       return '${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5)}';
-    if (value.length <= 12)
+    }
+    if (value.length <= 12) {
       return '${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5, 8)}/${value.substring(8)}';
+    }
     return '${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5, 8)}/${value.substring(8, 12)}-${value.substring(12, 14)}';
   }
 
@@ -198,7 +184,6 @@ class _Login1WidgetState extends State<Login1Widget> {
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
 
@@ -315,7 +300,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                              color: Colors.blue[800]!,
+                                              color: FlutterFlowTheme.of(context).primary,
                                               width: 2.0,
                                             ),
                                             borderRadius:
@@ -400,7 +385,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                              color: Colors.blue[800]!,
+                                              color: FlutterFlowTheme.of(context).primary,
                                               width: 2.0,
                                             ),
                                             borderRadius:
@@ -478,7 +463,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                             .bodyMedium
                                             .override(
                                               fontFamily: 'Montserrat',
-                                              color: Colors.blue[800]!,
+                                              color: FlutterFlowTheme.of(context).primary,
                                               letterSpacing: 0.0,
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -504,7 +489,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                             },
                                       text: _isLoading ? '' : 'Entrar',
                                       icon: _isLoading
-                                          ? SizedBox(
+                                          ? const SizedBox(
                                               width: 20,
                                               height: 20,
                                               child: CircularProgressIndicator(
@@ -523,8 +508,8 @@ class _Login1WidgetState extends State<Login1Widget> {
                                         iconPadding: const EdgeInsetsDirectional
                                             .fromSTEB(0.0, 0.0, 0.0, 0.0),
                                         color: _isLoading
-                                            ? Colors.blue[800]!.withOpacity(0.7)
-                                            : Colors.blue[800]!,
+                                            ? FlutterFlowTheme.of(context).primary.withOpacity(0.7)
+                                            : FlutterFlowTheme.of(context).primary,
                                         textStyle: FlutterFlowTheme.of(context)
                                             .titleSmall
                                             .override(
@@ -563,7 +548,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                     .override(
                                       fontFamily: FlutterFlowTheme.of(context)
                                           .bodyMediumFamily,
-                                      color: Colors.blue[800]!,
+                                      color: FlutterFlowTheme.of(context).primary,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w600,
                                       useGoogleFonts:
@@ -576,7 +561,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Montserrat',
-                                  color: Colors.blue[800]!,
+                                  color: FlutterFlowTheme.of(context).primary,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.w600,
                                 ),

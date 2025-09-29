@@ -518,7 +518,7 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
                     child: IconButton(
-                      onPressed: () => context.pop(),
+                      onPressed: () => Navigator.pop(context),
                       icon: Icon(Icons.arrow_back, size: 22),
                     ),
                   ),
