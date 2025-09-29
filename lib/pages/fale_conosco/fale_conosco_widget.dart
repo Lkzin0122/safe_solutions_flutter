@@ -50,10 +50,10 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
     final url = Uri.parse('http://localhost:8080/contato/enviar');
     
     final contato = {
-      'nome': _model.nomeController.text,
-      'email': _model.emailController.text,
-      'telefone': _model.telefoneController.text,
-      'mensagem': _model.mensagemController.text,
+      'nome': _model.nomeController?.text ?? '',
+      'email': _model.emailController?.text ?? '',
+      'telefone': _model.telefoneController?.text ?? '',
+      'mensagem': _model.mensagemController?.text ?? '',
     };
 
     final response = await http.post(
