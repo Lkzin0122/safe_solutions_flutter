@@ -7,9 +7,9 @@ class FlutterFlowTheme {
   }
   
   // Color constants
-  static const Color primaryColor = Color(0xFF4B39EF);
+  static const Color primaryColor = Color(0xFF204060);
   static const Color secondaryColor = Color(0xFF39D2C0);
-  static const Color tertiaryColor = Color(0xFFEE8B60);
+  static const Color tertiaryColor = Color(0xFF204060);
   static const Color alternateColor = Color(0xFFE0E3E7);
   static const Color primaryBackgroundColor = Color(0xFFF1F4F8);
   static const Color secondaryBackgroundColor = Color(0xFFFFFFFF);
@@ -21,8 +21,8 @@ class FlutterFlowTheme {
   static const Color accent4Color = Color(0xFFEEEEEE);
   static const Color successColor = Color(0xFF04A24C);
   static const Color errorColor = Color(0xFFE21C3D);
-  static const Color warningColor = Color(0xFFFCDC0C);
-  static const Color infoColor = Color(0xFF1C4494);
+  static const Color warningColor = Color(0xFF204060);
+  static const Color infoColor = Color(0xFF204060);
 
   // Instance color getters
   Color get primary => primaryColor;

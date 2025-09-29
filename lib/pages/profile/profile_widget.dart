@@ -4,8 +4,10 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'profile_model.dart';
+import '../../models/user_profile.dart';
+import '../../services/profile_service.dart';
 export 'profile_model.dart';
 
 class ProfileWidget extends StatefulWidget {
@@ -21,15 +23,17 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget>
     with TickerProviderStateMixin {
   late ProfileModel _model;
+  UserProfile? userProfile;
+  bool isLoading = true;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
   final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ProfileModel());
+    _loadUserProfile();
 
     animationsMap.addAll({
       'cardOnPageLoadAnimation': AnimationInfo(
@@ -49,86 +53,6 @@ class _ProfileWidgetState extends State<ProfileWidget>
             duration: 600.0.ms,
             begin: const Offset(0.6, 0.6),
             end: const Offset(1.0, 1.0),
-          ),
-        ],
-      ),
-      'textOnPageLoadAnimation1': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          VisibilityEffect(duration: 1.ms),
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(0.0, 20.0),
-            end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      'textOnPageLoadAnimation2': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          VisibilityEffect(duration: 1.ms),
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(0.0, 20.0),
-            end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      'dividerOnPageLoadAnimation': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          VisibilityEffect(duration: 1.ms),
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(0.0, 20.0),
-            end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      'buttonOnPageLoadAnimation': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          VisibilityEffect(duration: 400.ms),
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 400.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 400.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(0.0, 60.0),
-            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -152,6 +76,26 @@ class _ProfileWidgetState extends State<ProfileWidget>
           ),
         ],
       ),
+      'textOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 200.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 30.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
     });
     setupAnimations(
       animationsMap.values.where((anim) =>
@@ -161,42 +105,63 @@ class _ProfileWidgetState extends State<ProfileWidget>
     );
   }
 
+  Future<void> _loadUserProfile() async {
+    try {
+      final profile = await ProfileService.getUserProfile();
+      if (mounted) {
+        setState(() {
+          userProfile = profile;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          userProfile = UserProfile(
+            companyName: 'Tech Solutions',
+            companyEmail: 'techsolutions@gmail.com',
+            companyCnpj: '22.222.222/2222-22',
+            companyPhone: '(11) 97880-3756',
+            companyAddress: 'São Paulo, SP',
+            companyDescription: 'Empresa especializada em soluções tecnológicas.',
+          );
+          isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: _model,
-      child: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        child: Scaffold(
-          key: scaffoldKey,
-          backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-          body: SafeArea(
-            top: true,
-            child: Consumer<ProfileModel>(
-              builder: (context, model, child) {
-                if (model.isLoading) {
-                  return Center(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        body: SafeArea(
+          top: true,
+          child: isLoading
+                ? Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
                         FlutterFlowTheme.of(context).primary,
                       ),
                     ),
-                  );
-                }
-                return SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
+                  )
+                : SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(24.0, 80.0, 24.0, 30.0),
                         child: Stack(
@@ -247,50 +212,44 @@ class _ProfileWidgetState extends State<ProfileWidget>
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 95.0,
-                              height: 95.0,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.account_circle,
-                                size: 95.0,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
+                        child: Container(
+                          width: 95.0,
+                          height: 95.0,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.account_circle,
+                            size: 95.0,
+                            color: Colors.white,
+                          ),
                         ),
                       ).animateOnPageLoad(animationsMap['cardOnPageLoadAnimation']!),
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                         child: Text(
-                          model.userProfile?.companyName ?? 'Tech Solutions',
+                          userProfile?.companyName ?? 'Tech Solutions',
                           style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                fontFamily:
-                                    FlutterFlowTheme.of(context).headlineSmallFamily,
+                                fontFamily: FlutterFlowTheme.of(context).headlineSmallFamily,
+                                color: FlutterFlowTheme.of(context).primary,
                                 letterSpacing: 0.0,
-                                useGoogleFonts:
-                                    !FlutterFlowTheme.of(context).headlineSmallIsCustom,
+                                fontWeight: FontWeight.bold,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).headlineSmallIsCustom,
                               ),
-                        ).animateOnPageLoad(animationsMap['textOnPageLoadAnimation1']!),
+                        ).animateOnPageLoad(animationsMap['textOnPageLoadAnimation']!),
                       ),
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                         child: Text(
-                          model.userProfile?.companyEmail ?? 'techsolutions@gmail.com',
+                          userProfile?.companyEmail ?? 'techsolutions@gmail.com',
                           style: FlutterFlowTheme.of(context).titleSmall.override(
-                                fontFamily:
-                                    FlutterFlowTheme.of(context).titleSmallFamily,
-                                color: FlutterFlowTheme.of(context).secondary,
+                                fontFamily: FlutterFlowTheme.of(context).titleSmallFamily,
+                                color: FlutterFlowTheme.of(context).tertiary,
                                 letterSpacing: 0.0,
-                                useGoogleFonts:
-                                    !FlutterFlowTheme.of(context).titleSmallIsCustom,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).titleSmallIsCustom,
                               ),
-                        ).animateOnPageLoad(animationsMap['textOnPageLoadAnimation2']!),
+                        ).animateOnPageLoad(animationsMap['textOnPageLoadAnimation']!),
                       ),
                       Divider(
                         height: 44.0,
@@ -298,7 +257,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                         indent: 24.0,
                         endIndent: 24.0,
                         color: FlutterFlowTheme.of(context).alternate,
-                      ).animateOnPageLoad(animationsMap['dividerOnPageLoadAnimation']!),
+                      ),
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
                         child: Column(
@@ -308,16 +267,16 @@ class _ProfileWidgetState extends State<ProfileWidget>
                               padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).secondaryBackground,
-                                borderRadius: BorderRadius.circular(12.0),
+                                borderRadius: BorderRadius.circular(16.0),
                                 border: Border.all(
-                                  color: FlutterFlowTheme.of(context).alternate,
+                                  color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
                                   width: 1.0,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    blurRadius: 4.0,
-                                    color: Colors.black.withOpacity(0.1),
-                                    offset: Offset(0.0, 2.0),
+                                    blurRadius: 8.0,
+                                    color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                    offset: Offset(0.0, 4.0),
                                   ),
                                 ],
                               ),
@@ -326,25 +285,32 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(
-                                        Icons.info_outline,
-                                        color: FlutterFlowTheme.of(context).tertiary,
-                                        size: 20.0,
+                                      Container(
+                                        padding: EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        child: Icon(
+                                          Icons.info_outline,
+                                          color: FlutterFlowTheme.of(context).primary,
+                                          size: 20.0,
+                                        ),
                                       ),
-                                      SizedBox(width: 8.0),
+                                      SizedBox(width: 12.0),
                                       Text(
                                         'Sobre a Empresa',
                                         style: FlutterFlowTheme.of(context).titleMedium.override(
                                           fontFamily: 'Montserrat',
-                                          color: FlutterFlowTheme.of(context).tertiary,
+                                          color: FlutterFlowTheme.of(context).primary,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 12.0),
+                                  SizedBox(height: 16.0),
                                   Text(
-                                    model.userProfile?.companyDescription ?? 'Empresa especializada em soluções tecnológicas inovadoras para segurança residencial e empresarial.',
+                                    userProfile?.companyDescription ?? 'Empresa especializada em soluções tecnológicas.',
                                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                                       fontFamily: 'Montserrat',
                                       letterSpacing: 0.0,
@@ -353,7 +319,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                 ],
                               ),
                             ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
-                            SizedBox(height: 16.0),
+                            SizedBox(height: 20.0),
                             Row(
                               children: [
                                 Expanded(
@@ -361,18 +327,32 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                     padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
                                     decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context).secondaryBackground,
-                                      borderRadius: BorderRadius.circular(12.0),
+                                      borderRadius: BorderRadius.circular(16.0),
                                       border: Border.all(
-                                        color: FlutterFlowTheme.of(context).alternate,
+                                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
                                         width: 1.0,
                                       ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 8.0,
+                                          color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                          offset: Offset(0.0, 4.0),
+                                        ),
+                                      ],
                                     ),
                                     child: Column(
                                       children: [
-                                        Icon(
-                                          Icons.phone_outlined,
-                                          color: FlutterFlowTheme.of(context).tertiary,
-                                          size: 24.0,
+                                        Container(
+                                          padding: EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                            borderRadius: BorderRadius.circular(8.0),
+                                          ),
+                                          child: Icon(
+                                            Icons.phone_outlined,
+                                            color: FlutterFlowTheme.of(context).primary,
+                                            size: 24.0,
+                                          ),
                                         ),
                                         SizedBox(height: 8.0),
                                         Text(
@@ -383,10 +363,12 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
+                                        SizedBox(height: 4.0),
                                         Text(
-                                          model.userProfile?.companyPhone ?? '(11) 99999-9999',
+                                          userProfile?.companyPhone ?? '(11) 99999-9999',
                                           style: FlutterFlowTheme.of(context).bodyMedium.override(
                                             fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context).primary,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -400,18 +382,32 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                     padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
                                     decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context).secondaryBackground,
-                                      borderRadius: BorderRadius.circular(12.0),
+                                      borderRadius: BorderRadius.circular(16.0),
                                       border: Border.all(
-                                        color: FlutterFlowTheme.of(context).alternate,
+                                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
                                         width: 1.0,
                                       ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 8.0,
+                                          color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                          offset: Offset(0.0, 4.0),
+                                        ),
+                                      ],
                                     ),
                                     child: Column(
                                       children: [
-                                        Icon(
-                                          Icons.business_outlined,
-                                          color: FlutterFlowTheme.of(context).tertiary,
-                                          size: 24.0,
+                                        Container(
+                                          padding: EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                            borderRadius: BorderRadius.circular(8.0),
+                                          ),
+                                          child: Icon(
+                                            Icons.business_outlined,
+                                            color: FlutterFlowTheme.of(context).primary,
+                                            size: 24.0,
+                                          ),
                                         ),
                                         SizedBox(height: 8.0),
                                         Text(
@@ -422,10 +418,12 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
+                                        SizedBox(height: 4.0),
                                         Text(
-                                          model.userProfile?.companyCnpj ?? '12.345.678/0001-90',
+                                          userProfile?.companyCnpj ?? '12.345.678/0001-90',
                                           style: FlutterFlowTheme.of(context).bodyMedium.override(
                                             fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context).primary,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -434,33 +432,47 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                   ),
                                 ),
                               ],
-                            ),
-                            SizedBox(height: 12.0),
+                            ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
+                            SizedBox(height: 16.0),
                             InkWell(
                               onTap: () async {
-                                final address = model.userProfile?.companyAddress ?? 'São Paulo, SP';
-                                final url = 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(address)}';
-                                await launchURL(url);
+                                final address = userProfile?.companyAddress ?? 'São Paulo, SP';
+                                final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(address)}');
+                                await launchUrl(url);
                               },
                               child: Container(
                                 width: double.infinity,
-                                padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                                padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context).secondaryBackground,
-                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderRadius: BorderRadius.circular(16.0),
                                   border: Border.all(
-                                    color: FlutterFlowTheme.of(context).alternate,
+                                    color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
                                     width: 1.0,
                                   ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 8.0,
+                                      color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                      offset: Offset(0.0, 4.0),
+                                    ),
+                                  ],
                                 ),
                                 child: Row(
                                   children: [
-                                    Icon(
-                                      Icons.location_on_outlined,
-                                      color: FlutterFlowTheme.of(context).tertiary,
-                                      size: 24.0,
+                                    Container(
+                                      padding: EdgeInsets.all(12.0),
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(12.0),
+                                      ),
+                                      child: Icon(
+                                        Icons.location_on_outlined,
+                                        color: FlutterFlowTheme.of(context).primary,
+                                        size: 28.0,
+                                      ),
                                     ),
-                                    SizedBox(width: 12.0),
+                                    SizedBox(width: 16.0),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -473,11 +485,22 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
+                                          SizedBox(height: 4.0),
                                           Text(
-                                            model.userProfile?.companyAddress ?? 'São Paulo, SP',
+                                            userProfile?.companyAddress ?? 'São Paulo, SP',
                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                               fontFamily: 'Montserrat',
+                                              color: FlutterFlowTheme.of(context).primary,
                                               fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          SizedBox(height: 4.0),
+                                          Text(
+                                            'Toque para abrir no Google Maps',
+                                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                                              fontFamily: 'Montserrat',
+                                              color: FlutterFlowTheme.of(context).tertiary,
+                                              fontStyle: FontStyle.italic,
                                             ),
                                           ),
                                         ],
@@ -485,37 +508,41 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                     ),
                                     Icon(
                                       Icons.open_in_new,
-                                      color: FlutterFlowTheme.of(context).secondaryText,
-                                      size: 16.0,
+                                      color: FlutterFlowTheme.of(context).primary,
+                                      size: 20.0,
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
+                            ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
                             SizedBox(height: 24.0),
                           ],
                         ),
                       ),
-                    ],
+                      ],
+                    ),
                   ),
-                );
-              },
-            ),
-          ),
+        ),
         bottomNavigationBar: Container(
           width: double.infinity,
           height: 80,
           decoration: BoxDecoration(
             color: FlutterFlowTheme.of(context).secondaryBackground,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
+              topLeft: Radius.circular(24.0),
+              topRight: Radius.circular(24.0),
+            ),
+            border: Border(
+              top: BorderSide(
+                color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                width: 1.0,
+              ),
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10.0,
-                offset: Offset(0.0, -2.0),
+                color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                blurRadius: 16.0,
+                offset: Offset(0.0, -4.0),
               ),
             ],
           ),
@@ -526,13 +553,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.pushNamed('Contratos');
-                  },
+                  onTap: () => context.pushNamed('Contratos'),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -547,13 +568,11 @@ class _ProfileWidgetState extends State<ProfileWidget>
                         child: Text(
                           'Serviços',
                           style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily:
-                                    FlutterFlowTheme.of(context).bodySmallFamily,
+                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
                                 color: FlutterFlowTheme.of(context).secondaryText,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.w600,
-                                useGoogleFonts:
-                                    !FlutterFlowTheme.of(context).bodySmallIsCustom,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
                               ),
                         ),
                       ),
@@ -561,13 +580,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   ),
                 ),
                 InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.pushNamed('FaleConosco');
-                  },
+                  onTap: () => context.pushNamed('FaleConosco'),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -582,13 +595,11 @@ class _ProfileWidgetState extends State<ProfileWidget>
                         child: Text(
                           'Fale conosco',
                           style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily:
-                                    FlutterFlowTheme.of(context).bodySmallFamily,
+                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
                                 color: FlutterFlowTheme.of(context).secondaryText,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.w500,
-                                useGoogleFonts:
-                                    !FlutterFlowTheme.of(context).bodySmallIsCustom,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
                               ),
                         ),
                       ),
@@ -596,13 +607,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   ),
                 ),
                 InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.pushNamed('Profile');
-                  },
+                  onTap: () => context.pushNamed('Profile'),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -615,7 +620,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                         ),
                         child: Icon(
                           Icons.person_outlined,
-                          color: Color(0xFF4870B8),
+                          color: FlutterFlowTheme.of(context).primary,
                           size: 24,
                         ),
                       ),
@@ -624,13 +629,11 @@ class _ProfileWidgetState extends State<ProfileWidget>
                         child: Text(
                           'Perfil',
                           style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily:
-                                    FlutterFlowTheme.of(context).bodySmallFamily,
+                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
                                 color: FlutterFlowTheme.of(context).primary,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.w500,
-                                useGoogleFonts:
-                                    !FlutterFlowTheme.of(context).bodySmallIsCustom,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
                               ),
                         ),
                       ),
@@ -639,7 +642,6 @@ class _ProfileWidgetState extends State<ProfileWidget>
                 ),
               ],
             ),
-          ),
           ),
         ),
       ),

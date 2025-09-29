@@ -92,12 +92,15 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'Fale Conosco',
-                        style: FlutterFlowTheme.of(context).headlineMedium.override(
-                          fontFamily: 'Montserrat',
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          fontWeight: FontWeight.bold,
+                      Center(
+                        child: Text(
+                          'Fale Conosco',
+                          textAlign: TextAlign.center,
+                          style: FlutterFlowTheme.of(context).headlineMedium.override(
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).primary,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       SizedBox(height: 8.0),
@@ -155,80 +158,40 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                           ),
                         ),
                         SizedBox(height: 24.0),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: InkWell(
-                                onTap: () async {
-                                  await launchUrl(Uri.parse('tel:+5511999999999'));
-                                },
-                                child: Container(
-                                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 20.0, 16.0),
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context).success,
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: FlutterFlowTheme.of(context).success.withOpacity(0.3),
-                                        blurRadius: 8.0,
-                                        offset: Offset(0.0, 4.0),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Icon(Icons.phone, color: Colors.white, size: 24.0),
-                                      SizedBox(height: 8.0),
-                                      Text(
-                                        'Ligar Agora',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14.0,
-                                        ),
-                                      ),
-                                    ],
+                        InkWell(
+                          onTap: () async {
+                            await launchUrl(Uri.parse('https://wa.me/5511978803756'));
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 20.0, 16.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF25D366),
+                              borderRadius: BorderRadius.circular(12.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0xFF25D366).withOpacity(0.3),
+                                  blurRadius: 8.0,
+                                  offset: Offset(0.0, 4.0),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.chat, color: Colors.white, size: 24.0),
+                                SizedBox(width: 12.0),
+                                Text(
+                                  'WhatsApp: (11) 97880-3756',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16.0,
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                            SizedBox(width: 16.0),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () async {
-                                  await launchUrl(Uri.parse('https://wa.me/5511999999999'));
-                                },
-                                child: Container(
-                                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 20.0, 16.0),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF25D366),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color(0xFF25D366).withOpacity(0.3),
-                                        blurRadius: 8.0,
-                                        offset: Offset(0.0, 4.0),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Icon(Icons.chat, color: Colors.white, size: 24.0),
-                                      SizedBox(height: 8.0),
-                                      Text(
-                                        'WhatsApp',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14.0,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
