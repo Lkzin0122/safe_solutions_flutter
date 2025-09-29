@@ -155,80 +155,40 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                           ),
                         ),
                         SizedBox(height: 24.0),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: InkWell(
-                                onTap: () async {
-                                  await launchUrl(Uri.parse('tel:+5511999999999'));
-                                },
-                                child: Container(
-                                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 20.0, 16.0),
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context).success,
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: FlutterFlowTheme.of(context).success.withOpacity(0.3),
-                                        blurRadius: 8.0,
-                                        offset: Offset(0.0, 4.0),
-                                      ),
-                                    ],
+                        Center(
+                          child: InkWell(
+                            onTap: () async {
+                              await launchUrl(Uri.parse('https://wa.me/5511999999999'));
+                            },
+                            child: Container(
+                              padding: EdgeInsetsDirectional.fromSTEB(40.0, 16.0, 40.0, 16.0),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF25D366),
+                                borderRadius: BorderRadius.circular(12.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0xFF25D366).withOpacity(0.3),
+                                    blurRadius: 8.0,
+                                    offset: Offset(0.0, 4.0),
                                   ),
-                                  child: Column(
-                                    children: [
-                                      Icon(Icons.phone, color: Colors.white, size: 24.0),
-                                      SizedBox(height: 8.0),
-                                      Text(
-                                        'Ligar Agora',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14.0,
-                                        ),
-                                      ),
-                                    ],
+                                ],
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.chat, color: Colors.white, size: 24.0),
+                                  SizedBox(height: 8.0),
+                                  Text(
+                                    'WhatsApp',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14.0,
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             ),
-                            SizedBox(width: 16.0),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () async {
-                                  await launchUrl(Uri.parse('https://wa.me/5511999999999'));
-                                },
-                                child: Container(
-                                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 20.0, 16.0),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF25D366),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Color(0xFF25D366).withOpacity(0.3),
-                                        blurRadius: 8.0,
-                                        offset: Offset(0.0, 4.0),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Icon(Icons.chat, color: Colors.white, size: 24.0),
-                                      SizedBox(height: 8.0),
-                                      Text(
-                                        'WhatsApp',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14.0,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
@@ -405,7 +365,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                         : Icon(Icons.send, color: Colors.white),
                       options: FFButtonOptions(
                         height: 50.0,
-                        color: FlutterFlowTheme.of(context).tertiary,
+                        color: FlutterFlowTheme.of(context).primary,
                         textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                           fontFamily: 'Montserrat',
                           color: Colors.white,

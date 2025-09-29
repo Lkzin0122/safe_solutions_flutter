@@ -296,7 +296,7 @@ class _VerificarCodigoWidgetState extends State<VerificarCodigoWidget> {
                               const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                           iconPadding:
                               const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                          color: FlutterFlowTheme.of(context).tertiary,
+                          color: FlutterFlowTheme.of(context).primary,
                           textStyle: FlutterFlowTheme.of(context)
                               .titleSmall
                               .override(
@@ -348,7 +348,7 @@ class _VerificarCodigoWidgetState extends State<VerificarCodigoWidget> {
                               .override(
                                 fontFamily: FlutterFlowTheme.of(context)
                                     .bodyMediumFamily,
-                                color: FlutterFlowTheme.of(context).tertiary,
+                                color: FlutterFlowTheme.of(context).primary,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.w600,
                                 decoration: TextDecoration.underline,
