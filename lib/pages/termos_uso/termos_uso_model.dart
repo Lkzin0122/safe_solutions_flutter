@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import 'termos_uso_widget.dart' show TermosUsoWidget;
 import 'package:flutter/material.dart';
 

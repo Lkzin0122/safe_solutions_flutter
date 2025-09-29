@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import 'bratecno_widget.dart' show BratecnoWidget;
 import 'package:flutter/material.dart';
 

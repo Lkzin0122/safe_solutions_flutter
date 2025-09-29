@@ -2,8 +2,9 @@ import 'package:rxdart/rxdart.dart';
 
 class SafeSolutionsAuthUser {
   final bool loggedIn;
+  final String? uid;
   
-  SafeSolutionsAuthUser({required this.loggedIn});
+  SafeSolutionsAuthUser({required this.loggedIn, this.uid});
 }
 
 class SafeSolutionsAuthUserProvider {
@@ -16,3 +17,6 @@ class SafeSolutionsAuthUserProvider {
     _userSubject.close();
   }
 }
+
+// Global subject for auth user
+final safeSolutionsAuthUserSubject = BehaviorSubject.seeded(SafeSolutionsAuthUser(loggedIn: false));

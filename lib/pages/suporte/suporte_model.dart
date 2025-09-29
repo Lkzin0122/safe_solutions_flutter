@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import 'suporte_widget.dart' show SuporteWidget;
 import 'package:flutter/material.dart';
 

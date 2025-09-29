@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import 'status_servico_widget.dart' show StatusServicoWidget;
 import 'package:flutter/material.dart';
 

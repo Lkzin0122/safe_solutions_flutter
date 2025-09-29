@@ -1,11 +1,7 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'status_servico_model.dart';
 export 'status_servico_model.dart';
 
@@ -298,7 +294,7 @@ class _StatusServicoWidgetState extends State<StatusServicoWidget> {
               // Botão de contato
               FFButtonWidget(
                 onPressed: () {
-                  context.pushNamed(FaleConoscoWidget.routeName);
+                  context.pushNamed('FaleConosco');
                 },
                 text: 'Entrar em Contato',
                 options: FFButtonOptions(
@@ -348,7 +344,7 @@ class _StatusServicoWidgetState extends State<StatusServicoWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               InkWell(
-                onTap: () => context.pushNamed(ContratosWidget.routeName),
+                onTap: () => context.pushNamed('servicos'),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -373,7 +369,7 @@ class _StatusServicoWidgetState extends State<StatusServicoWidget> {
                 ),
               ),
               InkWell(
-                onTap: () => context.pushNamed(FaleConoscoWidget.routeName),
+                onTap: () => context.pushNamed('FaleConosco'),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -398,7 +394,7 @@ class _StatusServicoWidgetState extends State<StatusServicoWidget> {
                 ),
               ),
               InkWell(
-                onTap: () => context.pushNamed(ProfileWidget.routeName),
+                onTap: () => context.pushNamed('Profile'),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,

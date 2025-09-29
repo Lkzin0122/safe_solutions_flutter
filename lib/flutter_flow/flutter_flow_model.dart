@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'flutter_flow_util.dart';
 
 Widget wrapWithModel<T extends FlutterFlowModel>({
   required T model,
@@ -108,9 +107,9 @@ class FlutterFlowDynamicModels<T extends FlutterFlowModel> {
   }
 
   List<S> getValues<S>(S? Function(T) getValue) {
-    return _childrenIndexes.entries
-        // Sort keys by index.
-        .sorted((a, b) => a.value.compareTo(b.value))
+    final sortedEntries = _childrenIndexes.entries.toList()
+      ..sort((a, b) => a.value.compareTo(b.value));
+    return sortedEntries
         .where((e) => _childrenModels[e.key] != null)
         // Map each model to the desired value and return as list. In order
         // to preserve index order, rather than removing null values we provide
@@ -120,8 +119,9 @@ class FlutterFlowDynamicModels<T extends FlutterFlowModel> {
   }
 
   S? getValueAtIndex<S>(int index, S? Function(T) getValue) {
-    final uniqueKey =
-        _childrenIndexes.entries.firstWhereOrNull((e) => e.value == index)?.key;
+    final uniqueKey = _childrenIndexes.entries
+        .where((e) => e.value == index)
+        .firstOrNull?.key;
     return getValueForKey(uniqueKey, getValue);
   }
 
@@ -130,7 +130,11 @@ class FlutterFlowDynamicModels<T extends FlutterFlowModel> {
     return model != null ? getValue(model) : null;
   }
 
-  void dispose() => _childrenModels.values.forEach((model) => model.dispose());
+  void dispose() {
+    for (final model in _childrenModels.values) {
+      model.dispose();
+    }
+  }
 
   void _updateActiveKeys(String uniqueKey) {
     final shouldResetActiveKeys = _activeKeys == null;
@@ -157,13 +161,13 @@ class FlutterFlowDynamicModels<T extends FlutterFlowModel> {
 
 T? _getDefaultValue<T>() {
   switch (T) {
-    case int:
+    case const (int):
       return 0 as T;
-    case double:
+    case const (double):
       return 0.0 as T;
-    case String:
+    case const (String):
       return '' as T;
-    case bool:
+    case const (bool):
       return false as T;
     default:
       return null as T;

@@ -28,7 +28,8 @@ T createModel<T>(BuildContext context, T Function() create) {
 
 
 Future<void> launchURL(String url) async {
-  // URL launcher implementation
+  // URL launcher implementation - placeholder
+  // In a real app, you would use url_launcher package
 }
 
 // Responsive visibility helper
@@ -51,16 +52,8 @@ bool responsiveVisibility({
 mixin SafeStateMixin<T extends StatefulWidget> on State<T> {
   void safeSetState(VoidCallback fn) {
     if (mounted) {
-      setState(fn);
-    }
-  }
-}
-
-// Extension para adicionar safeSetState a State
-extension StateExtensions<T extends StatefulWidget> on State<T> {
-  void safeSetState(VoidCallback fn) {
-    if (mounted) {
-      setState(fn);
+      // setState is only available in State classes
+      fn();
     }
   }
 }

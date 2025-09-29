@@ -3,7 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
-import '/pages/contratos/contratos_model.dart';
+
 import 'package:flutter/material.dart';
 import 'montador_model.dart';
 export 'montador_model.dart';
@@ -483,7 +483,7 @@ class _MontadorWidgetState extends State<MontadorWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               InkWell(
-                onTap: () => context.pushNamed('Contratos'),
+                onTap: () => context.pushNamed('servicos'),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

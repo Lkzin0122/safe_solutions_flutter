@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import '/index.dart';
 import 'nova_senha_widget.dart' show NovaSenhaWidget;
 import 'package:flutter/material.dart';
@@ -28,7 +28,6 @@ class NovaSenhaModel extends FlutterFlowModel<NovaSenhaWidget> {
   void dispose() {
     passwordFocusNode?.dispose();
     passwordTextController?.dispose();
-
     passwordConfirmFocusNode?.dispose();
     passwordConfirmTextController?.dispose();
   }

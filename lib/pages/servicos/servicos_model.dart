@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import 'servicos_widget.dart' show ServicosWidget;
 import 'package:flutter/material.dart';
 

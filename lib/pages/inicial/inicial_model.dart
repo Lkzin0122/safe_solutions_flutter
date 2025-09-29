@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import '/index.dart';
 import 'inicial_widget.dart' show InicialWidget;
 import 'package:flutter/material.dart';

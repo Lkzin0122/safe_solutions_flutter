@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:go_router/go_router.dart';
-import 'pages/profile/profile_widget.dart';
+import 'flutter_flow/nav/nav.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,23 +14,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'SafeSolutions',
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
+      supportedLocales: const [
         Locale('pt', 'BR'),
       ],
-      routerConfig: GoRouter(
-        initialLocation: '/profile',
-        routes: [
-          GoRoute(
-            path: '/profile',
-            builder: (context, state) => ProfileWidget(),
-          ),
-        ],
-      ),
+      routerConfig: createRouter(AppStateNotifier.instance),
     );
   }
 }

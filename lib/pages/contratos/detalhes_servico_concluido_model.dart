@@ -1,5 +1,5 @@
 import '/flutter_flow/flutter_flow_model.dart';
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import 'detalhes_servico_concluido_widget.dart' show DetalhesServicoConcluidoWidget;
 import 'package:flutter/material.dart';
 

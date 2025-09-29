@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 import 'login1_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -109,7 +110,7 @@ class _Login1WidgetState extends State<Login1Widget> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                context.goNamed('Contratos');
+                GoRouter.of(context).goNamed('servicos');
               },
               child: Text('OK'),
             ),
@@ -435,7 +436,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                               FlutterFlowTheme.of(context)
                                                   .primaryBackground,
                                           suffixIcon: InkWell(
-                                            onTap: () => safeSetState(
+                                            onTap: () => setState(
                                               () => _model.passwordVisibility =
                                                   !_model.passwordVisibility,
                                             ),
@@ -473,7 +474,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        context.pushNamed('EsqueciSenha');
+                                        GoRouter.of(context).pushNamed('EsqueciSenha');
                                       },
                                       child: Text(
                                         '*esqueci minha senha',
@@ -501,11 +502,9 @@ class _Login1WidgetState extends State<Login1Widget> {
                                               if (_formKey.currentState!
                                                   .validate()) {
                                                 final cnpj = _model
-                                                    .CnpjAddressTextController
-                                                    .text;
+                                                    .CnpjAddressTextController?.text ?? '';
                                                 final senha = _model
-                                                    .passwordTextController
-                                                    .text;
+                                                    .passwordTextController?.text ?? '';
                                                 await buscarDados(cnpj, senha);
                                               }
                                             },

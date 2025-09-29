@@ -3,7 +3,28 @@ import 'package:go_router/go_router.dart';
 
 import '/auth/custom_auth/custom_auth_user_provider.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/index.dart';
+import '/pages/profile/profile_widget.dart';
+import '/pages/contratos/contratos_widget.dart';
+import '/pages/inicial/inicial_widget.dart';
+import '/pages/login1/login1_widget.dart';
+import '/pages/esqueci_senha/esqueci_senha_widget.dart';
+import '/pages/nova_senha/nova_senha_widget.dart';
+import '/pages/servicos/servicos_widget.dart';
+import '/pages/montador/montador_widget.dart';
+import '/pages/super_clean/super_clean_widget.dart';
+import '/pages/bratecno/bratecno_widget.dart';
+import '/pages/super_clean_copy/super_clean_copy_widget.dart';
+import '/pages/verificar_codigo/verificar_codigo_widget.dart';
+import '/pages/fale_conosco/fale_conosco_widget.dart';
+import '/pages/editar_conta/editar_conta_widget.dart';
+import '/pages/configuracoes/configuracoes_widget.dart';
+import '/pages/suporte/suporte_widget.dart';
+import '/pages/privacidade/privacidade_widget.dart';
+import '/pages/calendario/calendario_widget.dart';
+import '/pages/confirmar_senha/confirmar_senha_widget.dart';
+import '/pages/nova_senha_pos_validacao/nova_senha_pos_validacao_widget.dart';
+import '/pages/termos_uso/termos_uso_widget.dart';
+import '/pages/status_servico/status_servico_widget.dart';
 
 export 'package:go_router/go_router.dart';
 
@@ -58,7 +79,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       navigatorKey: appNavigatorKey,
       errorBuilder: (context, state) => appStateNotifier.loggedIn
           ? const ContratosWidget()
-          : const InicialWidget(),
+          : const Login1Widget(),
       routes: [
         GoRoute(
           name: '_initialize',
@@ -69,7 +90,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             }
             return appStateNotifier.loggedIn
                 ? const ContratosWidget()
-                : const InicialWidget();
+                : const Login1Widget();
           },
         ),
         GoRoute(
@@ -90,17 +111,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         GoRoute(
           name: 'Inicial',
           path: '/inicial',
-          builder: (context, state) => const InicialWidget(),
+          builder: (context, state) => const ProfileWidget(),
         ),
         GoRoute(
-          name: 'Contratos',
+          name: 'servicos',
           path: '/servicos',
-          builder: (context, state) {
-            final extra = state.extra as Map<String, dynamic>?;
-            return ContratosWidget(
-              initialTab: extra?['initialTab'],
-            );
-          },
+          builder: (context, state) => const ContratosWidget(),
         ),
         GoRoute(
           name: 'Profile',
@@ -170,13 +186,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         GoRoute(
           name: 'ConfirmarSenha',
           path: '/confirmarSenha',
-          builder: (context, state) {
-            final extra = state.extra as Map<String, dynamic>?;
-            return ConfirmarSenhaWidget(
-              serviceId:
-                  extra?['serviceId'] ?? state.uri.queryParameters['serviceId'],
-            );
-          },
+          builder: (context, state) => const ConfirmarSenhaWidget(),
+        ),
+        GoRoute(
+          name: 'StatusServico',
+          path: '/statusServico',
+          builder: (context, state) => const StatusServicoWidget(),
         ),
         GoRoute(
           name: 'NovaSenhaPosValidacao',
@@ -209,7 +224,7 @@ extension NavigationExtensions on BuildContext {
     bool ignoreRedirect = false,
   }) {
     if (mounted) {
-      goNamed(
+      GoRouter.of(this).goNamed(
         name,
         pathParameters: pathParameters,
         queryParameters: queryParameters,
@@ -227,7 +242,7 @@ extension NavigationExtensions on BuildContext {
     bool ignoreRedirect = false,
   }) {
     if (mounted) {
-      pushNamed(
+      GoRouter.of(this).pushNamed(
         name,
         pathParameters: pathParameters,
         queryParameters: queryParameters,
@@ -237,10 +252,10 @@ extension NavigationExtensions on BuildContext {
   }
 
   void safePop() {
-    if (canPop()) {
-      pop();
+    if (GoRouter.of(this).canPop()) {
+      GoRouter.of(this).pop();
     } else {
-      go('/');
+      GoRouter.of(this).go('/');
     }
   }
 }

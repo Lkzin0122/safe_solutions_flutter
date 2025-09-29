@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:from_css_color/from_css_color.dart';
 
 import '../../flutter_flow/lat_lng.dart';
 import '../../flutter_flow/place.dart';
@@ -62,7 +61,8 @@ String? serializeParam(
       case ParamType.LatLng:
         data = (param as LatLng).serialize();
       case ParamType.Color:
-        data = (param as Color).toCssString();
+        final color = param as Color;
+        data = '#${color.value.toRadixString(16).padLeft(8, '0')}';
       case ParamType.FFPlace:
         data = placeToString(param as FFPlace);
       case ParamType.FFUploadedFile:
@@ -76,6 +76,22 @@ String? serializeParam(
     return data;
   } catch (e) {
     print('Error serializing parameter: $e');
+    return null;
+  }
+}
+
+Color? _parseColor(String colorStr) {
+  try {
+    if (colorStr.startsWith('#')) {
+      final hexColor = colorStr.substring(1);
+      if (hexColor.length == 6) {
+        return Color(int.parse('FF$hexColor', radix: 16));
+      } else if (hexColor.length == 8) {
+        return Color(int.parse(hexColor, radix: 16));
+      }
+    }
+    return null;
+  } catch (e) {
     return null;
   }
 }
@@ -188,7 +204,7 @@ dynamic deserializeParam<T>(
       case ParamType.LatLng:
         return latLngFromString(param);
       case ParamType.Color:
-        return fromCssColor(param);
+        return _parseColor(param);
       case ParamType.FFPlace:
         return placeFromString(param);
       case ParamType.FFUploadedFile:

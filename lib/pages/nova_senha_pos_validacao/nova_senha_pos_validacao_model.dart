@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import 'nova_senha_pos_validacao_widget.dart' show NovaSenhaPosValidacaoWidget;
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import 'fale_conosco_widget.dart' show FaleConoscoWidget;
 import 'package:flutter/material.dart';
 

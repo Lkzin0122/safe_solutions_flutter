@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import '/index.dart';
 import 'verificar_codigo_widget.dart' show VerificarCodigoWidget;
 import 'package:flutter/material.dart';

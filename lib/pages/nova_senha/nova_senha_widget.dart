@@ -2,12 +2,8 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import '/index.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'nova_senha_model.dart';
 export 'nova_senha_model.dart';
 
@@ -223,7 +219,7 @@ class _NovaSenhaWidgetState extends State<NovaSenhaWidget> {
                                         fillColor: FlutterFlowTheme.of(context)
                                             .primaryBackground,
                                         suffixIcon: InkWell(
-                                          onTap: () => safeSetState(
+                                          onTap: () => setState(
                                             () => _model.passwordVisibility =
                                                 !_model.passwordVisibility,
                                           ),
@@ -245,9 +241,7 @@ class _NovaSenhaWidgetState extends State<NovaSenhaWidget> {
                                             fontFamily: 'Montserrat',
                                             letterSpacing: 0.0,
                                           ),
-                                      validator: _model
-                                          .passwordTextControllerValidator
-                                          .asValidator(context),
+                                      validator: _model.passwordTextControllerValidator != null ? (val) => _model.passwordTextControllerValidator!(context, val) : null,
                                     ),
                                   ),
                                 ),
@@ -318,7 +312,7 @@ class _NovaSenhaWidgetState extends State<NovaSenhaWidget> {
                                         fillColor: FlutterFlowTheme.of(context)
                                             .primaryBackground,
                                         suffixIcon: InkWell(
-                                          onTap: () => safeSetState(
+                                          onTap: () => setState(
                                             () => _model
                                                     .passwordConfirmVisibility =
                                                 !_model
@@ -343,9 +337,7 @@ class _NovaSenhaWidgetState extends State<NovaSenhaWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                       minLines: 1,
-                                      validator: _model
-                                          .passwordConfirmTextControllerValidator
-                                          .asValidator(context),
+                                      validator: _model.passwordConfirmTextControllerValidator != null ? (val) => _model.passwordConfirmTextControllerValidator!(context, val) : null,
                                     ),
                                   ),
                                 ),
@@ -408,7 +400,7 @@ class _NovaSenhaWidgetState extends State<NovaSenhaWidget> {
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                         image: const DecorationImage(
                           fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(
+                          image: NetworkImage(
                             'https://images.unsplash.com/photo-1514924013411-cbf25faa35bb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1380&q=80',
                           ),
                         ),
