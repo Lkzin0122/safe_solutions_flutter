@@ -553,7 +553,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  onTap: () => context.pushNamed('Contratos'),
+                  onTap: () => context.goNamed('servicos'),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,

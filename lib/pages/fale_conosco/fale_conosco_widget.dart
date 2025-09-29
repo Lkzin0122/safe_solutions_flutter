@@ -54,76 +54,32 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          elevation: 2.0,
+        ),
         body: Form(
           key: formKey,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Logo padronizada
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 20.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 4.0,
-                        offset: Offset(0.0, 2.0),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(0.0),
-                      child: Image.network(
-                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                        width: 250.0,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-                
-                // Header com título
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Text(
-                          'Fale Conosco',
-                          textAlign: TextAlign.center,
-                          style: FlutterFlowTheme.of(context).headlineMedium.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        'Estamos aqui para ajudar você',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily: 'Montserrat',
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                
                 // Seção de contato rápido
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 24.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
                   child: Container(
                     width: double.infinity,
-                    padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [FlutterFlowTheme.of(context).primary.withOpacity(0.1), Colors.white],
+                        colors: [
+                          FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                          Colors.white
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -143,29 +99,35 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                         SizedBox(height: 16.0),
                         Text(
                           'Contato Rápido',
-                          style: FlutterFlowTheme.of(context).titleLarge.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .titleLarge
+                              .override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                         SizedBox(height: 8.0),
                         Text(
                           'Entre em contato conosco agora mesmo',
-                          style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodyMedium
+                              .override(
+                                fontFamily: 'Montserrat',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                              ),
                         ),
                         SizedBox(height: 24.0),
-<<<<<<< HEAD
                         InkWell(
                           onTap: () async {
-                            await launchUrl(Uri.parse('https://wa.me/5511978803756'));
+                            await launchUrl(
+                                Uri.parse('https://wa.me/5511978803756'));
                           },
                           child: Container(
                             width: double.infinity,
-                            padding: EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 20.0, 16.0),
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                20.0, 16.0, 20.0, 16.0),
                             decoration: BoxDecoration(
                               color: Color(0xFF25D366),
                               borderRadius: BorderRadius.circular(12.0),
@@ -180,7 +142,8 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.chat, color: Colors.white, size: 24.0),
+                                Icon(Icons.chat,
+                                    color: Colors.white, size: 24.0),
                                 SizedBox(width: 12.0),
                                 Text(
                                   'WhatsApp: (11) 97880-3756',
@@ -191,40 +154,6 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                                   ),
                                 ),
                               ],
-=======
-                        Center(
-                          child: InkWell(
-                            onTap: () async {
-                              await launchUrl(Uri.parse('https://wa.me/5511999999999'));
-                            },
-                            child: Container(
-                              padding: EdgeInsetsDirectional.fromSTEB(40.0, 16.0, 40.0, 16.0),
-                              decoration: BoxDecoration(
-                                color: Color(0xFF25D366),
-                                borderRadius: BorderRadius.circular(12.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xFF25D366).withOpacity(0.3),
-                                    blurRadius: 8.0,
-                                    offset: Offset(0.0, 4.0),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                children: [
-                                  Icon(Icons.chat, color: Colors.white, size: 24.0),
-                                  SizedBox(height: 8.0),
-                                  Text(
-                                    'WhatsApp',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
->>>>>>> e0f663c38a9d11d8ad8f878c19d4a779d772c51e
                             ),
                           ),
                         ),
@@ -232,95 +161,122 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                     ),
                   ),
                 ),
-                
+
                 // Divider com texto
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 20.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 20.0),
                   child: Row(
                     children: [
-                      Expanded(child: Divider(color: FlutterFlowTheme.of(context).alternate)),
+                      Expanded(
+                          child: Divider(
+                              color: FlutterFlowTheme.of(context).alternate)),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            16.0, 0.0, 16.0, 0.0),
                         child: Text(
                           'Ou envie uma mensagem',
-                          style: FlutterFlowTheme.of(context).titleMedium.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .titleMedium
+                              .override(
+                                fontFamily: 'Montserrat',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                       ),
-                      Expanded(child: Divider(color: FlutterFlowTheme.of(context).alternate)),
+                      Expanded(
+                          child: Divider(
+                              color: FlutterFlowTheme.of(context).alternate)),
                     ],
                   ),
                 ),
-                
+
                 // Campos do formulário
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 16.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 16.0),
                   child: TextFormField(
                     controller: _model.nomeController,
                     focusNode: _model.nomeFocusNode,
                     validator: (val) {
-                      if (val == null || val.isEmpty) return 'Nome é obrigatório';
-                      if (val.length < 2) return 'Nome deve ter pelo menos 2 caracteres';
+                      if (val == null || val.isEmpty)
+                        return 'Nome é obrigatório';
+                      if (val.length < 2)
+                        return 'Nome deve ter pelo menos 2 caracteres';
                       return null;
                     },
                     decoration: InputDecoration(
                       labelText: 'Nome Completo',
                       hintText: 'Digite seu nome completo',
                       filled: true,
-                      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
+                      fillColor:
+                          FlutterFlowTheme.of(context).secondaryBackground,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate),
+                        borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).alternate),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(color: FlutterFlowTheme.of(context).tertiary, width: 2.0),
+                        borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primary,
+                            width: 2.0),
                       ),
-                      prefixIcon: Icon(Icons.person_outline, color: FlutterFlowTheme.of(context).secondaryText),
+                      prefixIcon: Icon(Icons.person_outline,
+                          color: FlutterFlowTheme.of(context).secondaryText),
                     ),
                     textCapitalization: TextCapitalization.words,
                   ),
                 ),
-                
+
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 16.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 16.0),
                   child: TextFormField(
                     controller: _model.emailController,
                     focusNode: _model.emailFocusNode,
                     validator: (val) {
-                      if (val == null || val.isEmpty) return 'Email é obrigatório';
-                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(val)) return 'Digite um email válido';
+                      if (val == null || val.isEmpty)
+                        return 'Email é obrigatório';
+                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                          .hasMatch(val)) return 'Digite um email válido';
                       return null;
                     },
                     decoration: InputDecoration(
                       labelText: 'Email',
                       hintText: 'Digite seu email',
                       filled: true,
-                      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
+                      fillColor:
+                          FlutterFlowTheme.of(context).secondaryBackground,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate),
+                        borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).alternate),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(color: FlutterFlowTheme.of(context).tertiary, width: 2.0),
+                        borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primary,
+                            width: 2.0),
                       ),
-                      prefixIcon: Icon(Icons.email_outlined, color: FlutterFlowTheme.of(context).secondaryText),
+                      prefixIcon: Icon(Icons.email_outlined,
+                          color: FlutterFlowTheme.of(context).secondaryText),
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
                 ),
-                
+
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 16.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 16.0),
                   child: TextFormField(
                     controller: _model.telefoneController,
                     focusNode: _model.telefoneFocusNode,
                     validator: (val) {
-                      if (val == null || val.isEmpty) return 'Telefone é obrigatório';
+                      if (val == null || val.isEmpty)
+                        return 'Telefone é obrigatório';
                       if (val.length < 10) return 'Digite um telefone válido';
                       return null;
                     },
@@ -328,29 +284,37 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                       labelText: 'Telefone',
                       hintText: '(11) 99999-9999',
                       filled: true,
-                      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
+                      fillColor:
+                          FlutterFlowTheme.of(context).secondaryBackground,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate),
+                        borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).alternate),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(color: FlutterFlowTheme.of(context).tertiary, width: 2.0),
+                        borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primary,
+                            width: 2.0),
                       ),
-                      prefixIcon: Icon(Icons.phone_outlined, color: FlutterFlowTheme.of(context).secondaryText),
+                      prefixIcon: Icon(Icons.phone_outlined,
+                          color: FlutterFlowTheme.of(context).secondaryText),
                     ),
                     keyboardType: TextInputType.phone,
                   ),
                 ),
-                
+
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 32.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 32.0),
                   child: TextFormField(
                     controller: _model.mensagemController,
                     focusNode: _model.mensagemFocusNode,
                     validator: (val) {
-                      if (val == null || val.isEmpty) return 'Mensagem é obrigatória';
-                      if (val.length < 10) return 'Mensagem deve ter pelo menos 10 caracteres';
+                      if (val == null || val.isEmpty)
+                        return 'Mensagem é obrigatória';
+                      if (val.length < 10)
+                        return 'Mensagem deve ter pelo menos 10 caracteres';
                       return null;
                     },
                     maxLines: 4,
@@ -359,88 +323,106 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                       labelText: 'Mensagem',
                       hintText: 'Descreva sua dúvida ou solicitação...',
                       filled: true,
-                      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
+                      fillColor:
+                          FlutterFlowTheme.of(context).secondaryBackground,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate),
+                        borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).alternate),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(color: FlutterFlowTheme.of(context).tertiary, width: 2.0),
+                        borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primary,
+                            width: 2.0),
                       ),
                       alignLabelWithHint: true,
                     ),
                     textCapitalization: TextCapitalization.sentences,
                   ),
                 ),
-                
+
                 // Botão Enviar
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
                   child: SizedBox(
                     width: double.infinity,
                     child: FFButtonWidget(
-                      onPressed: _isLoading ? null : () async {
-                        if (formKey.currentState!.validate()) {
-                          setState(() { _isLoading = true; });
-                          HapticFeedback.lightImpact();
-                          await Future.delayed(Duration(seconds: 1));
-                          setState(() { _isLoading = false; _showSuccessMessage = true; });
-                          await Future.delayed(Duration(seconds: 2));
-                          if (mounted) context.pushNamed('servicos');
-                        }
-                      },
+                      onPressed: _isLoading
+                          ? null
+                          : () async {
+                              if (formKey.currentState!.validate()) {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                HapticFeedback.lightImpact();
+                                await Future.delayed(Duration(seconds: 1));
+                                setState(() {
+                                  _isLoading = false;
+                                  _showSuccessMessage = true;
+                                });
+                                await Future.delayed(Duration(seconds: 2));
+                                if (mounted) context.goNamed('servicos');
+                              }
+                            },
                       text: _isLoading ? 'Enviando...' : 'Enviar Mensagem',
-                      icon: _isLoading 
-                        ? SizedBox(
-                            width: 20.0,
-                            height: 20.0,
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                              strokeWidth: 2.0,
-                            ),
-                          )
-                        : Icon(Icons.send, color: Colors.white),
+                      icon: _isLoading
+                          ? SizedBox(
+                              width: 20.0,
+                              height: 20.0,
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                                strokeWidth: 2.0,
+                              ),
+                            )
+                          : Icon(Icons.send, color: Colors.white),
                       options: FFButtonOptions(
                         height: 50.0,
                         color: FlutterFlowTheme.of(context).primary,
-                        textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                          fontFamily: 'Montserrat',
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        textStyle:
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
                         elevation: 3.0,
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                     ),
                   ),
                 ),
-                
+
                 // Mensagem de sucesso
                 if (_showSuccessMessage)
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 0.0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 0.0),
                     child: Container(
-                      padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          16.0, 16.0, 16.0, 16.0),
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).success,
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.check_circle_outline, color: Colors.white, size: 24.0),
+                          Icon(Icons.check_circle_outline,
+                              color: Colors.white, size: 24.0),
                           SizedBox(width: 12.0),
                           Expanded(
                             child: Text(
                               'Mensagem enviada com sucesso! Entraremos em contato em breve.',
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                
+
                 SizedBox(height: 24.0),
               ],
             ),
@@ -474,16 +456,21 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.description, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
+                      Icon(Icons.description,
+                          color: FlutterFlowTheme.of(context).secondaryText,
+                          size: 24),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
                           'Serviços',
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodySmall
+                              .override(
+                                fontFamily: 'Montserrat',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                       ),
                     ],
@@ -495,20 +482,24 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                     Container(
                       padding: EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                        color: FlutterFlowTheme.of(context)
+                            .primary
+                            .withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.message_outlined, color: FlutterFlowTheme.of(context).primary, size: 24),
+                      child: Icon(Icons.message_outlined,
+                          color: FlutterFlowTheme.of(context).primary,
+                          size: 24),
                     ),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                       child: Text(
                         'Fale conosco',
                         style: FlutterFlowTheme.of(context).bodySmall.override(
-                          fontFamily: 'Montserrat',
-                          color: FlutterFlowTheme.of(context).primary,
-                          fontWeight: FontWeight.w500,
-                        ),
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).primary,
+                              fontWeight: FontWeight.w500,
+                            ),
                       ),
                     ),
                   ],
@@ -518,16 +509,21 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.person_outlined, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
+                      Icon(Icons.person_outlined,
+                          color: FlutterFlowTheme.of(context).secondaryText,
+                          size: 24),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
                           'Perfil',
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                            fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodySmall
+                              .override(
+                                fontFamily: 'Montserrat',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
                       ),
                     ],

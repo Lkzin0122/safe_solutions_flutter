@@ -17,30 +17,36 @@ class ServicoModel {
   final String id;
   final String nome;
   final String descricao;
-  final String status;
-  final String? imageUrl;
-  final String? dataContratacao;
-  final String? dataConclusao;
+  final String categoria;
+  final String local;
+  final double valor;
+  final bool status;
+  final String? disponibilidade;
+  final String? criterios;
 
   ServicoModel({
     required this.id,
     required this.nome,
     required this.descricao,
+    required this.categoria,
+    required this.local,
+    required this.valor,
     required this.status,
-    this.imageUrl,
-    this.dataContratacao,
-    this.dataConclusao,
+    this.disponibilidade,
+    this.criterios,
   });
 
   factory ServicoModel.fromJson(Map<String, dynamic> json) {
     return ServicoModel(
       id: json['id']?.toString() ?? '',
-      nome: json['nome']?.toString() ?? '',
-      descricao: json['descricao']?.toString() ?? '',
-      status: json['status']?.toString() ?? '',
-      imageUrl: json['imageUrl']?.toString(),
-      dataContratacao: json['dataContratacao']?.toString(),
-      dataConclusao: json['dataConclusao']?.toString(),
+      nome: json['nome_servico']?.toString() ?? '',
+      descricao: json['descricao_servico']?.toString() ?? '',
+      categoria: json['categoria_servico']?.toString() ?? '',
+      local: json['local_servico']?.toString() ?? '',
+      valor: (json['valor_estimado_servico'] ?? 0.0).toDouble(),
+      status: json['status_servico'] ?? false,
+      disponibilidade: json['disponibilidade_servico']?.toString(),
+      criterios: json['criterios_servico']?.toString(),
     );
   }
 }
@@ -152,11 +158,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   }
 
   List<ServicoModel> get _servicosAtivos {
-    var servicos = _servicos
-        .where((servico) =>
-            servico.status.toLowerCase() != 'concluido' &&
-            servico.status.toLowerCase() != 'finalizado')
-        .toList();
+    var servicos = _servicos.where((servico) => servico.status == true).toList();
 
     if (_searchQuery.isNotEmpty) {
       servicos = servicos
@@ -172,11 +174,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   }
 
   List<ServicoModel> get _servicosConcluidos {
-    var servicos = _servicos
-        .where((servico) =>
-            servico.status.toLowerCase() == 'concluido' ||
-            servico.status.toLowerCase() == 'finalizado')
-        .toList();
+    var servicos = _servicos.where((servico) => servico.status == false).toList();
 
     if (_searchQuery.isNotEmpty) {
       servicos = servicos
@@ -199,22 +197,32 @@ class _ContratosWidgetState extends State<ContratosWidget> {
 
   Widget _buildServicoFromBackend(ServicoModel servico,
       {bool isCompleted = false}) {
-    String imageUrl =
-        servico.imageUrl ?? _getDefaultImageForService(servico.nome);
+    String imageUrl = _getDefaultImageForService(servico.nome);
+    String description = '${servico.descricao}\nLocal: ${servico.local}\nValor: R\$ ${servico.valor.toStringAsFixed(2)}';
 
     if (isCompleted) {
-      final completedService = CompletedService.fromServicoModel(servico);
+      final completedService = CompletedService(
+        id: servico.id,
+        title: servico.nome,
+        description: servico.descricao,
+        completedDate: servico.disponibilidade ?? 'Data não informada',
+        rating: 5.0,
+        icon: Icons.check_circle,
+      );
       return _buildCompletedServiceCard(service: completedService);
     }
 
     return _buildServiceCard(
       title: servico.nome,
-      description: servico.descricao,
+      description: description,
       imageUrl: imageUrl,
       onTap: () {
-        context.pushNamed(
-          'DetalhesServico',
-          pathParameters: {'servicoId': servico.id},
+        // Navegar para detalhes do serviço
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Detalhes do serviço: ${servico.nome}'),
+            backgroundColor: FlutterFlowTheme.of(context).primary,
+          ),
         );
       },
     );
