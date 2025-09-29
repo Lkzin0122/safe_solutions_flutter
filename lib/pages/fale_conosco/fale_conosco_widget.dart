@@ -4,6 +4,8 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'fale_conosco_model.dart';
 export 'fale_conosco_model.dart';
 
@@ -42,6 +44,27 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
   void dispose() {
     _model.dispose();
     super.dispose();
+  }
+
+  Future<void> _enviarContato() async {
+    final url = Uri.parse('http://localhost:8080/contato/enviar');
+    
+    final contato = {
+      'nome': _model.nomeController.text,
+      'email': _model.emailController.text,
+      'telefone': _model.telefoneController.text,
+      'mensagem': _model.mensagemController.text,
+    };
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(contato),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Falha ao enviar contato');
+    }
   }
 
   @override
@@ -352,17 +375,23 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                           ? null
                           : () async {
                               if (formKey.currentState!.validate()) {
-                                setState(() {
-                                  _isLoading = true;
-                                });
+                                setState(() { _isLoading = true; });
                                 HapticFeedback.lightImpact();
-                                await Future.delayed(Duration(seconds: 1));
-                                setState(() {
-                                  _isLoading = false;
-                                  _showSuccessMessage = true;
-                                });
-                                await Future.delayed(Duration(seconds: 2));
-                                if (mounted) context.goNamed('servicos');
+                                
+                                try {
+                                  await _enviarContato();
+                                  setState(() { _isLoading = false; _showSuccessMessage = true; });
+                                  await Future.delayed(Duration(seconds: 2));
+                                  if (mounted) context.goNamed('servicos');
+                                } catch (e) {
+                                  setState(() { _isLoading = false; });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Erro ao enviar mensagem: $e'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
                               }
                             },
                       text: _isLoading ? 'Enviando...' : 'Enviar Mensagem',

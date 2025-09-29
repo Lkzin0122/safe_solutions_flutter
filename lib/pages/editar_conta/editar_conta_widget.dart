@@ -6,6 +6,8 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'editar_conta_model.dart';
 export 'editar_conta_model.dart';
 
@@ -24,7 +26,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showSuccessMessage = false;
   bool _isLoading = false;
-  bool _photoChanged = false;
+  File? _selectedImage;
 
   @override
   void initState() {
@@ -63,6 +65,60 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.photo_library, color: FlutterFlowTheme.of(context).primary),
+                title: Text('Galeria'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    setState(() {
+                      _selectedImage = File(image.path);
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Foto selecionada com sucesso!'),
+                        backgroundColor: FlutterFlowTheme.of(context).success,
+                      ),
+                    );
+                  }
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_camera, color: FlutterFlowTheme.of(context).primary),
+                title: Text('Câmera'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  final XFile? image = await picker.pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    setState(() {
+                      _selectedImage = File(image.path);
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Foto capturada com sucesso!'),
+                        backgroundColor: FlutterFlowTheme.of(context).success,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -166,30 +222,24 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                           height: 120.0,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(
-                              color: FlutterFlowTheme.of(context).tertiary,
-                              width: 3.0,
-                            ),
                             boxShadow: [
                               BoxShadow(
                                 blurRadius: 8.0,
-                                color: FlutterFlowTheme.of(context).tertiary.withOpacity(0.2),
+                                color: Colors.black.withOpacity(0.1),
                                 offset: Offset(0.0, 4.0),
                               ),
                             ],
                           ),
                           child: ClipOval(
-                            child: _photoChanged
-                                ? Container(
-                                    color: FlutterFlowTheme.of(context).tertiary,
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 60.0,
-                                      color: Colors.white,
-                                    ),
+                            child: _selectedImage != null
+                                ? Image.file(
+                                    _selectedImage!,
+                                    width: 120.0,
+                                    height: 120.0,
+                                    fit: BoxFit.cover,
                                   )
                                 : Container(
-                                    color: FlutterFlowTheme.of(context).tertiary,
+                                    color: FlutterFlowTheme.of(context).primary,
                                     child: Icon(
                                       Icons.account_circle,
                                       size: 80.0,
@@ -203,21 +253,13 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                           right: 0,
                           child: InkWell(
                             onTap: () async {
-                              setState(() {
-                                _photoChanged = true;
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Foto alterada com sucesso!'),
-                                  backgroundColor: FlutterFlowTheme.of(context).success,
-                                ),
-                              );
+                              await _pickImage();
                             },
                             child: Container(
                               width: 35.0,
                               height: 35.0,
                               decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context).tertiary,
+                                color: FlutterFlowTheme.of(context).primary,
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
@@ -228,9 +270,9 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                 ],
                               ),
                               child: Icon(
-                                Icons.folder_open,
+                                Icons.camera_alt,
                                 color: Colors.white,
-                                size: 18.0,
+                                size: 20.0,
                               ),
                             ),
                           ),
