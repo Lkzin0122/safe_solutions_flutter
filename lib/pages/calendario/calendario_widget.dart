@@ -256,7 +256,7 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
                   CalendarioModel.scheduledServices.removeWhere((s) => s.id == serviceId);
                 });
                 
-                context.goNamed('Contratos');
+                context.goNamed('servicos');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: FlutterFlowTheme.of(context).primary,
@@ -518,7 +518,7 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
                     child: IconButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => context.goNamed('servicos'),
                       icon: Icon(Icons.arrow_back, size: 22),
                     ),
                   ),

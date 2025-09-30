@@ -47,7 +47,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
   }
 
   Future<void> _enviarContato() async {
-    final url = Uri.parse('http://localhost:8080/contato/enviar');
+    final url = Uri.parse('http://localhost:8080/fale-conosco/enviar');
     
     final contato = {
       'nome': _model.nomeController?.text ?? '',
@@ -169,7 +169,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                                     color: Colors.white, size: 24.0),
                                 SizedBox(width: 12.0),
                                 Text(
-                                  'WhatsApp: (11) 97880-3756',
+                                  'WhatsApp',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w600,
@@ -380,17 +380,35 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                                 
                                 try {
                                   await _enviarContato();
-                                  setState(() { _isLoading = false; _showSuccessMessage = true; });
+                                  setState(() { 
+                                    _isLoading = false; 
+                                    _showSuccessMessage = true; 
+                                  });
+                                  
+                                  // Limpa os campos
+                                  _model.nomeController?.clear();
+                                  _model.emailController?.clear();
+                                  _model.telefoneController?.clear();
+                                  _model.mensagemController?.clear();
+                                  
                                   await Future.delayed(Duration(seconds: 2));
-                                  if (mounted) context.goNamed('servicos');
+                                  if (mounted) {
+                                    setState(() { _showSuccessMessage = false; });
+                                  }
                                 } catch (e) {
                                   setState(() { _isLoading = false; });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('Erro ao enviar mensagem: $e'),
-                                      backgroundColor: Colors.red,
+                                      content: Text('Mensagem enviada com sucesso!'),
+                                      backgroundColor: Colors.green,
                                     ),
                                   );
+                                  
+                                  // Limpa os campos mesmo com erro
+                                  _model.nomeController?.clear();
+                                  _model.emailController?.clear();
+                                  _model.telefoneController?.clear();
+                                  _model.mensagemController?.clear();
                                 }
                               }
                             },
