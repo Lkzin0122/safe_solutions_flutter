@@ -1,9 +1,14 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_profile.dart';
+import '../models/empresa.dart';
+import '../models/usuario.dart';
+import '../storage/session_storage.dart';
 
 class ProfileService {
   static const String _profileKey = 'user_profile';
+  static const String _baseUrl = 'http://localhost:8080/empresa';
 
   static Future<UserProfile> getUserProfile() async {
     final prefs = await SharedPreferences.getInstance();
@@ -32,5 +37,49 @@ class ProfileService {
   static Future<void> saveUserProfile(UserProfile profile) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_profileKey, json.encode(profile.toJson()));
+  }
+
+  // GET /empresa - Get all companies
+  static Future<List<Empresa>> getAllEmpresas() async {
+    final response = await http.get(
+      Uri.parse(_baseUrl),
+      headers: {'Authorization': 'Bearer ${SessionStorage.token}'},
+    );
+    
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => Empresa.fromJson(json)).toList();
+    }
+    throw Exception('Failed to load empresas');
+  }
+
+  // GET /empresa/{cnpj} - Get company by CNPJ
+  static Future<Empresa> getEmpresa(String cnpj) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/$cnpj'),
+      headers: {'Authorization': 'Bearer ${SessionStorage.token}'},
+    );
+    
+    if (response.statusCode == 200) {
+      return Empresa.fromJson(json.decode(response.body));
+    }
+    throw Exception('Empresa não encontrada');
+  }
+
+  // POST /empresa/usuario - Get company by user
+  static Future<Empresa> getEmpresaUsuario(Usuario usuario) async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl/usuario'),
+      headers: {
+        'Authorization': 'Bearer ${SessionStorage.token}',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(usuario.toJson()),
+    );
+    
+    if (response.statusCode == 200) {
+      return Empresa.fromJson(json.decode(response.body));
+    }
+    throw Exception('Empresa não encontrada para o usuário');
   }
 }
