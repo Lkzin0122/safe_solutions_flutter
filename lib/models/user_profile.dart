@@ -6,6 +6,7 @@ class UserProfile {
   final String companyPhone;
   final String companyAddress;
   final String companyDescription;
+  final String? companyCep;
 
   // Dados pessoais (visíveis apenas para o próprio usuário)
   final String? personalName;
@@ -21,6 +22,7 @@ class UserProfile {
     required this.companyPhone,
     required this.companyAddress,
     required this.companyDescription,
+    this.companyCep,
     this.personalName,
     this.personalCpf,
     this.personalPhone,
@@ -36,6 +38,7 @@ class UserProfile {
       companyPhone: json['companyPhone'] ?? '',
       companyAddress: json['companyAddress'] ?? '',
       companyDescription: json['companyDescription'] ?? '',
+      companyCep: json['companyCep'],
       personalName: json['personalName'],
       personalCpf: json['personalCpf'],
       personalPhone: json['personalPhone'],
@@ -52,6 +55,7 @@ class UserProfile {
       'companyPhone': companyPhone,
       'companyAddress': companyAddress,
       'companyDescription': companyDescription,
+      'companyCep': companyCep,
       'personalName': personalName,
       'personalCpf': personalCpf,
       'personalPhone': personalPhone,

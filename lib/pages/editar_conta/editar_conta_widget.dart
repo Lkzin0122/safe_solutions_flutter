@@ -7,6 +7,8 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import 'dart:io';
 import 'editar_conta_model.dart';
 export 'editar_conta_model.dart';
@@ -49,22 +51,56 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
     _model.biografiaController ??= TextEditingController();
     _model.biografiaFocusNode ??= FocusNode();
     
+    _model.nomeEmpresaController ??= TextEditingController();
+    _model.nomeEmpresaFocusNode ??= FocusNode();
+    
+    _model.enderecoController ??= TextEditingController();
+    _model.enderecoFocusNode ??= FocusNode();
+    
+    _model.cepController ??= TextEditingController();
+    _model.cepFocusNode ??= FocusNode();
+    
     // Load user data (example with email)
     _loadUserData();
   }
   
+  String _formatPhone(String value) {
+    value = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (value.length <= 2) return value;
+    if (value.length <= 7) {
+      return '(${value.substring(0, 2)}) ${value.substring(2)}';
+    }
+    if (value.length <= 11) {
+      return '(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7)}';
+    }
+    return '(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7, 11)}';
+  }
+
   void _loadUserData() async {
     setState(() {
       _isLoading = true;
     });
     
-    // Example: load user by email or CPF
-    const String userIdentifier = 'safesolutionsempresa@gmail.com'; // or CPF
-    await _model.loadUserData(userIdentifier);
-    
-    setState(() {
-      _isLoading = false;
-    });
+    try {
+      // Get user email from empresa data or session
+      final prefs = await SharedPreferences.getInstance();
+      final empresaJson = prefs.getString('empresa_data');
+      
+      if (empresaJson != null) {
+        final empresaData = json.decode(empresaJson);
+        final userEmail = empresaData['usuario']?['email'];
+        
+        if (userEmail != null) {
+          await _model.loadUserData(userEmail);
+        }
+      }
+    } catch (e) {
+      print('Error loading user data: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   Future<void> _pickImage() async {
@@ -147,19 +183,14 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
           if (mounted) {
             Navigator.of(context).pop();
           }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Erro ao salvar dados. Tente novamente.'),
-              backgroundColor: FlutterFlowTheme.of(context).error,
-            ),
-          );
         }
       } catch (e) {
+        String errorMessage = e.toString().replaceAll('Exception: ', '');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erro de conexão. Verifique sua internet.'),
+            content: Text(errorMessage),
             backgroundColor: FlutterFlowTheme.of(context).error,
+            duration: Duration(seconds: 4),
           ),
         );
       } finally {
@@ -282,9 +313,9 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                   ),
                   SizedBox(height: 32.0),
                   
-                  // Campo Nome Completo
+                  // Campo Nome da Empresa
                   Text(
-                    'Nome Completo',
+                    'Nome da Empresa',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: 'Montserrat',
                       color: FlutterFlowTheme.of(context).primaryText,
@@ -294,11 +325,11 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                   ),
                   SizedBox(height: 8.0),
                   TextFormField(
-                    controller: _model.nomeCompletoController,
-                    focusNode: _model.nomeCompletoFocusNode,
-                    validator: _model.nomeCompletoValidator?.asValidator(context),
+                    controller: _model.nomeEmpresaController,
+                    focusNode: _model.nomeEmpresaFocusNode,
+                    validator: _model.nomeEmpresaValidator?.asValidator(context),
                     decoration: InputDecoration(
-                      hintText: 'Digite seu nome completo',
+                      hintText: 'Digite o nome da empresa',
                       hintStyle: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Montserrat',
                         color: FlutterFlowTheme.of(context).secondaryText,
@@ -342,7 +373,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                       ),
                       contentPadding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
                       prefixIcon: Icon(
-                        Icons.person_outline,
+                        Icons.business_outlined,
                         color: FlutterFlowTheme.of(context).secondaryText,
                       ),
                     ),
@@ -435,6 +466,19 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                     controller: _model.telefoneController,
                     focusNode: _model.telefoneFocusNode,
                     validator: _model.telefoneValidator?.asValidator(context),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(15),
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    onChanged: (value) {
+                      final formatted = _formatPhone(value);
+                      if (formatted != value) {
+                        _model.telefoneController?.value = TextEditingValue(
+                          text: formatted,
+                          selection: TextSelection.collapsed(offset: formatted.length),
+                        );
+                      }
+                    },
                     decoration: InputDecoration(
                       hintText: '(11) 99999-9999',
                       hintStyle: FlutterFlowTheme.of(context).bodyMedium.override(

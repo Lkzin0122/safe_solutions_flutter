@@ -6,8 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'login1_model.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import '../../services/auth_service.dart';
 export 'login1_model.dart';
 
 class Login1Widget extends StatefulWidget {
@@ -33,33 +32,13 @@ class _Login1WidgetState extends State<Login1Widget> {
     });
 
     try {
-      // Remove a formatação do CNPJ para enviar apenas números
       final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
-
-      final response = await http.get(
-        Uri.parse("http://localhost:8080/empresa/login/$cnpjNumbers")
-            .replace(queryParameters: {'senha': senha}),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        // Salvar CNPJ do usuário logado
-        await _salvarCnpjUsuario(cnpjNumbers);
-        // Login bem-sucedido
-        _showSuccessDialog();
-      } else if (response.statusCode == 401) {
-        // Credenciais inválidas
-        _showErrorDialog('CNPJ ou senha incorretos.');
-      } else {
-        // Outros erros
-        _showErrorDialog('Erro no servidor. Tente novamente mais tarde.');
-      }
+      final empresa = await AuthService.login(cnpjNumbers, senha);
+      
+      await _salvarCnpjUsuario(cnpjNumbers);
+      _showSuccessDialog();
     } catch (e) {
-      // Erro de conexão
-      _showErrorDialog(
-          'Erro de conexão. Verifique sua internet e tente novamente.');
+      _showErrorDialog(e.toString().replaceAll('Exception: ', ''));
     } finally {
       setState(() {
         _isLoading = false;

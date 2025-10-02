@@ -7,6 +7,8 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../services/auth_service.dart';
 import 'verificar_codigo_model.dart';
 export 'verificar_codigo_model.dart';
 
@@ -28,6 +30,8 @@ class _VerificarCodigoWidgetState extends State<VerificarCodigoWidget> {
   
   List<TextEditingController> _controllers = [];
   List<FocusNode> _focusNodes = [];
+  bool _isLoading = false;
+  String? _userCnpj;
 
   String? _validateCodigo() {
     String codigo = _controllers.map((c) => c.text).join();
@@ -44,11 +48,88 @@ class _VerificarCodigoWidgetState extends State<VerificarCodigoWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => VerificarCodigoModel());
+    _loadUserCnpj();
 
     for (int i = 0; i < 6; i++) {
       _controllers.add(TextEditingController());
       _focusNodes.add(FocusNode());
     }
+  }
+
+  Future<void> _loadUserCnpj() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userCnpj = prefs.getString('user_cnpj');
+    });
+  }
+
+  Future<void> _validarCodigo() async {
+    if (_userCnpj == null) {
+      _showError('Erro: CNPJ não encontrado. Faça login novamente.');
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      String codigo = _controllers.map((c) => c.text).join();
+      bool isValid = await AuthService.validarCodigo(_userCnpj!, codigo);
+      
+      if (isValid) {
+        context.goNamed('servicos');
+      } else {
+        _showError('Código inválido ou expirado.');
+      }
+    } catch (e) {
+      _showError(e.toString().replaceAll('Exception: ', ''));
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _reenviarCodigo() async {
+    if (_userCnpj == null) {
+      _showError('Erro: CNPJ não encontrado. Faça login novamente.');
+      return;
+    }
+
+    try {
+      await AuthService.reenviarCodigo(_userCnpj!);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Código reenviado para seu e-mail',
+            style: TextStyle(
+              color: FlutterFlowTheme.of(context).primaryText,
+            ),
+          ),
+          duration: const Duration(milliseconds: 4000),
+          backgroundColor: FlutterFlowTheme.of(context).secondary,
+        ),
+      );
+    } catch (e) {
+      _showError(e.toString().replaceAll('Exception: ', ''));
+    }
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        duration: const Duration(seconds: 3),
+        backgroundColor: FlutterFlowTheme.of(context).error,
+      ),
+    );
   }
 
   @override
@@ -268,27 +349,25 @@ class _VerificarCodigoWidgetState extends State<VerificarCodigoWidget> {
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
                       child: FFButtonWidget(
-                        onPressed: () async {
+                        onPressed: _isLoading ? null : () async {
                           String? error = _validateCodigo();
                           if (error == null) {
-                            context.goNamed('NovaSenhaPosValidacao');
+                            await _validarCodigo();
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  error,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                duration: const Duration(seconds: 2),
-                                backgroundColor: FlutterFlowTheme.of(context).error,
-                              ),
-                            );
+                            _showError(error);
                           }
                         },
-                        text: 'Confirmar',
+                        text: _isLoading ? '' : 'Confirmar',
+                        icon: _isLoading
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                ),
+                              )
+                            : null,
                         options: FFButtonOptions(
                           width: 270.0,
                           height: 50.0,
@@ -326,21 +405,7 @@ class _VerificarCodigoWidgetState extends State<VerificarCodigoWidget> {
                         focusColor: Colors.transparent,
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
-                        onTap: () async {
-                          // Simular reenvio do código
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Código reenviado para seu e-mail',
-                                style: TextStyle(
-                                  color: FlutterFlowTheme.of(context).primaryText,
-                                ),
-                              ),
-                              duration: const Duration(milliseconds: 4000),
-                              backgroundColor: FlutterFlowTheme.of(context).secondary,
-                            ),
-                          );
-                        },
+                        onTap: _isLoading ? null : _reenviarCodigo,
                         child: Text(
                           'Reenviar código',
                           style: FlutterFlowTheme.of(context)

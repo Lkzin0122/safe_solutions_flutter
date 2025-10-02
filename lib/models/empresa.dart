@@ -7,6 +7,7 @@ class Empresa {
   final String? telefone;
   final String? endereco;
   final String? descricao;
+  final String? cep;
   final Usuario? usuario;
 
   Empresa({
@@ -16,17 +17,19 @@ class Empresa {
     this.telefone,
     this.endereco,
     this.descricao,
+    this.cep,
     this.usuario,
   });
 
   factory Empresa.fromJson(Map<String, dynamic> json) {
     return Empresa(
       cnpj: json['cnpj'] ?? '',
-      nomeEmpresa: json['nome_empresa'] ?? '',
+      nomeEmpresa: json['nome_empresa'] ?? json['nomeEmpresa'] ?? '',
       email: json['email'] ?? '',
-      telefone: json['telefone'],
-      endereco: json['endereco'],
-      descricao: json['descricao'],
+      telefone: json['telefone'] ?? json['phone'],
+      endereco: json['endereco'] ?? json['address'],
+      descricao: json['descricao'] ?? json['description'],
+      cep: json['cep'],
       usuario: json['usuario'] != null ? Usuario.fromJson(json['usuario']) : null,
     );
   }
@@ -39,6 +42,7 @@ class Empresa {
       'telefone': telefone,
       'endereco': endereco,
       'descricao': descricao,
+      'cep': cep,
       'usuario': usuario?.toJson(),
     };
   }

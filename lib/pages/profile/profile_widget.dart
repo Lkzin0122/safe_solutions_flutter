@@ -115,6 +115,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
         });
       }
     } catch (e) {
+      print('Error loading profile: $e');
       if (mounted) {
         setState(() {
           userProfile = UserProfile(
@@ -421,7 +422,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                         SizedBox(height: 4.0),
                                         Text(
                                           userProfile?.companyCnpj ?? '12.345.678/0001-90',
-                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                          style: FlutterFlowTheme.of(context).bodySmall.override(
                                             fontFamily: 'Montserrat',
                                             color: FlutterFlowTheme.of(context).primary,
                                             fontWeight: FontWeight.w600,

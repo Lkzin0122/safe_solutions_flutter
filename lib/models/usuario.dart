@@ -13,19 +13,24 @@ class Usuario {
 
   factory Usuario.fromJson(Map<String, dynamic> json) {
     return Usuario(
-      cpf: json['cpf'],
-      nome: json['nome_usuario'],
-      email: json['email'],
-      telefone: json['telefone'],
+      cpf: json['cpf'] ?? json['cpf_usuario'] ?? '',
+      nome: json['nome_usuario'] ?? json['nome'] ?? '',
+      email: json['email'] ?? '',
+      telefone: json['telefone'] ?? json['phone'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'cpf': cpf,
+    final map = {
+      'cpf': cpf.replaceAll(RegExp(r'[^0-9]'), ''),
       'nome_usuario': nome,
       'email': email,
-      'telefone': telefone,
     };
+    
+    if (telefone != null && telefone!.isNotEmpty) {
+      map['telefone'] = telefone!;
+    }
+    
+    return map;
   }
 }
