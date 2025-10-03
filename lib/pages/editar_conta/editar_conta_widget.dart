@@ -5,11 +5,6 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'dart:io';
 import 'editar_conta_model.dart';
 export 'editar_conta_model.dart';
 
@@ -26,179 +21,17 @@ class EditarContaWidget extends StatefulWidget {
 class _EditarContaWidgetState extends State<EditarContaWidget> {
   late EditarContaModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _showSuccessMessage = false;
-  bool _isLoading = false;
-  File? _selectedImage;
 
   @override
   void initState() {
     super.initState();
     _model = ffm.createModel(context, () => EditarContaModel());
-    
-    // Initialize controllers
-    _model.nomeCompletoController ??= TextEditingController();
-    _model.nomeCompletoFocusNode ??= FocusNode();
-    
-    _model.emailController ??= TextEditingController();
-    _model.emailFocusNode ??= FocusNode();
-    
-    _model.telefoneController ??= TextEditingController();
-    _model.telefoneFocusNode ??= FocusNode();
-    
-    _model.cpfController ??= TextEditingController();
-    _model.cpfFocusNode ??= FocusNode();
-    
-    _model.biografiaController ??= TextEditingController();
-    _model.biografiaFocusNode ??= FocusNode();
-    
-    _model.nomeEmpresaController ??= TextEditingController();
-    _model.nomeEmpresaFocusNode ??= FocusNode();
-    
-    _model.enderecoController ??= TextEditingController();
-    _model.enderecoFocusNode ??= FocusNode();
-    
-    _model.cepController ??= TextEditingController();
-    _model.cepFocusNode ??= FocusNode();
-    
-    // Load user data (example with email)
-    _loadUserData();
-  }
-  
-  String _formatPhone(String value) {
-    value = value.replaceAll(RegExp(r'[^0-9]'), '');
-    if (value.length <= 2) return value;
-    if (value.length <= 7) {
-      return '(${value.substring(0, 2)}) ${value.substring(2)}';
-    }
-    if (value.length <= 11) {
-      return '(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7)}';
-    }
-    return '(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7, 11)}';
-  }
-
-  void _loadUserData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    
-    try {
-      // Get user email from empresa data or session
-      final prefs = await SharedPreferences.getInstance();
-      final empresaJson = prefs.getString('empresa_data');
-      
-      if (empresaJson != null) {
-        final empresaData = json.decode(empresaJson);
-        final userEmail = empresaData['usuario']?['email'];
-        
-        if (userEmail != null) {
-          await _model.loadUserData(userEmail);
-        }
-      }
-    } catch (e) {
-      print('Error loading user data: $e');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SafeArea(
-          child: Wrap(
-            children: [
-              ListTile(
-                leading: Icon(Icons.photo_library, color: FlutterFlowTheme.of(context).primary),
-                title: Text('Galeria'),
-                onTap: () async {
-                  Navigator.of(context).pop();
-                  final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                  if (image != null) {
-                    setState(() {
-                      _selectedImage = File(image.path);
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Foto selecionada com sucesso!'),
-                        backgroundColor: FlutterFlowTheme.of(context).success,
-                      ),
-                    );
-                  }
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.photo_camera, color: FlutterFlowTheme.of(context).primary),
-                title: Text('Câmera'),
-                onTap: () async {
-                  Navigator.of(context).pop();
-                  final XFile? image = await picker.pickImage(source: ImageSource.camera);
-                  if (image != null) {
-                    setState(() {
-                      _selectedImage = File(image.path);
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Foto capturada com sucesso!'),
-                        backgroundColor: FlutterFlowTheme.of(context).success,
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   @override
   void dispose() {
     _model.dispose();
     super.dispose();
-  }
-
-  void _salvarDados() async {
-    if (_model.formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-      
-      try {
-        bool success = await _model.saveUserData();
-        
-        if (success) {
-          setState(() {
-            _showSuccessMessage = true;
-          });
-          
-          HapticFeedback.lightImpact();
-          
-          await Future.delayed(Duration(seconds: 2));
-          if (mounted) {
-            Navigator.of(context).pop();
-          }
-        }
-      } catch (e) {
-        String errorMessage = e.toString().replaceAll('Exception: ', '');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(errorMessage),
-            backgroundColor: FlutterFlowTheme.of(context).error,
-            duration: Duration(seconds: 4),
-          ),
-        );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
   }
 
   @override
@@ -235,552 +68,509 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
           elevation: 2.0,
         ),
         body: SafeArea(
-          child: Form(
-            key: _model.formKey,
-            autovalidateMode: AutovalidateMode.disabled,
-            child: SingleChildScrollView(
-              padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  // Foto de perfil
-                  Center(
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: 120.0,
-                          height: 120.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 8.0,
-                                color: Colors.black.withOpacity(0.1),
-                                offset: Offset(0.0, 4.0),
-                              ),
-                            ],
-                          ),
-                          child: ClipOval(
-                            child: _selectedImage != null
-                                ? Image.file(
-                                    _selectedImage!,
-                                    width: 120.0,
-                                    height: 120.0,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Container(
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    child: Icon(
-                                      Icons.account_circle,
-                                      size: 80.0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: InkWell(
-                            onTap: () async {
-                              await _pickImage();
-                            },
-                            child: Container(
-                              width: 35.0,
-                              height: 35.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context).primary,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 4.0,
-                                    color: Colors.black.withOpacity(0.2),
-                                    offset: Offset(0.0, 2.0),
-                                  ),
-                                ],
-                              ),
-                              child: Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
-                                size: 20.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+          child: SingleChildScrollView(
+            padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Seção Dados da Empresa
+                Text(
+                  'Dados de sua empresa',
+                  style: FlutterFlowTheme.of(context).headlineSmall.override(
+                    fontFamily: 'Montserrat',
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w600,
                   ),
-                  SizedBox(height: 32.0),
-                  
-                  // Campo Nome da Empresa
-                  Text(
-                    'Nome da Empresa',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  TextFormField(
-                    controller: _model.nomeEmpresaController,
-                    focusNode: _model.nomeEmpresaFocusNode,
-                    validator: _model.nomeEmpresaValidator?.asValidator(context),
-                    decoration: InputDecoration(
-                      hintText: 'Digite o nome da empresa',
-                      hintStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                      filled: true,
-                      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).tertiary,
-                          width: 2.0,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 2.0,
-                        ),
-                      ),
-                      contentPadding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                      prefixIcon: Icon(
-                        Icons.business_outlined,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                    ),
-                    style: FlutterFlowTheme.of(context).bodyMedium,
-                    textCapitalization: TextCapitalization.words,
-                  ),
-                  SizedBox(height: 20.0),
-                  
-                  // Campo Email
-                  Text(
-                    'Email',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  TextFormField(
-                    controller: _model.emailController,
-                    focusNode: _model.emailFocusNode,
-                    validator: _model.emailValidator?.asValidator(context),
-                    decoration: InputDecoration(
-                      hintText: 'Digite seu email',
-                      hintStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                      filled: true,
-                      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).tertiary,
-                          width: 2.0,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 2.0,
-                        ),
-                      ),
-                      contentPadding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                      prefixIcon: Icon(
-                        Icons.email_outlined,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                    ),
-                    style: FlutterFlowTheme.of(context).bodyMedium,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  SizedBox(height: 20.0),
-                  
-                  // Campo Telefone
-                  Text(
-                    'Telefone',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  TextFormField(
-                    controller: _model.telefoneController,
-                    focusNode: _model.telefoneFocusNode,
-                    validator: _model.telefoneValidator?.asValidator(context),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(15),
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    onChanged: (value) {
-                      final formatted = _formatPhone(value);
-                      if (formatted != value) {
-                        _model.telefoneController?.value = TextEditingValue(
-                          text: formatted,
-                          selection: TextSelection.collapsed(offset: formatted.length),
-                        );
-                      }
-                    },
-                    decoration: InputDecoration(
-                      hintText: '(11) 99999-9999',
-                      hintStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                      filled: true,
-                      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).tertiary,
-                          width: 2.0,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 2.0,
-                        ),
-                      ),
-                      contentPadding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                      prefixIcon: Icon(
-                        Icons.phone_outlined,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                    ),
-                    style: FlutterFlowTheme.of(context).bodyMedium,
-                    keyboardType: TextInputType.phone,
-                  ),
-                  SizedBox(height: 20.0),
-                  
-                  // Campo CPF
-                  Text(
-                    'CPF',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  TextFormField(
-                    controller: _model.cpfController,
-                    focusNode: _model.cpfFocusNode,
-                    validator: _model.cpfValidator?.asValidator(context),
-                    decoration: InputDecoration(
-                      hintText: '000.000.000-00',
-                      hintStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                      filled: true,
-                      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).tertiary,
-                          width: 2.0,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 2.0,
-                        ),
-                      ),
-                      contentPadding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                      prefixIcon: Icon(
-                        Icons.badge_outlined,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                    ),
-                    style: FlutterFlowTheme.of(context).bodyMedium,
-                    keyboardType: TextInputType.number,
-                  ),
-                  SizedBox(height: 20.0),
-                  
-                  // Campo Sobre a Empresa
-                  Text(
-                    'Sobre a Empresa',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  TextFormField(
-                    controller: _model.biografiaController,
-                    focusNode: _model.biografiaFocusNode,
-                    validator: _model.biografiaValidator?.asValidator(context),
-                    decoration: InputDecoration(
-                      hintText: 'Conte um pouco sobre você ou sua empresa...',
-                      hintStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                      filled: true,
-                      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).tertiary,
-                          width: 2.0,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 1.0,
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 2.0,
-                        ),
-                      ),
-                      contentPadding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                      alignLabelWithHint: true,
-                    ),
-                    style: FlutterFlowTheme.of(context).bodyMedium,
-                    maxLines: 4,
-                    maxLength: 500,
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
-                  SizedBox(height: 32.0),
-                  
-                  // Botões
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // Botão Cancelar
-                      Expanded(
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            Navigator.of(context).pop();
-                          },
-                          text: 'Cancelar',
-                          options: FFButtonOptions(
-                            height: 50.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                            color: FlutterFlowTheme.of(context).secondaryBackground,
-                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                              fontFamily: 'Montserrat',
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            elevation: 0.0,
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).alternate,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 16.0),
-                      
-                      // Botão Salvar
-                      Expanded(
-                        child: FFButtonWidget(
-                          onPressed: _isLoading ? null : _salvarDados,
-                          text: _isLoading ? 'Salvando...' : 'Salvar',
-                          icon: _isLoading 
-                            ? SizedBox(
-                                width: 20.0,
-                                height: 20.0,
-                                child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                  strokeWidth: 2.0,
-                                ),
-                              )
-                            : null,
-                          options: FFButtonOptions(
-                            height: 50.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                            color: FlutterFlowTheme.of(context).tertiary,
-                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                              fontFamily: 'Montserrat',
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            elevation: 3.0,
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  
-                  // Mensagem de sucesso
-                  if (_showSuccessMessage)
-                    Container(
-                      margin: EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
-                      padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).success,
-                        borderRadius: BorderRadius.circular(12.0),
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 4.0,
-                            color: FlutterFlowTheme.of(context).success.withOpacity(0.3),
-                            offset: Offset(0.0, 2.0),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                SizedBox(height: 20.0),
+                
+                // Linha 1: Nome da empresa e Email
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.check_circle_outline,
-                            color: Colors.white,
-                            size: 24.0,
-                          ),
-                          SizedBox(width: 12.0),
                           Text(
-                            'Dados salvos com sucesso!',
+                            'Nome da empresa:',
                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Montserrat',
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              'bolabola',
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                ],
-              ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Email da empresa',
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              'viniciusalvesdsph@gmail.com',
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.0),
+                
+                // Descrição da empresa
+                Text(
+                  'Descrição da empresa',
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                    fontFamily: 'Montserrat',
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                    fontSize: 14.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFE8F0F0),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    'bola',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).primaryText,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                
+                // Linha 2: Telefone e CNPJ
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Telefone da empresa',
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              '1199855164',
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'CNPJ',
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              '44444444444444',
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24.0),
+                
+                // Seção Endereço
+                Text(
+                  'Endereço',
+                  style: FlutterFlowTheme.of(context).headlineSmall.override(
+                    fontFamily: 'Montserrat',
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                
+                // Linha 3: CEP e Cidade
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'CEP',
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              '06449-300',
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Cidade',
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              'Barueri',
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.0),
+                
+                // Linha 4: Bairro e Rua
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Bairro',
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              'Parque Viana',
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Rua',
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              'Estrada das Pitas',
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.0),
+                
+                // Número
+                Text(
+                  'Número',
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                    fontFamily: 'Montserrat',
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                    fontSize: 14.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFE8F0F0),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    '952',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).primaryText,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24.0),
+                
+                // Seção Dados Pessoais
+                Text(
+                  'Dados Pessoais',
+                  style: FlutterFlowTheme.of(context).headlineSmall.override(
+                    fontFamily: 'Montserrat',
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                
+                // Linha 5: Nome do usuário e CPF
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Nome do usuário',
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              'Bruno_Magno',
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'CPF',
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE8F0F0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              '66666666666',
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.0),
+                
+                // Data de nascimento
+                Text(
+                  'Data de nascimento',
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                    fontFamily: 'Montserrat',
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                    fontSize: 14.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFE8F0F0),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    '04/11/1993',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).primaryText,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 32.0),
+                
+                // Botão Editar Dados
+                Container(
+                  width: double.infinity,
+                  child: FFButtonWidget(
+                    onPressed: () {
+                      // TODO: Implementar edição de dados
+                    },
+                    text: 'Editar Dados',
+                    options: FFButtonOptions(
+                      height: 50.0,
+                      padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      color: Colors.transparent,
+                      textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                        fontFamily: 'Montserrat',
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      elevation: 0.0,
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).alternate,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-
       ),
     );
   }
