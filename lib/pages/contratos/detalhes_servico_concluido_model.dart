@@ -1,9 +1,7 @@
 import '/flutter_flow/flutter_flow_model.dart';
-import '/flutter_flow/flutter_flow_model.dart';
-import 'detalhes_servico_concluido_widget.dart' show DetalhesServicoConcluidoWidget;
 import 'package:flutter/material.dart';
 
-class DetalhesServicoConcluidoModel extends FlutterFlowModel<DetalhesServicoConcluidoWidget> {
+class DetalhesServicoConcluidoModel extends FlutterFlowModel {
   @override
   void initState(BuildContext context) {}
 

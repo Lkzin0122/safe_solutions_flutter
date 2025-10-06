@@ -1,7 +1,6 @@
 // Export all pages
 export 'pages/profile/profile_widget.dart';
 export 'pages/editar_conta/editar_conta_widget.dart';
-export 'pages/configuracoes/configuracoes_widget.dart';
 
 // Export flutter flow
 export 'flutter_flow/flutter_flow_util.dart';

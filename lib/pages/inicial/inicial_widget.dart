@@ -1,11 +1,9 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:provider/provider.dart';
 import 'inicial_model.dart';
 export 'inicial_model.dart';
@@ -33,7 +31,7 @@ class _InicialWidgetState extends State<InicialWidget> with TickerProviderStateM
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => InicialModel());
+    _model = InicialModel();
 
     _logoController = AnimationController(
       duration: const Duration(milliseconds: 1500),
@@ -61,7 +59,7 @@ class _InicialWidgetState extends State<InicialWidget> with TickerProviderStateM
       curve: Curves.easeInOut,
     ));
 
-    _startAnimation();
+    SchedulerBinding.instance.addPostFrameCallback((_) => _startAnimation());
   }
 
   void _startAnimation() async {
@@ -75,7 +73,8 @@ class _InicialWidgetState extends State<InicialWidget> with TickerProviderStateM
     
     await Future.delayed(const Duration(milliseconds: 2000));
     if (mounted) {
-      context.goNamed('Login');
+      // Navegar para a próxima tela - ajuste conforme necessário
+      Navigator.pushReplacementNamed(context, '/login');
     }
   }
 
@@ -112,18 +111,18 @@ class _InicialWidgetState extends State<InicialWidget> with TickerProviderStateM
                           alignment: const Alignment(0.0, 0.0),
                         ),
                       ),
-                      SizedBox(height: 60),
+                      const SizedBox(height: 60),
                       AnimatedBuilder(
                         animation: _progressAnimation,
                         builder: (context, child) {
-                          return Container(
+                          return SizedBox(
                             width: 60,
                             height: 60,
                             child: CircularProgressIndicator(
                               value: _progressAnimation.value,
                               strokeWidth: 4,
                               backgroundColor: Colors.grey[300],
-                              valueColor: AlwaysStoppedAnimation<Color>(
+                              valueColor: const AlwaysStoppedAnimation<Color>(
                                 Color(0xFF4A90E2),
                               ),
                             ),
