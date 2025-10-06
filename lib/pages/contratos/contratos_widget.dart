@@ -5,13 +5,13 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 import 'contratos_model.dart';
 import 'detalhes_servico_concluido_widget.dart';
+import '../../services/auth_service.dart';
 export 'contratos_model.dart';
 
-bool isUserLoggedIn() {
-  return true;
-}
+
 
 class ServicoModel {
   final String id;
@@ -77,6 +77,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   String? _error;
   String? _userCnpj;
   String _searchQuery = '';
+  bool hasLoginError = false;
 
   @override
   void initState() {
@@ -88,14 +89,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!isUserLoggedIn()) {
-        context.pushNamed('Login');
-      } else {
-        await _loadUserCnpj();
-        if (_userCnpj != null) {
-          _loadServicos();
-        }
-      }
+      await _checkLoginAndLoadData();
     });
   }
 
@@ -103,6 +97,34 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   void dispose() {
     _model.dispose();
     super.dispose();
+  }
+
+  Future<void> _checkLoginAndLoadData() async {
+    try {
+      final isLoggedIn = await AuthService.isLoggedIn();
+      
+      if (!isLoggedIn) {
+        if (mounted) {
+          setState(() {
+            hasLoginError = true;
+            _isLoading = false;
+          });
+        }
+        return;
+      }
+      
+      await _loadUserCnpj();
+      if (_userCnpj != null) {
+        _loadServicos();
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          hasLoginError = true;
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   Future<void> _loadUserCnpj() async {
@@ -564,11 +586,13 @@ class _ContratosWidgetState extends State<ContratosWidget> {
         key: scaffoldKey,
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: RefreshIndicator(
-            onRefresh: _loadServicos,
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
+          child: hasLoginError
+              ? _buildErrorScreen()
+              : RefreshIndicator(
+                  onRefresh: _loadServicos,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
                 children: [
                   // Logo padronizada
                   Container(
@@ -632,7 +656,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           child: IconButton(
-                            onPressed: () => context.goNamed('Calendario'),
+                            onPressed: () => GoRouter.of(context).goNamed('Calendario'),
                             icon: const Icon(Icons.calendar_month,
                                 color: Colors.white),
                             tooltip: 'Ver Calendário',
@@ -811,12 +835,12 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       ),
                     ],
                   ],
-                  const SizedBox(height: 20.0),
-                ],
+                    const SizedBox(height: 20.0),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
         bottomNavigationBar: Container(
           width: double.infinity,
           height: 80,
@@ -881,7 +905,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.goNamed('FaleConosco');
+                    GoRouter.of(context).goNamed('FaleConosco');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -920,7 +944,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    context.goNamed('Profile');
+                    GoRouter.of(context).goNamed('Profile');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -956,6 +980,71 @@ class _ContratosWidgetState extends State<ContratosWidget> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorScreen() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.error_outline,
+                size: 64.0,
+                color: Colors.red,
+              ),
+            ),
+            const SizedBox(height: 24.0),
+            Text(
+              'Acesso Negado',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                fontFamily: 'Montserrat',
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Você precisa fazer login para acessar esta página.',
+              textAlign: TextAlign.center,
+              style: FlutterFlowTheme.of(context).bodyLarge.override(
+                fontFamily: 'Montserrat',
+                color: FlutterFlowTheme.of(context).secondaryText,
+              ),
+            ),
+            const SizedBox(height: 32.0),
+            ElevatedButton(
+              onPressed: () {
+                GoRouter.of(context).goNamed('Login');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: FlutterFlowTheme.of(context).primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+              child: Text(
+                'Fazer Login',
+                style: FlutterFlowTheme.of(context).titleMedium.override(
+                  fontFamily: 'Montserrat',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

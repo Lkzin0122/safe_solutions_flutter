@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import 'package:go_router/go_router.dart';
 import 'dart:convert';
 import 'fale_conosco_model.dart';
 export 'fale_conosco_model.dart';
@@ -48,7 +49,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
 
   Future<void> _enviarContato() async {
     final url = Uri.parse('http://localhost:8080/fale-conosco/enviar');
-    
+
     final contato = {
       'nome': _model.nomeController?.text ?? '',
       'email': _model.emailController?.text ?? '',
@@ -75,20 +76,27 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
-        key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).primary,
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-          elevation: 2.0,
-        ),
         body: Form(
           key: formKey,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Logo da SafeSolutions
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(24.0, 50.0, 24.0, 20.0),
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(0.0),
+                      child: Image.network(
+                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                        width: 200.0,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
                 // Seção de contato rápido
                 Padding(
                   padding:
@@ -150,15 +158,15 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                           child: Container(
                             width: double.infinity,
                             padding: EdgeInsetsDirectional.fromSTEB(
-                                20.0, 16.0, 20.0, 16.0),
+                                16.0, 12.0, 16.0, 12.0),
                             decoration: BoxDecoration(
                               color: Color(0xFF25D366),
-                              borderRadius: BorderRadius.circular(12.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               boxShadow: [
                                 BoxShadow(
                                   color: Color(0xFF25D366).withOpacity(0.3),
-                                  blurRadius: 8.0,
-                                  offset: Offset(0.0, 4.0),
+                                  blurRadius: 6.0,
+                                  offset: Offset(0.0, 3.0),
                                 ),
                               ],
                             ),
@@ -166,14 +174,14 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.chat,
-                                    color: Colors.white, size: 24.0),
-                                SizedBox(width: 12.0),
+                                    color: Colors.white, size: 20.0),
+                                SizedBox(width: 8.0),
                                 Text(
                                   'WhatsApp',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 16.0,
+                                    fontSize: 14.0,
                                   ),
                                 ),
                               ],
@@ -375,35 +383,42 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                           ? null
                           : () async {
                               if (formKey.currentState!.validate()) {
-                                setState(() { _isLoading = true; });
+                                setState(() {
+                                  _isLoading = true;
+                                });
                                 HapticFeedback.lightImpact();
-                                
+
                                 try {
                                   await _enviarContato();
-                                  setState(() { 
-                                    _isLoading = false; 
-                                    _showSuccessMessage = true; 
+                                  setState(() {
+                                    _isLoading = false;
+                                    _showSuccessMessage = true;
                                   });
-                                  
+
                                   // Limpa os campos
                                   _model.nomeController?.clear();
                                   _model.emailController?.clear();
                                   _model.telefoneController?.clear();
                                   _model.mensagemController?.clear();
-                                  
+
                                   await Future.delayed(Duration(seconds: 2));
                                   if (mounted) {
-                                    setState(() { _showSuccessMessage = false; });
+                                    setState(() {
+                                      _showSuccessMessage = false;
+                                    });
                                   }
                                 } catch (e) {
-                                  setState(() { _isLoading = false; });
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('Mensagem enviada com sucesso!'),
+                                      content:
+                                          Text('Mensagem enviada com sucesso!'),
                                       backgroundColor: Colors.green,
                                     ),
                                   );
-                                  
+
                                   // Limpa os campos mesmo com erro
                                   _model.nomeController?.clear();
                                   _model.emailController?.clear();
@@ -425,16 +440,17 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                             )
                           : Icon(Icons.send, color: Colors.white),
                       options: FFButtonOptions(
-                        height: 50.0,
+                        height: 44.0,
                         color: FlutterFlowTheme.of(context).primary,
                         textStyle:
                             FlutterFlowTheme.of(context).titleSmall.override(
                                   fontFamily: 'Montserrat',
                                   color: Colors.white,
+                                  fontSize: 14.0,
                                   fontWeight: FontWeight.w600,
                                 ),
-                        elevation: 3.0,
-                        borderRadius: BorderRadius.circular(12.0),
+                        elevation: 2.0,
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
                   ),
@@ -499,7 +515,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  onTap: () => context.goNamed('servicos'),
+                  onTap: () => GoRouter.of(context).goNamed('servicos'),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -552,7 +568,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
                   ],
                 ),
                 InkWell(
-                  onTap: () => context.goNamed('Profile'),
+                  onTap: () => GoRouter.of(context).goNamed('Profile'),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

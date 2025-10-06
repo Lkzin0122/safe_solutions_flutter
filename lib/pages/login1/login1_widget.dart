@@ -35,7 +35,6 @@ class _Login1WidgetState extends State<Login1Widget> {
       final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
       final empresa = await AuthService.login(cnpjNumbers, senha);
       
-      await _salvarCnpjUsuario(cnpjNumbers);
       _showSuccessDialog();
     } catch (e) {
       _showErrorDialog(e.toString().replaceAll('Exception: ', ''));
@@ -44,11 +43,6 @@ class _Login1WidgetState extends State<Login1Widget> {
         _isLoading = false;
       });
     }
-  }
-
-  Future<void> _salvarCnpjUsuario(String cnpj) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user_cnpj', cnpj);
   }
 
   void _showSuccessDialog() {

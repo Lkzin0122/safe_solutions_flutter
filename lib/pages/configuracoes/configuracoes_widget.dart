@@ -3,7 +3,9 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'configuracoes_model.dart';
+import '../../services/auth_service.dart';
 export 'configuracoes_model.dart';
 
 class ConfiguracoesWidget extends StatefulWidget {
@@ -48,14 +50,14 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
                 child: IconButton(
-                  onPressed: () => context.pushNamed('Profile'),
+                  onPressed: () => GoRouter.of(context).pushNamed('Profile'),
                   icon: Icon(Icons.arrow_back, size: 20),
                 ),
               ),
             ),
             // Editar Conta
             InkWell(
-              onTap: () => context.pushNamed('EditarConta'),
+              onTap: () => GoRouter.of(context).pushNamed('EditarConta'),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
@@ -98,7 +100,7 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
             
             // Privacidade
             InkWell(
-              onTap: () => context.pushNamed('Privacidade'),
+              onTap: () => GoRouter.of(context).pushNamed('Privacidade'),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
@@ -141,7 +143,7 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
             
             // Termos de Uso
             InkWell(
-              onTap: () => context.pushNamed('TermosUso'),
+              onTap: () => GoRouter.of(context).pushNamed('TermosUso'),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
@@ -184,7 +186,7 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
             
             // Suporte
             InkWell(
-              onTap: () => context.pushNamed('Suporte'),
+              onTap: () => GoRouter.of(context).pushNamed('Suporte'),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
@@ -222,9 +224,164 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
                 ),
               ),
             ),
+            
+            SizedBox(height: 32.0),
+            
+            // Logout
+            InkWell(
+              onTap: () => _showLogoutDialog(),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.red.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12.0),
+                  border: Border.all(
+                    color: Colors.red.withOpacity(0.3),
+                    width: 1.0,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.logout,
+                      color: Colors.red,
+                      size: 24.0,
+                    ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Text(
+                        'Sair',
+                        style: FlutterFlowTheme.of(context).bodyLarge.override(
+                          fontFamily: 'Montserrat',
+                          color: Colors.red,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.red,
+                      size: 16.0,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(
+                Icons.logout,
+                color: Colors.red,
+                size: 28,
+              ),
+              SizedBox(width: 8),
+              Text('Sair'),
+            ],
+          ),
+          content: const Text('Tem certeza que deseja sair da sua conta?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await AuthService.logout();
+                GoRouter.of(context).goNamed('Login');
+              },
+              child: const Text(
+                'Sair',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+                      color: Colors.red,
+                      size: 24.0,
+                    ),
+                    SizedBox(width: 16.0),
+                    Expanded(
+                      child: Text(
+                        'Sair',
+                        style: FlutterFlowTheme.of(context).bodyLarge.override(
+                          fontFamily: 'Montserrat',
+                          color: Colors.red,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.red,
+                      size: 16.0,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(
+                Icons.logout,
+                color: Colors.red,
+                size: 28,
+              ),
+              SizedBox(width: 8),
+              Text('Sair'),
+            ],
+          ),
+          content: const Text('Tem certeza que deseja sair da sua conta?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await AuthService.logout();
+                GoRouter.of(context).goNamed('Login');
+              },
+              child: const Text(
+                'Sair',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

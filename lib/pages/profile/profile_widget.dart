@@ -5,6 +5,8 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 import 'profile_model.dart';
 import '../../models/user_profile.dart';
 import '../../services/profile_service.dart';
@@ -25,6 +27,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
   late ProfileModel _model;
   UserProfile? userProfile;
   bool isLoading = true;
+  bool hasLoginError = false;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = <String, AnimationInfo>{};
@@ -33,7 +36,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => ProfileModel());
-    _loadUserProfile();
+    _checkLoginAndLoadProfile();
 
     animationsMap.addAll({
       'cardOnPageLoadAnimation': AnimationInfo(
@@ -105,6 +108,33 @@ class _ProfileWidgetState extends State<ProfileWidget>
     );
   }
 
+  Future<void> _checkLoginAndLoadProfile() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userCnpj = prefs.getString('user_cnpj');
+      final empresaData = prefs.getString('empresa_data');
+      
+      if (userCnpj == null || empresaData == null) {
+        if (mounted) {
+          setState(() {
+            hasLoginError = true;
+            isLoading = false;
+          });
+        }
+        return;
+      }
+      
+      await _loadUserProfile();
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          hasLoginError = true;
+          isLoading = false;
+        });
+      }
+    }
+  }
+
   Future<void> _loadUserProfile() async {
     try {
       final profile = await ProfileService.getUserProfile();
@@ -118,14 +148,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
       print('Error loading profile: $e');
       if (mounted) {
         setState(() {
-          userProfile = UserProfile(
-            companyName: 'Tech Solutions',
-            companyEmail: 'techsolutions@gmail.com',
-            companyCnpj: '22.222.222/2222-22',
-            companyPhone: '(11) 97880-3756',
-            companyAddress: 'São Paulo, SP',
-            companyDescription: 'Empresa especializada em soluções tecnológicas.',
-          );
+          hasLoginError = true;
           isLoading = false;
         });
       }
@@ -158,6 +181,8 @@ class _ProfileWidgetState extends State<ProfileWidget>
                       ),
                     ),
                   )
+                : hasLoginError
+                ? _buildErrorScreen()
                 : SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     child: Column(
@@ -181,7 +206,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                               top: 0.0,
                               right: 0.0,
                               child: InkWell(
-                                onTap: () => context.pushNamed('Configuracoes'),
+                                onTap: () => GoRouter.of(context).pushNamed('Configuracoes'),
                                 child: Container(
                                   width: 24.0,
                                   height: 24.0,
@@ -554,7 +579,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  onTap: () => context.goNamed('servicos'),
+                  onTap: () => GoRouter.of(context).goNamed('servicos'),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -581,7 +606,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   ),
                 ),
                 InkWell(
-                  onTap: () => context.pushNamed('FaleConosco'),
+                  onTap: () => GoRouter.of(context).pushNamed('FaleConosco'),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -608,7 +633,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   ),
                 ),
                 InkWell(
-                  onTap: () => context.pushNamed('Profile'),
+                  onTap: () => GoRouter.of(context).pushNamed('Profile'),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -644,6 +669,71 @@ class _ProfileWidgetState extends State<ProfileWidget>
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorScreen() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.error_outline,
+                size: 64.0,
+                color: Colors.red,
+              ),
+            ),
+            const SizedBox(height: 24.0),
+            Text(
+              'Acesso Negado',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                fontFamily: 'Montserrat',
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Você precisa fazer login para acessar esta página.',
+              textAlign: TextAlign.center,
+              style: FlutterFlowTheme.of(context).bodyLarge.override(
+                fontFamily: 'Montserrat',
+                color: FlutterFlowTheme.of(context).secondaryText,
+              ),
+            ),
+            const SizedBox(height: 32.0),
+            ElevatedButton(
+              onPressed: () {
+                GoRouter.of(context).goNamed('Login');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: FlutterFlowTheme.of(context).primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+              child: Text(
+                'Fazer Login',
+                style: FlutterFlowTheme.of(context).titleMedium.override(
+                  fontFamily: 'Montserrat',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

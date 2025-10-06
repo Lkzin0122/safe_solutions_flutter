@@ -12,47 +12,33 @@ class ProfileService {
   static const String _baseUrl = 'http://localhost:8080/empresa';
 
   static Future<UserProfile> getUserProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userCnpj = prefs.getString('user_cnpj');
+    
+    if (userCnpj == null) {
+      throw Exception('Usuário não está logado');
+    }
+    
     try {
-      final empresa = await _getEmpresaFromBackend();
-      if (empresa != null) {
-        final profile = _convertEmpresaToUserProfile(empresa);
-        await _saveProfileLocally(profile);
-        return profile;
-      }
+      final empresa = await getEmpresa(userCnpj);
+      final profile = _convertEmpresaToUserProfile(empresa);
+      await _saveProfileLocally(profile);
+      return profile;
     } catch (e) {
       print('Error loading from backend: $e');
+      
+      final empresaJson = prefs.getString(_empresaKey);
+      if (empresaJson != null) {
+        final empresaData = json.decode(empresaJson);
+        final empresa = Empresa.fromJson(empresaData);
+        return _convertEmpresaToUserProfile(empresa);
+      }
+      
+      throw Exception('Não foi possível carregar os dados do perfil');
     }
-    
-    final prefs = await SharedPreferences.getInstance();
-    final profileJson = prefs.getString(_profileKey);
-    
-    if (profileJson != null) {
-      return UserProfile.fromJson(json.decode(profileJson));
-    }
-    
-    return UserProfile(
-      companyName: 'Tech Solutions',
-      companyEmail: 'techsolutions@gmail.com',
-      companyCnpj: '22.222.222/2222-22',
-      companyPhone: '(11) 97880-3756',
-      companyAddress: 'São Paulo, SP',
-      companyDescription: 'Empresa especializada em soluções tecnológicas.',
-    );
   }
 
-  static Future<Empresa?> _getEmpresaFromBackend() async {
-    final prefs = await SharedPreferences.getInstance();
-    final empresaJson = prefs.getString(_empresaKey);
-    
-    if (empresaJson != null) {
-      final empresaData = json.decode(empresaJson);
-      final cnpj = empresaData['cnpj'];
-      if (cnpj != null) {
-        return await getEmpresa(cnpj);
-      }
-    }
-    return null;
-  }
+
 
   static UserProfile _convertEmpresaToUserProfile(Empresa empresa) {
     return UserProfile(

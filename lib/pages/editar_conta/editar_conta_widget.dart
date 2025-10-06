@@ -5,7 +5,11 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 import 'editar_conta_model.dart';
+import '../../models/user_profile.dart';
+import '../../services/profile_service.dart';
 export 'editar_conta_model.dart';
 
 class EditarContaWidget extends StatefulWidget {
@@ -21,11 +25,62 @@ class EditarContaWidget extends StatefulWidget {
 class _EditarContaWidgetState extends State<EditarContaWidget> {
   late EditarContaModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  UserProfile? userProfile;
+  bool isLoading = true;
+  bool hasLoginError = false;
 
   @override
   void initState() {
     super.initState();
     _model = ffm.createModel(context, () => EditarContaModel());
+    _checkLoginAndLoadProfile();
+  }
+
+  Future<void> _checkLoginAndLoadProfile() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userCnpj = prefs.getString('user_cnpj');
+      final empresaData = prefs.getString('empresa_data');
+      
+      if (userCnpj == null || empresaData == null) {
+        if (mounted) {
+          setState(() {
+            hasLoginError = true;
+            isLoading = false;
+          });
+        }
+        return;
+      }
+      
+      await _loadUserProfile();
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          hasLoginError = true;
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _loadUserProfile() async {
+    try {
+      final profile = await ProfileService.getUserProfile();
+      if (mounted) {
+        setState(() {
+          userProfile = profile;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Error loading profile: $e');
+      if (mounted) {
+        setState(() {
+          hasLoginError = true;
+          isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -68,7 +123,17 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
           elevation: 2.0,
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
+          child: isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      FlutterFlowTheme.of(context).primary,
+                    ),
+                  ),
+                )
+              : hasLoginError
+              ? _buildErrorScreen()
+              : SingleChildScrollView(
             padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +174,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
-                              'bolabola',
+                              userProfile?.companyName ?? 'N/A',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: FlutterFlowTheme.of(context).primaryText,
@@ -141,7 +206,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
-                              'viniciusalvesdsph@gmail.com',
+                              userProfile?.companyEmail ?? 'N/A',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: FlutterFlowTheme.of(context).primaryText,
@@ -173,7 +238,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Text(
-                    'bola',
+                    userProfile?.companyDescription ?? 'N/A',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: 'Montserrat',
                       color: FlutterFlowTheme.of(context).primaryText,
@@ -206,7 +271,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
-                              '1199855164',
+                              userProfile?.companyPhone ?? 'N/A',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: FlutterFlowTheme.of(context).primaryText,
@@ -238,7 +303,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
-                              '44444444444444',
+                              userProfile?.companyCnpj ?? 'N/A',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: FlutterFlowTheme.of(context).primaryText,
@@ -288,7 +353,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
-                              '06449-300',
+                              userProfile?.companyCep ?? 'N/A',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: FlutterFlowTheme.of(context).primaryText,
@@ -320,7 +385,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
-                              'Barueri',
+                              userProfile?.companyAddress?.split(',').first ?? 'N/A',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: FlutterFlowTheme.of(context).primaryText,
@@ -358,7 +423,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
-                              'Parque Viana',
+                              'N/A',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: FlutterFlowTheme.of(context).primaryText,
@@ -390,7 +455,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
-                              'Estrada das Pitas',
+                              'N/A',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: FlutterFlowTheme.of(context).primaryText,
@@ -422,7 +487,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Text(
-                    '952',
+                    'N/A',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: 'Montserrat',
                       color: FlutterFlowTheme.of(context).primaryText,
@@ -467,7 +532,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
-                              'Bruno_Magno',
+                              userProfile?.personalName ?? 'N/A',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: FlutterFlowTheme.of(context).primaryText,
@@ -499,7 +564,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
-                              '66666666666',
+                              userProfile?.personalCpf ?? 'N/A',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: FlutterFlowTheme.of(context).primaryText,
@@ -531,7 +596,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Text(
-                    '04/11/1993',
+                    'N/A',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: 'Montserrat',
                       color: FlutterFlowTheme.of(context).primaryText,
@@ -570,6 +635,71 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorScreen() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.error_outline,
+                size: 64.0,
+                color: Colors.red,
+              ),
+            ),
+            const SizedBox(height: 24.0),
+            Text(
+              'Acesso Negado',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                fontFamily: 'Montserrat',
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Você precisa fazer login para acessar esta página.',
+              textAlign: TextAlign.center,
+              style: FlutterFlowTheme.of(context).bodyLarge.override(
+                fontFamily: 'Montserrat',
+                color: FlutterFlowTheme.of(context).secondaryText,
+              ),
+            ),
+            const SizedBox(height: 32.0),
+            ElevatedButton(
+              onPressed: () {
+                GoRouter.of(context).goNamed('Login');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: FlutterFlowTheme.of(context).primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+              child: Text(
+                'Fazer Login',
+                style: FlutterFlowTheme.of(context).titleMedium.override(
+                  fontFamily: 'Montserrat',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
