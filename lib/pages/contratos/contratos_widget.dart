@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'contratos_model.dart';
-import 'detalhes_servico_concluido_widget.dart';
+
 import '../../services/auth_service.dart';
 export 'contratos_model.dart';
 
@@ -466,11 +466,11 @@ class _ContratosWidgetState extends State<ContratosWidget> {
         ),
         child: InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    DetalhesServicoConcluidoWidget(service: service),
+            // Navegar para detalhes do serviço concluído
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Detalhes do serviço: ${service.title}'),
+                backgroundColor: FlutterFlowTheme.of(context).primary,
               ),
             );
           },
@@ -660,6 +660,19 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             icon: const Icon(Icons.calendar_month,
                                 color: Colors.white),
                             tooltip: 'Ver Calendário',
+                          ),
+                        ),
+                        const SizedBox(width: 12.0),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: IconButton(
+                            onPressed: () => GoRouter.of(context).goNamed('TestApi'),
+                            icon: const Icon(Icons.bug_report,
+                                color: Colors.white),
+                            tooltip: 'Testar API',
                           ),
                         ),
                       ],

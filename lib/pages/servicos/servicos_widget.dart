@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'servicos_model.dart';
 export 'servicos_model.dart';
+import '/models/servico.dart';
+import '/services/servico_service.dart';
 
 class ServicosWidget extends StatefulWidget {
   const ServicosWidget({super.key});
@@ -19,6 +21,9 @@ class ServicosWidget extends StatefulWidget {
 
 class _ServicosWidgetState extends State<ServicosWidget> {
   late ServicosModel _model;
+  List<Servico> _servicos = [];
+  bool _isLoading = true;
+  String? _error;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -26,6 +31,32 @@ class _ServicosWidgetState extends State<ServicosWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ServicosModel());
+    _carregarServicos();
+  }
+
+  Future<void> _carregarServicos() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _error = null;
+      });
+      
+      final servicos = await ServicoService.getServicosAtivos();
+      
+      if (mounted) {
+        setState(() {
+          _servicos = servicos;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -35,64 +66,153 @@ class _ServicosWidgetState extends State<ServicosWidget> {
     super.dispose();
   }
 
-  Widget _buildServiceCard(String title, String description, IconData icon, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          color: FlutterFlowTheme.of(context).secondaryBackground,
-          borderRadius: BorderRadius.circular(16.0),
-          border: Border.all(
-            color: FlutterFlowTheme.of(context).alternate,
-            width: 1.0,
+  Widget _buildServicoCard(Servico servico) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.0),
+      padding: EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        color: FlutterFlowTheme.of(context).secondaryBackground,
+        borderRadius: BorderRadius.circular(16.0),
+        border: Border.all(
+          color: FlutterFlowTheme.of(context).alternate,
+          width: 1.0,
+        ),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 8.0,
+            color: Color(0x0F000000),
+            offset: Offset(0.0, 4.0),
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 50.0,
+                height: 50.0,
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Icon(
+                  _getIconForCategory(servico.categoriaServico),
+                  size: 24.0,
+                  color: FlutterFlowTheme.of(context).primary,
+                ),
+              ),
+              SizedBox(width: 16.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      servico.nomeServico,
+                      style: FlutterFlowTheme.of(context).titleMedium.override(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    if (servico.categoriaServico != null)
+                      Text(
+                        servico.categoriaServico!,
+                        style: FlutterFlowTheme.of(context).bodySmall.override(
+                          fontFamily: 'Montserrat',
+                          color: FlutterFlowTheme.of(context).primary,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              if (servico.valorEstimadoServico != null)
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Text(
+                    'R\$ ${servico.valorEstimadoServico!.toStringAsFixed(2)}',
+                    style: FlutterFlowTheme.of(context).bodySmall.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+            ],
           ),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 8.0,
-              color: Color(0x0F000000),
-              offset: Offset(0.0, 4.0),
-            )
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 60.0,
-              height: 60.0,
-              decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              child: Icon(
-                icon,
-                size: 30.0,
-                color: FlutterFlowTheme.of(context).primary,
-              ),
-            ),
-            SizedBox(height: 16.0),
+          if (servico.descricaoServico != null) ...[
+            SizedBox(height: 12.0),
             Text(
-              title,
-              style: FlutterFlowTheme.of(context).titleMedium.override(
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
+              servico.descricaoServico!,
+              style: FlutterFlowTheme.of(context).bodyMedium,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
+          ],
+          if (servico.localServico != null) ...[
             SizedBox(height: 8.0),
-            Text(
-              description,
-              style: FlutterFlowTheme.of(context).bodySmall.override(
-                fontFamily: 'Montserrat',
-                color: FlutterFlowTheme.of(context).secondaryText,
-              ),
-              textAlign: TextAlign.center,
+            Row(
+              children: [
+                Icon(
+                  Icons.location_on,
+                  size: 16.0,
+                  color: FlutterFlowTheme.of(context).secondaryText,
+                ),
+                SizedBox(width: 4.0),
+                Text(
+                  servico.localServico!,
+                  style: FlutterFlowTheme.of(context).bodySmall.override(
+                    fontFamily: 'Montserrat',
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
+          if (servico.empresa != null) ...[
+            SizedBox(height: 8.0),
+            Row(
+              children: [
+                Icon(
+                  Icons.business,
+                  size: 16.0,
+                  color: FlutterFlowTheme.of(context).secondaryText,
+                ),
+                SizedBox(width: 4.0),
+                Text(
+                  servico.empresa!.nomeEmpresa,
+                  style: FlutterFlowTheme.of(context).bodySmall.override(
+                    fontFamily: 'Montserrat',
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
       ),
     );
+  }
+
+  IconData _getIconForCategory(String? categoria) {
+    switch (categoria?.toLowerCase()) {
+      case 'limpeza':
+        return Icons.cleaning_services;
+      case 'montagem':
+        return Icons.build;
+      case 'manutenção':
+        return Icons.build_circle;
+      case 'jardinagem':
+        return Icons.grass;
+      case 'pintura':
+        return Icons.format_paint;
+      default:
+        return Icons.home_repair_service;
+    }
   }
 
   @override
@@ -158,7 +278,7 @@ class _ServicosWidgetState extends State<ServicosWidget> {
                               'Soluções completas para sua casa',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
-                                color: Colors.white.withOpacity(0.9),
+                                color: Colors.white.withValues(alpha: 0.9),
                               ),
                             ),
                           ],
@@ -167,41 +287,106 @@ class _ServicosWidgetState extends State<ServicosWidget> {
                       
                       SizedBox(height: 24.0),
                       
-                      // Serviços Grid
-                      GridView.count(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16.0,
-                        mainAxisSpacing: 16.0,
-                        childAspectRatio: 0.85,
+                      // Botão de Recarregar
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildServiceCard(
-                            'Super Clean',
-                            'Limpeza completa e profissional',
-                            Icons.cleaning_services,
-                            () => context.goNamed('SuperClean'),
+                          Text(
+                            'Serviços Disponíveis',
+                            style: FlutterFlowTheme.of(context).titleLarge.override(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          _buildServiceCard(
-                            'Montador',
-                            'Montagem de móveis e equipamentos',
-                            Icons.build,
-                            () => context.goNamed('montador'),
-                          ),
-                          _buildServiceCard(
-                            'Calendário',
-                            'Agende e gerencie seus serviços',
-                            Icons.calendar_today,
-                            () => context.goNamed('calendario'),
-                          ),
-                          _buildServiceCard(
-                            'Fale Conosco',
-                            'Entre em contato conosco',
-                            Icons.message,
-                            () => context.goNamed('faleConosco'),
+                          IconButton(
+                            onPressed: _carregarServicos,
+                            icon: Icon(Icons.refresh),
+                            tooltip: 'Recarregar serviços',
                           ),
                         ],
                       ),
+                      
+                      SizedBox(height: 16.0),
+                      
+                      // Conteúdo dos Serviços
+                      if (_isLoading)
+                        Center(
+                          child: CircularProgressIndicator(
+                            color: FlutterFlowTheme.of(context).primary,
+                          ),
+                        )
+                      else if (_error != null)
+                        Container(
+                          padding: EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                            color: Colors.red.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12.0),
+                            border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(Icons.error_outline, color: Colors.red, size: 48),
+                              SizedBox(height: 16),
+                              Text(
+                                'Erro ao carregar serviços',
+                                style: FlutterFlowTheme.of(context).titleMedium.override(
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Verifique sua conexão e tente novamente',
+                                style: FlutterFlowTheme.of(context).bodySmall,
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: _carregarServicos,
+                                child: Text('Tentar Novamente'),
+                              ),
+                            ],
+                          ),
+                        )
+                      else if (_servicos.isEmpty)
+                        Container(
+                          padding: EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context).secondaryBackground,
+                            borderRadius: BorderRadius.circular(12.0),
+                            border: Border.all(color: FlutterFlowTheme.of(context).alternate),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.search_off,
+                                size: 48,
+                                color: FlutterFlowTheme.of(context).secondaryText,
+                              ),
+                              SizedBox(height: 16),
+                              Text(
+                                'Nenhum serviço disponível',
+                                style: FlutterFlowTheme.of(context).titleMedium,
+                              ),
+                              Text(
+                                'Não há serviços ativos no momento',
+                                style: FlutterFlowTheme.of(context).bodySmall,
+                              ),
+                            ],
+                          ),
+                        )
+                      else
+                        // Lista de Serviços da API
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: _servicos.length,
+                          itemBuilder: (context, index) {
+                            final servico = _servicos[index];
+                            return _buildServicoCard(servico);
+                          },
+                        ),
                     ],
                   ),
                 ),

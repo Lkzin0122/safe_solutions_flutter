@@ -93,15 +93,21 @@ class ProfileService {
 
   // GET /empresa/{cnpj} - Get company by CNPJ
   static Future<Empresa> getEmpresa(String cnpj) async {
+    final cnpjLimpo = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
+    print('ProfileService: Buscando empresa com CNPJ: $cnpjLimpo');
+    
     final response = await http.get(
-      Uri.parse('$_baseUrl/$cnpj'),
+      Uri.parse('$_baseUrl/$cnpjLimpo'),
       headers: {'Content-Type': 'application/json'},
     );
+    
+    print('ProfileService: Status da resposta: ${response.statusCode}');
+    print('ProfileService: Corpo da resposta: ${response.body}');
     
     if (response.statusCode == 200) {
       return Empresa.fromJson(json.decode(response.body));
     }
-    throw Exception('Empresa não encontrada');
+    throw Exception('Erro ao carregar dados');
   }
 
   // POST /empresa/usuario - Get company by user
@@ -115,7 +121,7 @@ class ProfileService {
     if (response.statusCode == 200) {
       return Empresa.fromJson(json.decode(response.body));
     }
-    throw Exception('Empresa não encontrada para o usuário');
+    throw Exception('Dados não encontrados para o usuário');
   }
 
   // PUT /empresa/{cnpj} - Update company

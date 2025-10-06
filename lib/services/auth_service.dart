@@ -8,21 +8,22 @@ class AuthService {
   static const String _baseUrl = 'http://localhost:8080/empresa';
 
   static Future<Empresa> login(String cnpj, String senha) async {
+    final cnpjLimpo = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
     final response = await http.get(
-      Uri.parse('$_baseUrl/login/$cnpj?senha=$senha'),
+      Uri.parse('$_baseUrl/login/$cnpjLimpo?senha=$senha'),
       headers: {'Content-Type': 'application/json'},
     );
     
     if (response.statusCode == 200) {
       final empresa = Empresa.fromJson(json.decode(response.body));
       await ProfileService.saveEmpresaData(empresa);
-      await _saveLoginSession(cnpj);
+      await _saveLoginSession(cnpjLimpo);
       return empresa;
     } else if (response.statusCode == 401) {
       final error = json.decode(response.body);
       throw Exception(error['erro'] ?? 'CNPJ ou senha incorretos.');
     } else if (response.statusCode == 404) {
-      throw Exception('Empresa não encontrada.');
+      throw Exception('Dados não encontrados.');
     }
     throw Exception('Erro no servidor. Tente novamente.');
   }
@@ -49,8 +50,9 @@ class AuthService {
   }
 
   static Future<bool> validarCodigo(String cnpj, String codigo) async {
+    final cnpjLimpo = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
     final response = await http.post(
-      Uri.parse('$_baseUrl/login/validar-codigo/$cnpj'),
+      Uri.parse('$_baseUrl/login/validar-codigo/$cnpjLimpo'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'codigo': codigo}),
     );
@@ -64,8 +66,9 @@ class AuthService {
   }
 
   static Future<void> reenviarCodigo(String cnpj) async {
+    final cnpjLimpo = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
     final response = await http.post(
-      Uri.parse('$_baseUrl/login/reenviar-codigo/$cnpj'),
+      Uri.parse('$_baseUrl/login/reenviar-codigo/$cnpjLimpo'),
       headers: {'Content-Type': 'application/json'},
     );
     

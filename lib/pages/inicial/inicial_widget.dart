@@ -3,11 +3,13 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:provider/provider.dart';
 import 'inicial_model.dart';
 export 'inicial_model.dart';
 import 'dart:async';
+import '/flutter_flow/nav/nav.dart';
 
 class InicialWidget extends StatefulWidget {
   const InicialWidget({super.key});
@@ -73,8 +75,8 @@ class _InicialWidgetState extends State<InicialWidget> with TickerProviderStateM
     
     await Future.delayed(const Duration(milliseconds: 2000));
     if (mounted) {
-      // Navegar para a próxima tela - ajuste conforme necessário
-      Navigator.pushReplacementNamed(context, '/login');
+      // Parar o splash e deixar o AppStateNotifier gerenciar a navegação
+      AppStateNotifier.instance.stopShowingSplashImage();
     }
   }
 
