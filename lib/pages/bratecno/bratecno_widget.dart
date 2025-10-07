@@ -248,7 +248,6 @@ class _BratecnoWidgetState extends State<BratecnoWidget> {
                     borderRadius: BorderRadius.circular(12.0),
                     child: Image.network(
                       'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/42x886euiaf7/image_20_1.png',
-                      width: 100.0,
                       height: 100.0,
                       fit: BoxFit.cover,
                     ),
