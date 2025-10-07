@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'login1_model.dart';
-import '../../services/auth_service.dart';
 export 'login1_model.dart';
 
 class Login1Widget extends StatefulWidget {
@@ -33,16 +34,65 @@ class _Login1WidgetState extends State<Login1Widget> {
 
     try {
       final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
-      final empresa = await AuthService.login(cnpjNumbers, senha);
       
-      _showSuccessDialog();
+      print('=== LOGIN DEBUG ===');
+      print('CNPJ: $cnpjNumbers');
+      print('Senha: $senha');
+      
+      // Primeiro testa se o servidor está rodando
+      print('Testando conexão com servidor...');
+      try {
+        final testResponse = await http.get(
+          Uri.parse('http://localhost:8080/empresa'),
+          headers: {'Content-Type': 'application/json'},
+        ).timeout(const Duration(seconds: 5));
+        print('Servidor respondeu: ${testResponse.statusCode}');
+      } catch (e) {
+        print('Servidor não está respondendo: $e');
+        _showErrorDialog('Servidor não está rodando. Inicie o backend Spring Boot na porta 8080.');
+        return;
+      }
+      
+      print('Fazendo login...');
+      final response = await http.get(
+        Uri.parse('http://localhost:8080/empresa/login/$cnpjNumbers?senha=$senha'),
+        headers: {'Content-Type': 'application/json'},
+      ).timeout(const Duration(seconds: 10));
+      
+      print('Status: ${response.statusCode}');
+      print('Body: ${response.body}');
+      
+      if (response.statusCode == 200) {
+        final empresaData = json.decode(response.body);
+        await _saveLoginData(cnpjNumbers, empresaData);
+        _showSuccessDialog();
+      } else if (response.statusCode == 401) {
+        try {
+          final error = json.decode(response.body);
+          _showErrorDialog(error['erro'] ?? 'CNPJ ou senha incorretos.');
+        } catch (e) {
+          _showErrorDialog('CNPJ ou senha incorretos.');
+        }
+      } else if (response.statusCode == 404) {
+        _showErrorDialog('Empresa não encontrada.');
+      } else {
+        _showErrorDialog('Erro no servidor (${response.statusCode}). Tente novamente.');
+      }
     } catch (e) {
-      _showErrorDialog(e.toString().replaceAll('Exception: ', ''));
+      print('Erro geral: $e');
+      _showErrorDialog('Erro de conexão: ${e.toString()}');
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
+  }
+  
+  Future<void> _saveLoginData(String cnpj, Map<String, dynamic> empresaData) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_cnpj', cnpj);
+    await prefs.setString('empresa_data', json.encode(empresaData));
+    await prefs.setBool('is_logged_in', true);
   }
 
   void _showSuccessDialog() {
@@ -110,9 +160,9 @@ class _Login1WidgetState extends State<Login1Widget> {
     if (value == null || value.isEmpty) {
       return 'Por favor, insira o CNPJ.';
     }
-    final cnpjRegex = RegExp(r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$');
-    if (!cnpjRegex.hasMatch(value)) {
-      return 'Por favor, insira um CNPJ válido.';
+    final cnpjNumbers = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (cnpjNumbers.length != 14) {
+      return 'CNPJ deve ter 14 dígitos.';
     }
     return null;
   }
@@ -231,11 +281,10 @@ class _Login1WidgetState extends State<Login1Widget> {
                                         obscureText: false,
                                         inputFormatters: [
                                           LengthLimitingTextInputFormatter(18),
-                                          FilteringTextInputFormatter
-                                              .digitsOnly,
                                         ],
                                         onChanged: (value) {
-                                          final formatted = _formatCnpj(value);
+                                          final numbersOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+                                          final formatted = _formatCnpj(numbersOnly);
                                           if (formatted != value) {
                                             _model.CnpjAddressTextController
                                                 ?.value = TextEditingValue(
@@ -311,7 +360,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                               fontFamily: 'Montserrat',
                                               letterSpacing: 0.0,
                                             ),
-                                        keyboardType: TextInputType.number,
+                                        keyboardType: TextInputType.text,
                                         validator: _validateCnpj,
                                       ),
                                     ),
