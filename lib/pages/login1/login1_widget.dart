@@ -1,20 +1,19 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import '/index.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 import 'login1_model.dart';
+import '../../services/auth_service.dart';
 export 'login1_model.dart';
 
 class Login1Widget extends StatefulWidget {
   const Login1Widget({super.key});
 
-  static String routeName = 'login1';
-  static String routePath = '/login1';
+  static String routeName = 'Login';
+  static String routePath = '/login';
 
   @override
   State<Login1Widget> createState() => _Login1WidgetState();
@@ -22,19 +21,115 @@ class Login1Widget extends StatefulWidget {
 
 class _Login1WidgetState extends State<Login1Widget> {
   late Login1Model _model;
+  bool _isLoading = false;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
-  String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Por favor, insira o email.';
+  Future<void> buscarDados(String cnpj, String senha) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
+      final empresa = await AuthService.login(cnpjNumbers, senha);
+      
+      _showSuccessDialog();
+    } catch (e) {
+      _showErrorDialog(e.toString().replaceAll('Exception: ', ''));
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Por favor, insira um email válido.';
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 28,
+              ),
+              SizedBox(width: 8),
+              Text('Sucesso!'),
+            ],
+          ),
+          content: const Text('Login realizado com sucesso!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                GoRouter.of(context).goNamed('servicos');
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(
+                Icons.error,
+                color: Colors.red,
+                size: 28,
+              ),
+              SizedBox(width: 8),
+              Text('Erro'),
+            ],
+          ),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  String? _validateCnpj(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, insira o CNPJ.';
+    }
+    final cnpjRegex = RegExp(r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$');
+    if (!cnpjRegex.hasMatch(value)) {
+      return 'Por favor, insira um CNPJ válido.';
     }
     return null;
+  }
+
+  String _formatCnpj(String value) {
+    value = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (value.length <= 2) return value;
+    if (value.length <= 5) {
+      return '${value.substring(0, 2)}.${value.substring(2)}';
+    }
+    if (value.length <= 8) {
+      return '${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5)}';
+    }
+    if (value.length <= 12) {
+      return '${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5, 8)}/${value.substring(8)}';
+    }
+    return '${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5, 8)}/${value.substring(8, 12)}-${value.substring(12, 14)}';
   }
 
   String? _validatePassword(String? value) {
@@ -52,8 +147,8 @@ class _Login1WidgetState extends State<Login1Widget> {
     super.initState();
     _model = createModel(context, () => Login1Model());
 
-    _model.emailAddressTextController ??= TextEditingController();
-    _model.emailAddressFocusNode ??= FocusNode();
+    _model.CnpjAddressTextController ??= TextEditingController();
+    _model.CnpjAddressFocusNode ??= FocusNode();
 
     _model.passwordTextController ??= TextEditingController();
     _model.passwordFocusNode ??= FocusNode();
@@ -62,7 +157,6 @@ class _Login1WidgetState extends State<Login1Widget> {
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
 
@@ -97,32 +191,20 @@ class _Login1WidgetState extends State<Login1Widget> {
                         Container(
                           width: double.infinity,
                           height: 140.0,
+                          margin: const EdgeInsets.only(top: 50.0),
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(16.0),
-                              bottomRight: Radius.circular(16.0),
-                              topLeft: Radius.circular(0.0),
-                              topRight: Radius.circular(0.0),
-                            ),
                           ),
-                          alignment: const AlignmentDirectional(-1.0, 0.0),
-                          child: Stack(
-                            children: [
-                              Align(
-                                alignment: const AlignmentDirectional(0.0, 0.01),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(0.0),
-                                  child: Image.network(
-                                    'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                                    width: 250.0,
-                                    fit: BoxFit.fill,
-                                    alignment: const Alignment(0.0, 0.0),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          child: Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(0.0),
+                              child: Image.network(
+                                  'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                                  width: 250.0,
+                                  fit: BoxFit.contain,
+                                  alignment: const Alignment(0.0, 0.0)),
+                            ),
                           ),
                         ),
                         Align(
@@ -136,19 +218,36 @@ class _Login1WidgetState extends State<Login1Widget> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 16.0),
                                     child: SizedBox(
                                       width: 370.0,
                                       child: TextFormField(
                                         controller:
-                                            _model.emailAddressTextController,
-                                        focusNode: _model.emailAddressFocusNode,
+                                            _model.CnpjAddressTextController,
+                                        focusNode: _model.CnpjAddressFocusNode,
                                         autofocus: true,
-                                        autofillHints: const [AutofillHints.email],
                                         obscureText: false,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(18),
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
+                                        ],
+                                        onChanged: (value) {
+                                          final formatted = _formatCnpj(value);
+                                          if (formatted != value) {
+                                            _model.CnpjAddressTextController
+                                                ?.value = TextEditingValue(
+                                              text: formatted,
+                                              selection:
+                                                  TextSelection.collapsed(
+                                                      offset: formatted.length),
+                                            );
+                                          }
+                                        },
                                         decoration: InputDecoration(
-                                          labelText: 'E-mail',
+                                          labelText: 'CNPJ',
                                           labelStyle: FlutterFlowTheme.of(
                                                   context)
                                               .labelMedium
@@ -174,9 +273,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
+                                              color: FlutterFlowTheme.of(context).primary,
                                               width: 2.0,
                                             ),
                                             borderRadius:
@@ -204,6 +301,9 @@ class _Login1WidgetState extends State<Login1Widget> {
                                                 BorderRadius.circular(12.0),
                                           ),
                                           filled: true,
+                                          fillColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
                                         ),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
@@ -211,15 +311,15 @@ class _Login1WidgetState extends State<Login1Widget> {
                                               fontFamily: 'Montserrat',
                                               letterSpacing: 0.0,
                                             ),
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        validator: _validateEmail,
+                                        keyboardType: TextInputType.number,
+                                        validator: _validateCnpj,
                                       ),
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 16.0),
                                     child: SizedBox(
                                       width: 370.0,
                                       child: TextFormField(
@@ -227,7 +327,9 @@ class _Login1WidgetState extends State<Login1Widget> {
                                             _model.passwordTextController,
                                         focusNode: _model.passwordFocusNode,
                                         autofocus: true,
-                                        autofillHints: const [AutofillHints.password],
+                                        autofillHints: const [
+                                          AutofillHints.password
+                                        ],
                                         obscureText: !_model.passwordVisibility,
                                         decoration: InputDecoration(
                                           labelText: 'Senha',
@@ -256,9 +358,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
+                                              color: FlutterFlowTheme.of(context).primary,
                                               width: 2.0,
                                             ),
                                             borderRadius:
@@ -290,7 +390,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                               FlutterFlowTheme.of(context)
                                                   .primaryBackground,
                                           suffixIcon: InkWell(
-                                            onTap: () => safeSetState(
+                                            onTap: () => setState(
                                               () => _model.passwordVisibility =
                                                   !_model.passwordVisibility,
                                             ),
@@ -319,16 +419,16 @@ class _Login1WidgetState extends State<Login1Widget> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 20.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 20.0),
                                     child: InkWell(
                                       splashColor: Colors.transparent,
                                       focusColor: Colors.transparent,
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        context.pushNamed(
-                                            EsqueciSenhaWidget.routeName);
+                                        GoRouter.of(context).pushNamed('EsqueciSenha');
                                       },
                                       child: Text(
                                         '*esqueci minha senha',
@@ -336,9 +436,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                             .bodyMedium
                                             .override(
                                               fontFamily: 'Montserrat',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .tertiary,
+                                              color: FlutterFlowTheme.of(context).primary,
                                               letterSpacing: 0.0,
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -346,28 +444,45 @@ class _Login1WidgetState extends State<Login1Widget> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 15.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 15.0, 0.0, 0.0),
                                     child: FFButtonWidget(
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          // Se passou na validação, navegue
-                                          context.pushNamed(
-                                              ContratosWidget.routeName);
-                                        }
-                                        // Se não passou, os erros aparecem automaticamente
-                                      },
-                                      text: 'Entrar',
+                                      onPressed: _isLoading
+                                          ? null
+                                          : () async {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                final cnpj = _model
+                                                    .CnpjAddressTextController?.text ?? '';
+                                                final senha = _model
+                                                    .passwordTextController?.text ?? '';
+                                                await buscarDados(cnpj, senha);
+                                              }
+                                            },
+                                      text: _isLoading ? '' : 'Entrar',
+                                      icon: _isLoading
+                                          ? const SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(Colors.white),
+                                              ),
+                                            )
+                                          : null,
                                       options: FFButtonOptions(
                                         width: 370.0,
                                         height: 44.0,
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
-                                        color: FlutterFlowTheme.of(context)
-                                            .tertiary,
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        iconPadding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        color: _isLoading
+                                            ? FlutterFlowTheme.of(context).primary.withOpacity(0.7)
+                                            : FlutterFlowTheme.of(context).primary,
                                         textStyle: FlutterFlowTheme.of(context)
                                             .titleSmall
                                             .override(
@@ -406,8 +521,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                     .override(
                                       fontFamily: FlutterFlowTheme.of(context)
                                           .bodyMediumFamily,
-                                      color:
-                                          FlutterFlowTheme.of(context).tertiary,
+                                      color: FlutterFlowTheme.of(context).primary,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w600,
                                       useGoogleFonts:
@@ -420,7 +534,7 @@ class _Login1WidgetState extends State<Login1Widget> {
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Montserrat',
-                                  color: FlutterFlowTheme.of(context).tertiary,
+                                  color: FlutterFlowTheme.of(context).primary,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.w600,
                                 ),

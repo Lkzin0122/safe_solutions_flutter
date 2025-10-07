@@ -92,21 +92,24 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                                           Align(
                                             alignment: const AlignmentDirectional(
                                                 -1.04, 0.51),
-                                            child: FlutterFlowIconButton(
-                                              borderColor: Colors.transparent,
-                                              borderRadius: 30.0,
-                                              borderWidth: 1.0,
-                                              buttonSize: 60.0,
-                                              icon: Icon(
-                                                Icons.arrow_back_rounded,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                size: 30.0,
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
+                                              child: FlutterFlowIconButton(
+                                                borderColor: Colors.transparent,
+                                                borderRadius: 25.0,
+                                                borderWidth: 1.0,
+                                                buttonSize: 45.0,
+                                                icon: Icon(
+                                                  Icons.arrow_back_rounded,
+                                                  color:
+                                                      FlutterFlowTheme.of(context)
+                                                          .primaryText,
+                                                  size: 22.0,
+                                                ),
+                                                onPressed: () async {
+                                                  context.pop();
+                                                },
                                               ),
-                                              onPressed: () async {
-                                                context.pop();
-                                              },
                                             ),
                                           ),
                                         ],
@@ -386,15 +389,14 @@ class _SuperCleanCopyWidgetState extends State<SuperCleanCopyWidget> {
                   ),
                 ],
               ),
-              Align(
-                alignment: const AlignmentDirectional(0.0, -0.97),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(24.0, 40.0, 24.0, 0.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(0.0),
                   child: Image.network(
                     'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
                     width: 250.0,
                     fit: BoxFit.fill,
-                    alignment: const Alignment(0.0, 0.0),
                   ),
                 ),
               ),

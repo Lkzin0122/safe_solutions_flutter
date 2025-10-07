@@ -1,17 +1,15 @@
-import '/auth/custom_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:math';
-import 'dart:ui';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 import 'profile_model.dart';
+import '../../models/user_profile.dart';
+import '../../services/profile_service.dart';
 export 'profile_model.dart';
 
 class ProfileWidget extends StatefulWidget {
@@ -27,15 +25,18 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget>
     with TickerProviderStateMixin {
   late ProfileModel _model;
+  UserProfile? userProfile;
+  bool isLoading = true;
+  bool hasLoginError = false;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
   final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ProfileModel());
+    _checkLoginAndLoadProfile();
 
     animationsMap.addAll({
       'cardOnPageLoadAnimation': AnimationInfo(
@@ -55,86 +56,6 @@ class _ProfileWidgetState extends State<ProfileWidget>
             duration: 600.0.ms,
             begin: const Offset(0.6, 0.6),
             end: const Offset(1.0, 1.0),
-          ),
-        ],
-      ),
-      'textOnPageLoadAnimation1': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          VisibilityEffect(duration: 1.ms),
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(0.0, 20.0),
-            end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      'textOnPageLoadAnimation2': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          VisibilityEffect(duration: 1.ms),
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(0.0, 20.0),
-            end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      'dividerOnPageLoadAnimation': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          VisibilityEffect(duration: 1.ms),
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(0.0, 20.0),
-            end: const Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      'buttonOnPageLoadAnimation': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          VisibilityEffect(duration: 400.ms),
-          FadeEffect(
-            curve: Curves.easeInOut,
-            delay: 400.0.ms,
-            duration: 600.0.ms,
-            begin: 0.0,
-            end: 1.0,
-          ),
-          MoveEffect(
-            curve: Curves.easeInOut,
-            delay: 400.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(0.0, 60.0),
-            end: const Offset(0.0, 0.0),
           ),
         ],
       ),
@@ -158,6 +79,26 @@ class _ProfileWidgetState extends State<ProfileWidget>
           ),
         ],
       ),
+      'textOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 200.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 30.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
     });
     setupAnimations(
       animationsMap.values.where((anim) =>
@@ -167,10 +108,56 @@ class _ProfileWidgetState extends State<ProfileWidget>
     );
   }
 
+  Future<void> _checkLoginAndLoadProfile() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userCnpj = prefs.getString('user_cnpj');
+      final empresaData = prefs.getString('empresa_data');
+      
+      if (userCnpj == null || empresaData == null) {
+        if (mounted) {
+          setState(() {
+            hasLoginError = true;
+            isLoading = false;
+          });
+        }
+        return;
+      }
+      
+      await _loadUserProfile();
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          hasLoginError = true;
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _loadUserProfile() async {
+    try {
+      final profile = await ProfileService.getUserProfile();
+      if (mounted) {
+        setState(() {
+          userProfile = profile;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Error loading profile: $e');
+      if (mounted) {
+        setState(() {
+          hasLoginError = true;
+          isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
 
@@ -186,152 +173,567 @@ class _ProfileWidgetState extends State<ProfileWidget>
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         body: SafeArea(
           top: true,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Align(
-                alignment: const AlignmentDirectional(0.0, -0.84),
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 50.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(0.0),
-                    child: Image.network(
-                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                      width: 250.0,
-                      fit: BoxFit.fill,
-                      alignment: const Alignment(0.0, 0.0),
-                    ),
-                  ),
-                ),
-              ),
-              Card(
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                color: FlutterFlowTheme.of(context).primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50.0),
-                ),
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 95.0,
-                      height: 95.0,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.network(
-                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/k8xruzgiy7xp/vecteezy_profile-icon-avatar-icon-user-icon-person-icon_20911732.png',
-                        fit: BoxFit.cover,
+          child: isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        FlutterFlowTheme.of(context).primary,
                       ),
                     ),
-                  ],
-                ),
-              ).animateOnPageLoad(animationsMap['cardOnPageLoadAnimation']!),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                child: Text(
-                  'Tech Solutions',
-                  style: FlutterFlowTheme.of(context).headlineSmall.override(
-                        fontFamily:
-                            FlutterFlowTheme.of(context).headlineSmallFamily,
-                        letterSpacing: 0.0,
-                        useGoogleFonts:
-                            !FlutterFlowTheme.of(context).headlineSmallIsCustom,
-                      ),
-                ).animateOnPageLoad(animationsMap['textOnPageLoadAnimation1']!),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
-                child: Text(
-                  'techsolutions@gmail.com',
-                  style: FlutterFlowTheme.of(context).titleSmall.override(
-                        fontFamily:
-                            FlutterFlowTheme.of(context).titleSmallFamily,
-                        color: FlutterFlowTheme.of(context).secondary,
-                        letterSpacing: 0.0,
-                        useGoogleFonts:
-                            !FlutterFlowTheme.of(context).titleSmallIsCustom,
-                      ),
-                ).animateOnPageLoad(animationsMap['textOnPageLoadAnimation2']!),
-              ),
-              Divider(
-                height: 44.0,
-                thickness: 1.0,
-                indent: 24.0,
-                endIndent: 24.0,
-                color: FlutterFlowTheme.of(context).alternate,
-              ).animateOnPageLoad(animationsMap['dividerOnPageLoadAnimation']!),
-              Align(
-                alignment: const AlignmentDirectional(1.0, 0.0),
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 40.0, 20.0),
-                  child: FFButtonWidget(
-                    onPressed: () async {
-                      GoRouter.of(context).prepareAuthEvent();
-                      await authManager.signOut();
-                      GoRouter.of(context).clearRedirectLocation();
-
-                      context.goNamedAuth(
-                          InicialWidget.routeName, context.mounted);
-                    },
-                    text: 'Editar Conta',
-                    options: FFButtonOptions(
-                      width: 150.0,
-                      height: 44.0,
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                      iconPadding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                      color: const Color(0xFF234063),
-                      textStyle:
-                          FlutterFlowTheme.of(context).bodyLarge.override(
-                                fontFamily: 'Montserrat',
-                                color: Colors.white,
-                                letterSpacing: 0.0,
+                  )
+                : hasLoginError
+                ? _buildErrorScreen()
+                : SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(24.0, 80.0, 24.0, 30.0),
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(0.0),
+                                child: Image.network(
+                                  'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                                  width: 250.0,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                      elevation: 0.0,
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).alternate,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ).animateOnPageLoad(
-                      animationsMap['buttonOnPageLoadAnimation']!),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
-                child: Container(
-                  width: double.infinity,
-                  height: 262.2,
-                  decoration: BoxDecoration(
-                    color: const Color(0x5A8D99AE),
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      color: FlutterFlowTheme.of(context).alternate,
-                      width: 2.0,
-                    ),
-                  ),
-                  child: Align(
-                    alignment: const AlignmentDirectional(-1.0, -1.0),
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          10.0, 10.0, 10.0, 10.0),
-                      child: Text(
-                        'A TechSolutions é uma empresa de tecnologia especializada em oferecer soluções inovadoras para empresas de diversos setores. ',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Montserrat',
-                              letterSpacing: 0.0,
                             ),
+                            Positioned(
+                              top: 0.0,
+                              right: 0.0,
+                              child: InkWell(
+                                onTap: () => GoRouter.of(context).pushNamed('Configuracoes'),
+                                child: Container(
+                                  width: 24.0,
+                                  height: 24.0,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 4.0,
+                                        color: Colors.black.withOpacity(0.1),
+                                        offset: Offset(0.0, 2.0),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.settings,
+                                    color: FlutterFlowTheme.of(context).primaryText,
+                                    size: 12.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                      Card(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        color: FlutterFlowTheme.of(context).primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        child: Container(
+                          width: 95.0,
+                          height: 95.0,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.account_circle,
+                            size: 95.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ).animateOnPageLoad(animationsMap['cardOnPageLoadAnimation']!),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                        child: Text(
+                          userProfile?.companyName ?? 'Tech Solutions',
+                          style: FlutterFlowTheme.of(context).headlineSmall.override(
+                                fontFamily: FlutterFlowTheme.of(context).headlineSmallFamily,
+                                color: FlutterFlowTheme.of(context).primary,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.bold,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).headlineSmallIsCustom,
+                              ),
+                        ).animateOnPageLoad(animationsMap['textOnPageLoadAnimation']!),
+                      ),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                        child: Text(
+                          userProfile?.companyEmail ?? 'techsolutions@gmail.com',
+                          style: FlutterFlowTheme.of(context).titleSmall.override(
+                                fontFamily: FlutterFlowTheme.of(context).titleSmallFamily,
+                                color: FlutterFlowTheme.of(context).tertiary,
+                                letterSpacing: 0.0,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).titleSmallIsCustom,
+                              ),
+                        ).animateOnPageLoad(animationsMap['textOnPageLoadAnimation']!),
+                      ),
+                      Divider(
+                        height: 44.0,
+                        thickness: 1.0,
+                        indent: 24.0,
+                        endIndent: 24.0,
+                        color: FlutterFlowTheme.of(context).alternate,
+                      ),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).secondaryBackground,
+                                borderRadius: BorderRadius.circular(16.0),
+                                border: Border.all(
+                                  color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                                  width: 1.0,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 8.0,
+                                    color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                    offset: Offset(0.0, 4.0),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        child: Icon(
+                                          Icons.info_outline,
+                                          color: FlutterFlowTheme.of(context).primary,
+                                          size: 20.0,
+                                        ),
+                                      ),
+                                      SizedBox(width: 12.0),
+                                      Text(
+                                        'Sobre a Empresa',
+                                        style: FlutterFlowTheme.of(context).titleMedium.override(
+                                          fontFamily: 'Montserrat',
+                                          color: FlutterFlowTheme.of(context).primary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 16.0),
+                                  Text(
+                                    userProfile?.companyDescription ?? 'Empresa especializada em soluções tecnológicas.',
+                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                      fontFamily: 'Montserrat',
+                                      letterSpacing: 0.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
+                            SizedBox(height: 20.0),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      border: Border.all(
+                                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                                        width: 1.0,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 8.0,
+                                          color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                          offset: Offset(0.0, 4.0),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                            borderRadius: BorderRadius.circular(8.0),
+                                          ),
+                                          child: Icon(
+                                            Icons.phone_outlined,
+                                            color: FlutterFlowTheme.of(context).primary,
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8.0),
+                                        Text(
+                                          'Telefone',
+                                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                            fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        SizedBox(height: 4.0),
+                                        Text(
+                                          userProfile?.companyPhone ?? '(11) 99999-9999',
+                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                            fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context).primary,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 12.0),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      border: Border.all(
+                                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                                        width: 1.0,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 8.0,
+                                          color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                          offset: Offset(0.0, 4.0),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                            borderRadius: BorderRadius.circular(8.0),
+                                          ),
+                                          child: Icon(
+                                            Icons.business_outlined,
+                                            color: FlutterFlowTheme.of(context).primary,
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8.0),
+                                        Text(
+                                          'CNPJ',
+                                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                            fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        SizedBox(height: 4.0),
+                                        Text(
+                                          userProfile?.companyCnpj ?? '12.345.678/0001-90',
+                                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                            fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context).primary,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
+                            SizedBox(height: 16.0),
+                            InkWell(
+                              onTap: () async {
+                                final address = userProfile?.companyAddress ?? 'São Paulo, SP';
+                                final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(address)}');
+                                await launchUrl(url);
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  border: Border.all(
+                                    color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                                    width: 1.0,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 8.0,
+                                      color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                      offset: Offset(0.0, 4.0),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(12.0),
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(12.0),
+                                      ),
+                                      child: Icon(
+                                        Icons.location_on_outlined,
+                                        color: FlutterFlowTheme.of(context).primary,
+                                        size: 28.0,
+                                      ),
+                                    ),
+                                    SizedBox(width: 16.0),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Localização',
+                                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                                              fontFamily: 'Montserrat',
+                                              color: FlutterFlowTheme.of(context).secondaryText,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          SizedBox(height: 4.0),
+                                          Text(
+                                            userProfile?.companyAddress ?? 'São Paulo, SP',
+                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                              fontFamily: 'Montserrat',
+                                              color: FlutterFlowTheme.of(context).primary,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          SizedBox(height: 4.0),
+                                          Text(
+                                            'Toque para abrir no Google Maps',
+                                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                                              fontFamily: 'Montserrat',
+                                              color: FlutterFlowTheme.of(context).tertiary,
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.open_in_new,
+                                      color: FlutterFlowTheme.of(context).primary,
+                                      size: 20.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
+                            SizedBox(height: 24.0),
+                          ],
+                        ),
+                      ),
+                      ],
                     ),
                   ),
-                ).animateOnPageLoad(
-                    animationsMap['containerOnPageLoadAnimation']!),
+        ),
+        bottomNavigationBar: Container(
+          width: double.infinity,
+          height: 80,
+          decoration: BoxDecoration(
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24.0),
+              topRight: Radius.circular(24.0),
+            ),
+            border: Border(
+              top: BorderSide(
+                color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                width: 1.0,
+              ),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: FlutterFlowTheme.of(context).primary.withOpacity(0.1),
+                blurRadius: 16.0,
+                offset: Offset(0.0, -4.0),
               ),
             ],
           ),
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InkWell(
+                  onTap: () => GoRouter.of(context).goNamed('servicos'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.description,
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                        size: 24,
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          'Serviços',
+                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
+                                color: FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w600,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () => GoRouter.of(context).pushNamed('FaleConosco'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.message_outlined,
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                        size: 24,
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          'Fale conosco',
+                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
+                                color: FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () => GoRouter.of(context).pushNamed('Profile'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.person_outlined,
+                          color: FlutterFlowTheme.of(context).primary,
+                          size: 24,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          'Perfil',
+                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                fontFamily: FlutterFlowTheme.of(context).bodySmallFamily,
+                                color: FlutterFlowTheme.of(context).primary,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                                useGoogleFonts: !FlutterFlowTheme.of(context).bodySmallIsCustom,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorScreen() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.error_outline,
+                size: 64.0,
+                color: Colors.red,
+              ),
+            ),
+            const SizedBox(height: 24.0),
+            Text(
+              'Acesso Negado',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                fontFamily: 'Montserrat',
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Você precisa fazer login para acessar esta página.',
+              textAlign: TextAlign.center,
+              style: FlutterFlowTheme.of(context).bodyLarge.override(
+                fontFamily: 'Montserrat',
+                color: FlutterFlowTheme.of(context).secondaryText,
+              ),
+            ),
+            const SizedBox(height: 32.0),
+            ElevatedButton(
+              onPressed: () {
+                GoRouter.of(context).goNamed('Login');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: FlutterFlowTheme.of(context).primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+              child: Text(
+                'Fazer Login',
+                style: FlutterFlowTheme.of(context).titleMedium.override(
+                  fontFamily: 'Montserrat',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

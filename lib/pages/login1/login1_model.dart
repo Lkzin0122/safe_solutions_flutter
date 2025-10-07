@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import '/index.dart';
 import 'login1_widget.dart' show Login1Widget;
 import 'package:flutter/material.dart';
@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 class Login1Model extends FlutterFlowModel<Login1Widget> {
   ///  State fields for stateful widgets in this page.
 
-  // State field(s) for emailAddress widget.
-  FocusNode? emailAddressFocusNode;
-  TextEditingController? emailAddressTextController;
-  String? Function(BuildContext, String?)? emailAddressTextControllerValidator;
+  // State field(s) for CnpjAddress widget.
+  FocusNode? CnpjAddressFocusNode;
+  TextEditingController? CnpjAddressTextController;
+  String? Function(BuildContext, String?)? CnpjAddressTextControllerValidator;
   // State field(s) for password widget.
   FocusNode? passwordFocusNode;
   TextEditingController? passwordTextController;
-  late bool passwordVisibility;
+  bool passwordVisibility = false;
   String? Function(BuildContext, String?)? passwordTextControllerValidator;
 
   @override
@@ -23,8 +23,8 @@ class Login1Model extends FlutterFlowModel<Login1Widget> {
 
   @override
   void dispose() {
-    emailAddressFocusNode?.dispose();
-    emailAddressTextController?.dispose();
+    CnpjAddressFocusNode?.dispose();
+    CnpjAddressTextController?.dispose();
 
     passwordFocusNode?.dispose();
     passwordTextController?.dispose();

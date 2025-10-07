@@ -2,10 +2,9 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
+import '/index.dart';
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'montador_model.dart';
 export 'montador_model.dart';
 
@@ -21,7 +20,6 @@ class MontadorWidget extends StatefulWidget {
 
 class _MontadorWidgetState extends State<MontadorWidget> {
   late MontadorModel _model;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -33,369 +31,488 @@ class _MontadorWidgetState extends State<MontadorWidget> {
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
+  }
+
+  void _showStatusPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          elevation: 16,
+          child: Container(
+            padding: EdgeInsets.all(28),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Colors.white, Colors.grey[50]!],
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(Icons.timeline, color: Colors.white, size: 24),
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Status do Serviço',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue[800],
+                              ),
+                            ),
+                            Text(
+                              'Acompanhe o progresso',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.blue[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 28),
+                _buildStatusStep('Orçamento aprovado', true, Colors.green, Icons.check_circle, '✓ Aprovado pelo cliente'),
+                _buildStatusConnector(true),
+                _buildStatusStep('Materiais adquiridos', true, Colors.green, Icons.shopping_cart, '✓ Todos os materiais prontos'),
+                _buildStatusConnector(true),
+                _buildStatusStep('Em execução', true, Colors.orange, Icons.build, '🔧 Montagem em andamento'),
+                _buildStatusConnector(false),
+                _buildStatusStep('Finalizado', false, Colors.grey, Icons.done_all, 'Aguardando conclusão'),
+                SizedBox(height: 28),
+                Container(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      elevation: 2,
+                    ),
+                    child: Text(
+                      'Fechar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildStatusStep(String text, bool completed, Color color, IconData icon, String subtitle) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: completed ? color.withOpacity(0.1) : Colors.grey[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: completed ? color.withOpacity(0.3) : Colors.grey[300]!,
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: completed ? color : Colors.grey[300],
+              shape: BoxShape.circle,
+              boxShadow: completed ? [
+                BoxShadow(
+                  color: color.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ] : null,
+            ),
+            child: Icon(
+              completed ? Icons.check : icon,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: completed ? FontWeight.bold : FontWeight.w500,
+                    color: completed ? Colors.black : Colors.grey[600],
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: completed ? color : Colors.grey[500],
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusConnector(bool active) {
+    return Container(
+      margin: EdgeInsets.only(left: 19.5, top: 8, bottom: 8),
+      width: 2,
+      height: 24,
+      decoration: BoxDecoration(
+        color: active ? Colors.green : Colors.grey[300],
+        borderRadius: BorderRadius.circular(1),
+      ),
+    );
+  }
+
+  void _showFinishConfirmation(BuildContext context) {
+    context.pushNamed('ConfirmarSenha', extra: {'serviceId': 'montador'});
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        body: SafeArea(
-          top: true,
-          child: Stack(
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
+    return Scaffold(
+      key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            // Botão de voltar
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
+                child: IconButton(
+                  onPressed: () => context.pop(),
+                  icon: Icon(Icons.arrow_back, size: 22),
+                ),
+              ),
+            ),
+            // Header com imagem e status
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: Column(
                 children: [
-                  Expanded(
-                    child: Container(
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: Image.network(
+                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png',
                       width: 100.0,
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        shape: BoxShape.rectangle,
-                      ),
-                      alignment: const AlignmentDirectional(0.0, 2.0),
-                      child: Stack(
-                        children: [
-                          Stack(
-                            children: [
-                              SingleChildScrollView(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: double.infinity,
-                                      height: 140.0,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryBackground,
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(16.0),
-                                          bottomRight: Radius.circular(16.0),
-                                          topLeft: Radius.circular(0.0),
-                                          topRight: Radius.circular(0.0),
-                                        ),
-                                      ),
-                                      alignment:
-                                          const AlignmentDirectional(-1.0, 0.0),
-                                      child: Stack(
-                                        children: [
-                                          Align(
-                                            alignment: const AlignmentDirectional(
-                                                -1.04, 0.51),
-                                            child: FlutterFlowIconButton(
-                                              borderColor: Colors.transparent,
-                                              borderRadius: 30.0,
-                                              borderWidth: 1.0,
-                                              buttonSize: 60.0,
-                                              icon: Icon(
-                                                Icons.arrow_back_rounded,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                size: 30.0,
-                                              ),
-                                              onPressed: () async {
-                                                context.pop();
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(0.0, -0.65),
-                            child: Container(
-                              width: 390.0,
-                              height: 149.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: const AlignmentDirectional(0.0, -0.01),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.network(
-                                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png',
-                                        width: 120.9,
-                                        height: 109.3,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(0.0, -0.38),
-                            child: Container(
-                              width: 150.0,
-                              height: 16.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Align(
-                                alignment: const AlignmentDirectional(0.0, 0.03),
-                                child: Text(
-                                  'Montador de móveis',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 11.0,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.65, -0.24),
-                            child: Text(
-                              'Descriçao do Orçamento',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .override(
-                                    fontFamily: FlutterFlowTheme.of(context)
-                                        .titleMediumFamily,
-                                    letterSpacing: 0.0,
-                                    useGoogleFonts:
-                                        !FlutterFlowTheme.of(context)
-                                            .titleMediumIsCustom,
-                                  ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.27, 0.01),
-                            child: Container(
-                              width: 294.7,
-                              height: 122.48,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.27, 0.01),
-                            child: Container(
-                              width: 294.7,
-                              height: 122.5,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.27, 0.01),
-                            child: Container(
-                              width: 294.7,
-                              height: 122.5,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.27, 0.01),
-                            child: Container(
-                              width: 294.7,
-                              height: 122.5,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.27, 0.01),
-                            child: Container(
-                              width: 294.7,
-                              height: 122.5,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.8, 0.23),
-                            child: Container(
-                              width: 100.0,
-                              height: 27.76,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Valor total',
-                                style: FlutterFlowTheme.of(context)
-                                    .titleMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .titleMediumFamily,
-                                      fontSize: 15.0,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .titleMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.77, 0.3),
-                            child: Container(
-                              width: 100.0,
-                              height: 21.85,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'R\$ 1.200,00',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyMediumFamily,
-                                      letterSpacing: 0.0,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyMediumIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(-0.83, 0.4),
-                            child: Container(
-                              width: 100.0,
-                              height: 21.14,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                'Prazo: 08/11',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyLarge
-                                    .override(
-                                      fontFamily: FlutterFlowTheme.of(context)
-                                          .bodyLargeFamily,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w600,
-                                      useGoogleFonts:
-                                          !FlutterFlowTheme.of(context)
-                                              .bodyLargeIsCustom,
-                                    ),
-                              ),
-                            ),
-                          ),
-                        ],
+                      height: 100.0,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: Text(
+                      'Em Andamento',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 ],
               ),
-              Align(
-                alignment: const AlignmentDirectional(0.0, -0.97),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(0.0),
-                  child: Image.network(
-                    'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                    width: 250.0,
-                    fit: BoxFit.fill,
-                    alignment: const Alignment(0.0, 0.0),
+            ),
+            
+            SizedBox(height: 24.0),
+            
+            // Descrição
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).secondaryBackground,
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 8.0,
+                    color: Colors.black.withOpacity(0.1),
+                    offset: Offset(0.0, 4.0),
                   ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Descrição do Orçamento',
+                    style: FlutterFlowTheme.of(context).titleMedium.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).tertiary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 12.0),
+                  Text(
+                    'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            SizedBox(height: 16.0),
+            
+            // Detalhes
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).secondaryBackground,
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 8.0,
+                    color: Colors.black.withOpacity(0.1),
+                    offset: Offset(0.0, 4.0),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Tipo de Móvel:', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat', fontWeight: FontWeight.w500)),
+                      Text('Móveis planejados', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat')),
+                    ],
+                  ),
+                  SizedBox(height: 8.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Quantidade:', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat', fontWeight: FontWeight.w500)),
+                      Text('3 peças', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat')),
+                    ],
+                  ),
+                  SizedBox(height: 8.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Localização:', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat', fontWeight: FontWeight.w500)),
+                      Text('Endereço do cliente', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat')),
+                    ],
+                  ),
+                  SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Valor Total',
+                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                            ),
+                          ),
+                          Text(
+                            'R\$ 1.200,00',
+                            style: FlutterFlowTheme.of(context).headlineSmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Prazo',
+                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                            ),
+                          ),
+                          Text(
+                            '08/11/2025',
+                            style: FlutterFlowTheme.of(context).titleMedium.override(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            
+            SizedBox(height: 24.0),
+            
+            // Botões
+            Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 50.0,
+                    child: ElevatedButton(
+                      onPressed: () => _showStatusPopup(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF204060),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Ver Status do Serviço',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 12.0),
+                Expanded(
+                  child: SizedBox(
+                    height: 50.0,
+                    child: ElevatedButton(
+                      onPressed: () => _showFinishConfirmation(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Finalizar Serviço',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        width: double.infinity,
+        height: 80,
+        decoration: BoxDecoration(
+          color: FlutterFlowTheme.of(context).secondaryBackground,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10.0,
+              offset: Offset(0.0, -2.0),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
+                onTap: () => context.pushNamed('servicos'),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.description, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
+                    Text('Serviços', style: FlutterFlowTheme.of(context).bodySmall.override(
+                      fontFamily: 'Montserrat', color: FlutterFlowTheme.of(context).secondaryText, fontWeight: FontWeight.w600)),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () => context.pushNamed('FaleConosco'),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.message_outlined, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
+                    Text('Fale conosco', style: FlutterFlowTheme.of(context).bodySmall.override(
+                      fontFamily: 'Montserrat', color: FlutterFlowTheme.of(context).secondaryText, fontWeight: FontWeight.w500)),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () => context.pushNamed('Profile'),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.person_outlined, color: FlutterFlowTheme.of(context).secondaryText, size: 24),
+                    Text('Perfil', style: FlutterFlowTheme.of(context).bodySmall.override(
+                      fontFamily: 'Montserrat', color: FlutterFlowTheme.of(context).secondaryText, fontWeight: FontWeight.w500)),
+                  ],
                 ),
               ),
             ],

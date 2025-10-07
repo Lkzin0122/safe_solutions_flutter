@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_model.dart';
 import 'super_clean_copy_widget.dart' show SuperCleanCopyWidget;
 import 'package:flutter/material.dart';
 
