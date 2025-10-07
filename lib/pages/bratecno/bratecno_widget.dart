@@ -196,7 +196,7 @@ class _BratecnoWidgetState extends State<BratecnoWidget> {
                                     .secondaryBackground,
                               ),
                               child: Text(
-                                'Orçamento para a montagem de três móveis planejados de escritório, incluindo uma mesa de trabalho (dimensões: 180cm x 90cm), um armário (200cm x 150cm) e uma estante de livros (altura: 250cm, largura: 120cm). Os móveis serão entregues no local, e o serviço deve ser prestado no endereço fornecido.',
+                                'Orçamento solicitado para a realização de serviços de manutenção em equipamentos de informática de uma empresa. O serviço incluirá a análise, diagnóstico e reparo de computadores e dispositivos associados, com foco especial em notebooks e desktops da equipe administrativa. A manutenção contemplará a limpeza interna dos equipamentos, verificação e atualização de softwares, remoção de vírus e malwares, além da substituição de peças defeituosas quando necessário.',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
