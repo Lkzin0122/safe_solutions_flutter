@@ -65,10 +65,10 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
 
   Future<void> _loadUserProfile() async {
     try {
-      final profile = await ProfileService.getUserProfile();
+      await _model.loadUserProfile();
       if (mounted) {
         setState(() {
-          userProfile = profile;
+          userProfile = _model.userProfile;
           isLoading = false;
         });
       }
@@ -133,11 +133,13 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                 )
               : hasLoginError
               ? _buildErrorScreen()
-              : SingleChildScrollView(
-            padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              : Form(
+                  key: _model.formKey,
+                  child: SingleChildScrollView(
+                    padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                 // Seção Dados da Empresa
                 Text(
                   'Dados de sua empresa',
@@ -166,21 +168,49 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                             ),
                           ),
                           SizedBox(height: 8.0),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE8F0F0),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              userProfile?.companyName ?? 'N/A',
-                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                fontFamily: 'Montserrat',
-                                color: FlutterFlowTheme.of(context).primaryText,
-                              ),
-                            ),
-                          ),
+                          _model.isEditing
+                              ? TextFormField(
+                                  controller: _model.nomeEmpresaController,
+                                  focusNode: _model.nomeEmpresaFocusNode,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context).alternate,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context).alternate,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context).primary,
+                                      ),
+                                    ),
+                                  ),
+                                  validator: _model.nomeEmpresaValidator,
+                                )
+                              : Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFE8F0F0),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Text(
+                                    userProfile?.companyName ?? 'N/A',
+                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                      fontFamily: 'Montserrat',
+                                      color: FlutterFlowTheme.of(context).primaryText,
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -230,21 +260,50 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                   ),
                 ),
                 SizedBox(height: 8.0),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFE8F0F0),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Text(
-                    userProfile?.companyDescription ?? 'N/A',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                    ),
-                  ),
-                ),
+                _model.isEditing
+                    ? TextFormField(
+                        controller: _model.biografiaController,
+                        focusNode: _model.biografiaFocusNode,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: FlutterFlowTheme.of(context).alternate,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: FlutterFlowTheme.of(context).alternate,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: FlutterFlowTheme.of(context).primary,
+                            ),
+                          ),
+                        ),
+                        validator: _model.biografiaValidator,
+                      )
+                    : Container(
+                        width: double.infinity,
+                        padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFE8F0F0),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Text(
+                          userProfile?.companyDescription ?? 'N/A',
+                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).primaryText,
+                          ),
+                        ),
+                      ),
                 SizedBox(height: 16.0),
                 
                 // Linha 2: Telefone e CNPJ
@@ -345,21 +404,49 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                             ),
                           ),
                           SizedBox(height: 8.0),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE8F0F0),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              userProfile?.companyCep ?? 'N/A',
-                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                fontFamily: 'Montserrat',
-                                color: FlutterFlowTheme.of(context).primaryText,
-                              ),
-                            ),
-                          ),
+                          _model.isEditing
+                              ? TextFormField(
+                                  controller: _model.cepController,
+                                  focusNode: _model.cepFocusNode,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context).alternate,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context).alternate,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context).primary,
+                                      ),
+                                    ),
+                                  ),
+                                  validator: _model.cepValidator,
+                                )
+                              : Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFE8F0F0),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Text(
+                                    userProfile?.companyCep ?? 'N/A',
+                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                      fontFamily: 'Montserrat',
+                                      color: FlutterFlowTheme.of(context).primaryText,
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -524,21 +611,49 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                             ),
                           ),
                           SizedBox(height: 8.0),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE8F0F0),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              userProfile?.personalName ?? 'N/A',
-                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                fontFamily: 'Montserrat',
-                                color: FlutterFlowTheme.of(context).primaryText,
-                              ),
-                            ),
-                          ),
+                          _model.isEditing
+                              ? TextFormField(
+                                  controller: _model.nomeCompletoController,
+                                  focusNode: _model.nomeCompletoFocusNode,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context).alternate,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context).alternate,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context).primary,
+                                      ),
+                                    ),
+                                  ),
+                                  validator: _model.nomeCompletoValidator,
+                                )
+                              : Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFE8F0F0),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Text(
+                                    userProfile?.personalName ?? 'N/A',
+                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                      fontFamily: 'Montserrat',
+                                      color: FlutterFlowTheme.of(context).primaryText,
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -605,36 +720,115 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                 ),
                 SizedBox(height: 32.0),
                 
-                // Botão Editar Dados
-                Container(
-                  width: double.infinity,
-                  child: FFButtonWidget(
-                    onPressed: () {
-                      // TODO: Implementar edição de dados
-                    },
-                    text: 'Editar Dados',
-                    options: FFButtonOptions(
-                      height: 50.0,
-                      padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                      iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                      color: Colors.transparent,
-                      textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                        fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                        fontWeight: FontWeight.w500,
+                // Botões de ação
+                Row(
+                  children: [
+                    if (_model.isEditing) ..[
+                      Expanded(
+                        child: FFButtonWidget(
+                          onPressed: () async {
+                            try {
+                              final success = await _model.saveUserProfile();
+                              if (success && mounted) {
+                                setState(() {
+                                  _model.toggleEditMode();
+                                  userProfile = _model.userProfile;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Dados salvos com sucesso!'),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Erro ao salvar dados: $e'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          },
+                          text: 'Salvar',
+                          options: FFButtonOptions(
+                            height: 50.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            color: FlutterFlowTheme.of(context).primary,
+                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                              fontFamily: 'Montserrat',
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            elevation: 2.0,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
                       ),
-                      elevation: 0.0,
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).alternate,
-                        width: 1.0,
+                      SizedBox(width: 16.0),
+                      Expanded(
+                        child: FFButtonWidget(
+                          onPressed: () {
+                            setState(() {
+                              _model.toggleEditMode();
+                              _model.initializeControllers(); // Reset controllers
+                            });
+                          },
+                          text: 'Cancelar',
+                          options: FFButtonOptions(
+                            height: 50.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            color: Colors.transparent,
+                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            elevation: 0.0,
+                            borderSide: BorderSide(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
+                    ] else
+                      Expanded(
+                        child: FFButtonWidget(
+                          onPressed: () {
+                            setState(() {
+                              _model.toggleEditMode();
+                            });
+                          },
+                          text: 'Editar Dados',
+                          options: FFButtonOptions(
+                            height: 50.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            color: Colors.transparent,
+                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            elevation: 0.0,
+                            borderSide: BorderSide(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
         ),
       ),
     );

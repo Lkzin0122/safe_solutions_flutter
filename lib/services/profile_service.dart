@@ -48,8 +48,9 @@ class ProfileService {
       companyPhone: empresa.telefone ?? '(11) 99999-9999',
       companyAddress: empresa.endereco ?? 'São Paulo, SP',
       companyDescription: empresa.descricao ?? 'Empresa especializada em soluções tecnológicas.',
-      companyCep: '01234-567',
+      companyCep: empresa.cep ?? '01234-567',
       personalName: empresa.usuario?.nome,
+      personalCpf: empresa.usuario?.cpf,
       personalEmail: empresa.usuario?.email,
       personalPhone: empresa.usuario?.telefone,
     );
@@ -74,7 +75,47 @@ class ProfileService {
   }
 
   static Future<void> saveUserProfile(UserProfile profile) async {
-    await _saveProfileLocally(profile);
+    try {
+      // Get current empresa data
+      final prefs = await SharedPreferences.getInstance();
+      final userCnpj = prefs.getString('user_cnpj');
+      
+      if (userCnpj == null) {
+        throw Exception('Usuário não está logado');
+      }
+      
+      // Get current empresa from backend
+      final currentEmpresa = await getEmpresa(userCnpj);
+      
+      // Update empresa with new data
+      final updatedEmpresa = Empresa(
+        cnpj: currentEmpresa.cnpj,
+        nomeEmpresa: profile.companyName,
+        email: currentEmpresa.email,
+        telefone: currentEmpresa.telefone,
+        endereco: profile.companyAddress,
+        descricao: profile.companyDescription,
+        cep: profile.companyCep,
+        usuario: currentEmpresa.usuario != null ? Usuario(
+          cpf: currentEmpresa.usuario!.cpf,
+          nome: profile.personalName ?? currentEmpresa.usuario!.nome,
+          email: profile.personalEmail ?? currentEmpresa.usuario!.email,
+          telefone: profile.personalPhone ?? currentEmpresa.usuario!.telefone,
+        ) : null,
+      );
+      
+      // Update empresa via API
+      await updateEmpresa(userCnpj, updatedEmpresa);
+      
+      // Save locally
+      await _saveProfileLocally(profile);
+      await saveEmpresaData(updatedEmpresa);
+      
+    } catch (e) {
+      print('Error saving profile: $e');
+      // Fallback to local save only
+      await _saveProfileLocally(profile);
+    }
   }
 
   // GET /empresa - Get all companies

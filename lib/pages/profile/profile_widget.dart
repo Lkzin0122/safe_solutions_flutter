@@ -7,9 +7,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
+import 'dart:convert';
 import 'profile_model.dart';
-import '../../models/user_profile.dart';
-import '../../services/profile_service.dart';
+import '../../services/empresa_service.dart';
 export 'profile_model.dart';
 
 class ProfileWidget extends StatefulWidget {
@@ -25,7 +25,7 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget>
     with TickerProviderStateMixin {
   late ProfileModel _model;
-  UserProfile? userProfile;
+  Map<String, dynamic>? empresaData;
   bool isLoading = true;
   bool hasLoginError = false;
 
@@ -110,11 +110,10 @@ class _ProfileWidgetState extends State<ProfileWidget>
 
   Future<void> _checkLoginAndLoadProfile() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final userCnpj = prefs.getString('user_cnpj');
-      final empresaData = prefs.getString('empresa_data');
+      final data = await EmpresaService.getEmpresaData();
+      final isLoggedIn = await EmpresaService.isLoggedIn();
       
-      if (userCnpj == null || empresaData == null) {
+      if (!isLoggedIn || data == null) {
         if (mounted) {
           setState(() {
             hasLoginError = true;
@@ -124,7 +123,12 @@ class _ProfileWidgetState extends State<ProfileWidget>
         return;
       }
       
-      await _loadUserProfile();
+      if (mounted) {
+        setState(() {
+          empresaData = data;
+          isLoading = false;
+        });
+      }
     } catch (e) {
       if (mounted) {
         setState(() {
@@ -135,24 +139,35 @@ class _ProfileWidgetState extends State<ProfileWidget>
     }
   }
 
-  Future<void> _loadUserProfile() async {
-    try {
-      final profile = await ProfileService.getUserProfile();
-      if (mounted) {
-        setState(() {
-          userProfile = profile;
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      print('Error loading profile: $e');
-      if (mounted) {
-        setState(() {
-          hasLoginError = true;
-          isLoading = false;
-        });
+  String _formatCnpj(String cnpj) {
+    if (cnpj.isEmpty) return '';
+    final numbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
+    if (numbers.length != 14) return cnpj;
+    return '${numbers.substring(0, 2)}.${numbers.substring(2, 5)}.${numbers.substring(5, 8)}/${numbers.substring(8, 12)}-${numbers.substring(12, 14)}';
+  }
+
+  String _getFullAddress() {
+    if (empresaData == null) return 'São Paulo, SP';
+    
+    final rua = empresaData!['rua'] ?? '';
+    final numero = empresaData!['numero'] ?? '';
+    final bairro = empresaData!['bairro'] ?? '';
+    final cidade = empresaData!['cidade'] ?? '';
+    final cep = empresaData!['cep'] ?? '';
+    
+    List<String> addressParts = [];
+    if (rua.isNotEmpty) {
+      if (numero.isNotEmpty) {
+        addressParts.add('$rua, $numero');
+      } else {
+        addressParts.add(rua);
       }
     }
+    if (bairro.isNotEmpty) addressParts.add(bairro);
+    if (cidade.isNotEmpty) addressParts.add(cidade);
+    if (cep.isNotEmpty) addressParts.add('CEP: $cep');
+    
+    return addressParts.isNotEmpty ? addressParts.join(', ') : 'São Paulo, SP';
   }
 
   @override
@@ -255,7 +270,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                         child: Text(
-                          userProfile?.companyName ?? 'Tech Solutions',
+                          empresaData?['nome_empresa'] ?? 'Tech Solutions',
                           style: FlutterFlowTheme.of(context).headlineSmall.override(
                                 fontFamily: FlutterFlowTheme.of(context).headlineSmallFamily,
                                 color: FlutterFlowTheme.of(context).primary,
@@ -268,7 +283,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                         child: Text(
-                          userProfile?.companyEmail ?? 'techsolutions@gmail.com',
+                          _formatCnpj(empresaData?['cnpj'] ?? ''),
                           style: FlutterFlowTheme.of(context).titleSmall.override(
                                 fontFamily: FlutterFlowTheme.of(context).titleSmallFamily,
                                 color: FlutterFlowTheme.of(context).tertiary,
@@ -336,7 +351,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                   ),
                                   SizedBox(height: 16.0),
                                   Text(
-                                    userProfile?.companyDescription ?? 'Empresa especializada em soluções tecnológicas.',
+                                    empresaData?['descricao_empresa'] ?? 'Empresa especializada em soluções tecnológicas.',
                                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                                       fontFamily: 'Montserrat',
                                       letterSpacing: 0.0,
@@ -391,7 +406,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                         ),
                                         SizedBox(height: 4.0),
                                         Text(
-                                          userProfile?.companyPhone ?? '(11) 99999-9999',
+                                          empresaData?['telefone_empresa'] ?? '(11) 99999-9999',
                                           style: FlutterFlowTheme.of(context).bodyMedium.override(
                                             fontFamily: 'Montserrat',
                                             color: FlutterFlowTheme.of(context).primary,
@@ -446,7 +461,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                         ),
                                         SizedBox(height: 4.0),
                                         Text(
-                                          userProfile?.companyCnpj ?? '12.345.678/0001-90',
+                                          _formatCnpj(empresaData?['cnpj'] ?? ''),
                                           style: FlutterFlowTheme.of(context).bodySmall.override(
                                             fontFamily: 'Montserrat',
                                             color: FlutterFlowTheme.of(context).primary,
@@ -462,7 +477,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                             SizedBox(height: 16.0),
                             InkWell(
                               onTap: () async {
-                                final address = userProfile?.companyAddress ?? 'São Paulo, SP';
+                                final address = _getFullAddress();
                                 final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(address)}');
                                 await launchUrl(url);
                               },
@@ -513,7 +528,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           ),
                                           SizedBox(height: 4.0),
                                           Text(
-                                            userProfile?.companyAddress ?? 'São Paulo, SP',
+                                            _getFullAddress(),
                                             style: FlutterFlowTheme.of(context).bodyMedium.override(
                                               fontFamily: 'Montserrat',
                                               color: FlutterFlowTheme.of(context).primary,

@@ -2,20 +2,18 @@ import '/flutter_flow/flutter_flow_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import '../../services/usuario_service.dart';
-import '../../services/empresa_service.dart';
-import '../../models/usuario.dart';
-import '../../models/empresa.dart';
+import '../../services/profile_service.dart';
+import '../../models/user_profile.dart';
 import 'editar_conta_widget.dart';
 
 class EditarContaModel extends FlutterFlowModel<EditarContaWidget> {
   final unfocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
 
-
   // User data
-  Usuario? usuario;
+  UserProfile? userProfile;
   bool isLoading = false;
+  bool isEditing = false;
 
   // State fields for TextFields
   FocusNode? nomeCompletoFocusNode;
@@ -45,8 +43,6 @@ class EditarContaModel extends FlutterFlowModel<EditarContaWidget> {
   FocusNode? cepFocusNode;
   TextEditingController? cepController;
   String? Function(BuildContext, String?)? cepValidator;
-
-  Empresa? empresa;
 
   FocusNode? cpfFocusNode;
   TextEditingController? cpfController;
@@ -90,84 +86,65 @@ class EditarContaModel extends FlutterFlowModel<EditarContaWidget> {
     return null;
   }
 
-  // Load user data and company data
-  Future<void> loadUserData(String email) async {
+  // Load user profile data
+  Future<void> loadUserProfile() async {
     isLoading = true;
     
     try {
-      usuario = await UsuarioService.getUsuarioByEmail(email);
-      
-      // Update controllers with loaded data
-      nomeCompletoController?.text = usuario!.nome;
-      emailController?.text = usuario!.email;
-      telefoneController?.text = usuario!.telefone ?? '';
-      cpfController?.text = usuario!.cpf;
-      
-      // Load company data
-      await _loadCompanyData();
+      userProfile = await ProfileService.getUserProfile();
+      initializeControllers();
     } catch (e) {
-      print('Error loading user data: $e');
+      print('Error loading user profile: $e');
+      rethrow;
     } finally {
       isLoading = false;
     }
   }
 
-  Future<void> _loadCompanyData() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final empresaJson = prefs.getString('empresa_data');
+  void initializeControllers() {
+    if (userProfile != null) {
+      nomeCompletoController?.text = userProfile!.personalName ?? '';
+      emailController?.text = userProfile!.personalEmail ?? '';
+      telefoneController?.text = userProfile!.personalPhone ?? '';
+      cpfController?.text = userProfile!.personalCpf ?? '';
       
-      if (empresaJson != null) {
-        final empresaData = json.decode(empresaJson);
-        final cnpj = empresaData['cnpj'];
-        
-        if (cnpj != null) {
-          empresa = await EmpresaService.getEmpresa(cnpj);
-          nomeEmpresaController?.text = empresa!.nomeEmpresa;
-          enderecoController?.text = empresa!.endereco ?? '';
-          biografiaController?.text = empresa!.descricao ?? '';
-          cepController?.text = empresa!.cep ?? '';
-        }
-      }
-    } catch (e) {
-      print('Error loading company data: $e');
+      nomeEmpresaController?.text = userProfile!.companyName;
+      enderecoController?.text = userProfile!.companyAddress;
+      biografiaController?.text = userProfile!.companyDescription;
+      cepController?.text = userProfile!.companyCep ?? '';
     }
   }
   
-  // Save user and company data
-  Future<bool> saveUserData() async {
-    if (usuario == null || empresa == null) return false;
+  // Save user profile data
+  Future<bool> saveUserProfile() async {
+    if (userProfile == null) return false;
     
     try {
-      final cpfLimpo = usuario!.cpf.replaceAll(RegExp(r'[^0-9]'), '');
-      final telefoneLimpo = telefoneController?.text?.replaceAll(RegExp(r'[^0-9]'), '') ?? '';
-      
-      // Update user
-      final updatedUsuario = Usuario(
-        cpf: cpfLimpo,
-        nome: nomeCompletoController?.text ?? '',
-        email: emailController?.text ?? '',
-        telefone: telefoneLimpo.isEmpty ? null : telefoneLimpo,
+      final updatedProfile = UserProfile(
+        companyName: nomeEmpresaController?.text ?? userProfile!.companyName,
+        companyEmail: userProfile!.companyEmail,
+        companyCnpj: userProfile!.companyCnpj,
+        companyPhone: userProfile!.companyPhone,
+        companyAddress: enderecoController?.text ?? userProfile!.companyAddress,
+        companyDescription: biografiaController?.text ?? userProfile!.companyDescription,
+        companyCep: cepController?.text ?? userProfile!.companyCep,
+        personalName: nomeCompletoController?.text ?? userProfile!.personalName,
+        personalCpf: userProfile!.personalCpf,
+        personalPhone: telefoneController?.text ?? userProfile!.personalPhone,
+        personalEmail: emailController?.text ?? userProfile!.personalEmail,
+        personalAddress: userProfile!.personalAddress,
       );
       
-      // Update company
-      final updatedEmpresa = Empresa(
-        cnpj: empresa!.cnpj,
-        nomeEmpresa: nomeEmpresaController?.text ?? '',
-        email: empresa!.email,
-        telefone: empresa!.telefone,
-        endereco: enderecoController?.text,
-        descricao: biografiaController?.text,
-        cep: cepController?.text,
-        usuario: updatedUsuario,
-      );
-      
-      await UsuarioService.updateUsuario(cpfLimpo, updatedUsuario);
-      await EmpresaService.updateEmpresa(empresa!.cnpj, updatedEmpresa);
+      await ProfileService.saveUserProfile(updatedProfile);
+      userProfile = updatedProfile;
       return true;
     } catch (e) {
       rethrow;
     }
+  }
+
+  void toggleEditMode() {
+    isEditing = !isEditing;
   }
 
   String? validateCpf(BuildContext context, String? val) {
@@ -206,6 +183,27 @@ class EditarContaModel extends FlutterFlowModel<EditarContaWidget> {
 
   @override
   void initState(BuildContext context) {
+    // Initialize controllers
+    nomeCompletoController = TextEditingController();
+    emailController = TextEditingController();
+    telefoneController = TextEditingController();
+    biografiaController = TextEditingController();
+    nomeEmpresaController = TextEditingController();
+    enderecoController = TextEditingController();
+    cepController = TextEditingController();
+    cpfController = TextEditingController();
+    
+    // Initialize focus nodes
+    nomeCompletoFocusNode = FocusNode();
+    emailFocusNode = FocusNode();
+    telefoneFocusNode = FocusNode();
+    biografiaFocusNode = FocusNode();
+    nomeEmpresaFocusNode = FocusNode();
+    enderecoFocusNode = FocusNode();
+    cepFocusNode = FocusNode();
+    cpfFocusNode = FocusNode();
+    
+    // Set validators
     nomeCompletoValidator = validateNomeCompleto;
     emailValidator = validateEmail;
     telefoneValidator = validateTelefone;
