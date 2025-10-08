@@ -18,38 +18,38 @@ class EditarContaModel extends FlutterFlowModel<EditarContaWidget> {
   // State fields for TextFields
   FocusNode? nomeCompletoFocusNode;
   TextEditingController? nomeCompletoController;
-  String? Function(BuildContext, String?)? nomeCompletoValidator;
+  FormFieldValidator<String>? nomeCompletoValidator;
 
   FocusNode? emailFocusNode;
   TextEditingController? emailController;
-  String? Function(BuildContext, String?)? emailValidator;
+  FormFieldValidator<String>? emailValidator;
 
   FocusNode? telefoneFocusNode;
   TextEditingController? telefoneController;
-  String? Function(BuildContext, String?)? telefoneValidator;
+  FormFieldValidator<String>? telefoneValidator;
 
   FocusNode? biografiaFocusNode;
   TextEditingController? biografiaController;
-  String? Function(BuildContext, String?)? biografiaValidator;
+  FormFieldValidator<String>? biografiaValidator;
 
   FocusNode? nomeEmpresaFocusNode;
   TextEditingController? nomeEmpresaController;
-  String? Function(BuildContext, String?)? nomeEmpresaValidator;
+  FormFieldValidator<String>? nomeEmpresaValidator;
 
   FocusNode? enderecoFocusNode;
   TextEditingController? enderecoController;
-  String? Function(BuildContext, String?)? enderecoValidator;
+  FormFieldValidator<String>? enderecoValidator;
 
   FocusNode? cepFocusNode;
   TextEditingController? cepController;
-  String? Function(BuildContext, String?)? cepValidator;
+  FormFieldValidator<String>? cepValidator;
 
   FocusNode? cpfFocusNode;
   TextEditingController? cpfController;
-  String? Function(BuildContext, String?)? cpfValidator;
+  FormFieldValidator<String>? cpfValidator;
 
   // Validation methods
-  String? validateNomeCompleto(BuildContext context, String? val) {
+  String? validateNomeCompleto(String? val) {
     if (val == null || val.isEmpty) {
       return 'Nome completo é obrigatório';
     }
@@ -59,7 +59,7 @@ class EditarContaModel extends FlutterFlowModel<EditarContaWidget> {
     return null;
   }
 
-  String? validateEmail(BuildContext context, String? val) {
+  String? validateEmail(String? val) {
     if (val == null || val.isEmpty) {
       return 'Email é obrigatório';
     }
@@ -69,7 +69,7 @@ class EditarContaModel extends FlutterFlowModel<EditarContaWidget> {
     return null;
   }
 
-  String? validateTelefone(BuildContext context, String? val) {
+  String? validateTelefone(String? val) {
     if (val == null || val.isEmpty) {
       return 'Telefone é obrigatório';
     }
@@ -79,7 +79,7 @@ class EditarContaModel extends FlutterFlowModel<EditarContaWidget> {
     return null;
   }
 
-  String? validateBiografia(BuildContext context, String? val) {
+  String? validateBiografia(String? val) {
     if (val != null && val.length > 500) {
       return 'Biografia deve ter no máximo 500 caracteres';
     }
@@ -147,7 +147,7 @@ class EditarContaModel extends FlutterFlowModel<EditarContaWidget> {
     isEditing = !isEditing;
   }
 
-  String? validateCpf(BuildContext context, String? val) {
+  String? validateCpf(String? val) {
     if (val == null || val.isEmpty) {
       return 'CPF é obrigatório';
     }
@@ -157,21 +157,21 @@ class EditarContaModel extends FlutterFlowModel<EditarContaWidget> {
     return null;
   }
 
-  String? validateNomeEmpresa(BuildContext context, String? val) {
+  String? validateNomeEmpresa(String? val) {
     if (val == null || val.isEmpty) {
       return 'Nome da empresa é obrigatório';
     }
     return null;
   }
 
-  String? validateEndereco(BuildContext context, String? val) {
+  String? validateEndereco(String? val) {
     if (val == null || val.isEmpty) {
       return 'Endereço é obrigatório';
     }
     return null;
   }
 
-  String? validateCep(BuildContext context, String? val) {
+  String? validateCep(String? val) {
     if (val != null && val.isNotEmpty) {
       final cepRegex = RegExp(r'^\d{5}-?\d{3}$');
       if (!cepRegex.hasMatch(val)) {

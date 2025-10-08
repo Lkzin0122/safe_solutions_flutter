@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../../services/debug_service.dart';
 import 'login1_model.dart';
 export 'login1_model.dart';
 
@@ -34,10 +35,10 @@ class _Login1WidgetState extends State<Login1Widget> {
 
     try {
       final cnpjNumbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
+      final senhaLimpa = senha.trim(); // Remove espaços em branco
       
-      print('=== LOGIN DEBUG ===');
-      print('CNPJ: $cnpjNumbers');
-      print('Senha: $senha');
+      // Debug detalhado
+      await DebugService.debugLogin(cnpj, senhaLimpa);
       
       // Primeiro testa se o servidor está rodando
       print('Testando conexão com servidor...');
@@ -55,7 +56,7 @@ class _Login1WidgetState extends State<Login1Widget> {
       
       print('Fazendo login...');
       final response = await http.get(
-        Uri.parse('http://localhost:8080/empresa/login/$cnpjNumbers?senha=$senha'),
+        Uri.parse('http://localhost:8080/empresa/login/$cnpjNumbers?senha=${Uri.encodeComponent(senhaLimpa)}'),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 10));
       

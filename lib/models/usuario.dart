@@ -1,36 +1,51 @@
 class Usuario {
-  String cpf;
-  String nome;
-  String email;
-  String? telefone;
+  final String? id;
+  final String cpf;
+  final String nomeUsuario;
+  final String? dataNascimento;
+  final String senhaUsuario;
+  final String email;
+  final String? dataCriacaoUsuario;
+  final int nivelAcesso;
+  final bool statusUsuario;
 
   Usuario({
+    this.id,
     required this.cpf,
-    required this.nome,
+    required this.nomeUsuario,
+    this.dataNascimento,
+    required this.senhaUsuario,
     required this.email,
-    this.telefone,
+    this.dataCriacaoUsuario,
+    this.nivelAcesso = 1,
+    this.statusUsuario = true,
   });
 
   factory Usuario.fromJson(Map<String, dynamic> json) {
     return Usuario(
-      cpf: json['cpf'] ?? json['cpf_usuario'] ?? '',
-      nome: json['nome_usuario'] ?? json['nome'] ?? '',
+      id: json['id'],
+      cpf: json['cpf'] ?? '',
+      nomeUsuario: json['nome_usuario'] ?? '',
+      dataNascimento: json['data_nascimento'],
+      senhaUsuario: json['senha_usuario'] ?? '',
       email: json['email'] ?? '',
-      telefone: json['telefone'] ?? json['phone'],
+      dataCriacaoUsuario: json['data_criacao_usuario'],
+      nivelAcesso: json['nivel_acesso'] ?? 1,
+      statusUsuario: json['status_usuario'] ?? true,
     );
   }
 
   Map<String, dynamic> toJson() {
-    final map = {
-      'cpf': cpf.replaceAll(RegExp(r'[^0-9]'), ''),
-      'nome_usuario': nome,
+    return {
+      'id': id,
+      'cpf': cpf,
+      'nome_usuario': nomeUsuario,
+      'data_nascimento': dataNascimento,
+      'senha_usuario': senhaUsuario,
       'email': email,
+      'data_criacao_usuario': dataCriacaoUsuario,
+      'nivel_acesso': nivelAcesso,
+      'status_usuario': statusUsuario,
     };
-    
-    if (telefone != null && telefone!.isNotEmpty) {
-      map['telefone'] = telefone!;
-    }
-    
-    return map;
   }
 }

@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_profile.dart';
 import '../models/empresa.dart';
 import '../models/usuario.dart';
-import '../storage/session_storage.dart';
 
 class ProfileService {
   static const String _profileKey = 'user_profile';
@@ -25,34 +24,33 @@ class ProfileService {
       await _saveProfileLocally(profile);
       return profile;
     } catch (e) {
-      print('Error loading from backend: $e');
-      
       final empresaJson = prefs.getString(_empresaKey);
       if (empresaJson != null) {
         final empresaData = json.decode(empresaJson);
         final empresa = Empresa.fromJson(empresaData);
         return _convertEmpresaToUserProfile(empresa);
       }
-      
       throw Exception('Não foi possível carregar os dados do perfil');
     }
   }
 
-
-
   static UserProfile _convertEmpresaToUserProfile(Empresa empresa) {
+    final endereco = [empresa.rua, empresa.numero, empresa.bairro, empresa.cidade]
+        .where((e) => e != null && e.isNotEmpty)
+        .join(', ');
+    
     return UserProfile(
       companyName: empresa.nomeEmpresa,
-      companyEmail: empresa.email,
+      companyEmail: empresa.usuario?.email ?? '',
       companyCnpj: _formatCnpj(empresa.cnpj),
-      companyPhone: empresa.telefone ?? '(11) 99999-9999',
-      companyAddress: empresa.endereco ?? 'São Paulo, SP',
-      companyDescription: empresa.descricao ?? 'Empresa especializada em soluções tecnológicas.',
-      companyCep: empresa.cep ?? '01234-567',
-      personalName: empresa.usuario?.nome,
+      companyPhone: empresa.telefoneEmpresa ?? '',
+      companyAddress: endereco.isNotEmpty ? endereco : '',
+      companyDescription: empresa.descricaoEmpresa ?? '',
+      companyCep: empresa.cep ?? '',
+      personalName: empresa.usuario?.nomeUsuario,
       personalCpf: empresa.usuario?.cpf,
       personalEmail: empresa.usuario?.email,
-      personalPhone: empresa.usuario?.telefone,
+      personalPhone: empresa.telefoneEmpresa,
     );
   }
 
@@ -76,7 +74,6 @@ class ProfileService {
 
   static Future<void> saveUserProfile(UserProfile profile) async {
     try {
-      // Get current empresa data
       final prefs = await SharedPreferences.getInstance();
       final userCnpj = prefs.getString('user_cnpj');
       
@@ -84,66 +81,79 @@ class ProfileService {
         throw Exception('Usuário não está logado');
       }
       
-      // Get current empresa from backend
       final currentEmpresa = await getEmpresa(userCnpj);
       
-      // Update empresa with new data
       final updatedEmpresa = Empresa(
+        id: currentEmpresa.id,
         cnpj: currentEmpresa.cnpj,
         nomeEmpresa: profile.companyName,
-        email: currentEmpresa.email,
-        telefone: currentEmpresa.telefone,
-        endereco: profile.companyAddress,
-        descricao: profile.companyDescription,
+        telefoneEmpresa: profile.companyPhone,
+        rua: _extractRua(profile.companyAddress),
+        numero: _extractNumero(profile.companyAddress),
+        bairro: _extractBairro(profile.companyAddress),
+        cidade: _extractCidade(profile.companyAddress),
         cep: profile.companyCep,
+        descricaoEmpresa: profile.companyDescription,
+        dataCriacao: currentEmpresa.dataCriacao,
         usuario: currentEmpresa.usuario != null ? Usuario(
+          id: currentEmpresa.usuario!.id,
           cpf: currentEmpresa.usuario!.cpf,
-          nome: profile.personalName ?? currentEmpresa.usuario!.nome,
-          email: profile.personalEmail ?? currentEmpresa.usuario!.email,
-          telefone: profile.personalPhone ?? currentEmpresa.usuario!.telefone,
+          nomeUsuario: profile.personalName ?? currentEmpresa.usuario!.nomeUsuario,
+          dataNascimento: currentEmpresa.usuario!.dataNascimento,
+          senhaUsuario: currentEmpresa.usuario!.senhaUsuario,
+          email: currentEmpresa.usuario!.email,
+          dataCriacaoUsuario: currentEmpresa.usuario!.dataCriacaoUsuario,
+          nivelAcesso: currentEmpresa.usuario!.nivelAcesso,
+          statusUsuario: currentEmpresa.usuario!.statusUsuario,
         ) : null,
       );
       
-      // Update empresa via API
       await updateEmpresa(userCnpj, updatedEmpresa);
       
-      // Save locally
+      if (currentEmpresa.usuario != null && 
+          (profile.personalName != currentEmpresa.usuario!.nomeUsuario)) {
+        await updateUsuario(currentEmpresa.usuario!.cpf, updatedEmpresa.usuario!);
+      }
+      
       await _saveProfileLocally(profile);
       await saveEmpresaData(updatedEmpresa);
       
     } catch (e) {
-      print('Error saving profile: $e');
-      // Fallback to local save only
-      await _saveProfileLocally(profile);
+      rethrow;
     }
   }
-
-  // GET /empresa - Get all companies
-  static Future<List<Empresa>> getAllEmpresas() async {
-    final response = await http.get(
-      Uri.parse(_baseUrl),
-      headers: {'Content-Type': 'application/json'},
-    );
-    
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      return data.map((json) => Empresa.fromJson(json)).toList();
-    }
-    throw Exception('Failed to load empresas');
+  
+  static String? _extractRua(String address) {
+    if (address.isEmpty) return null;
+    final parts = address.split(', ');
+    return parts.isNotEmpty ? parts[0] : null;
+  }
+  
+  static String? _extractNumero(String address) {
+    if (address.isEmpty) return null;
+    final parts = address.split(', ');
+    return parts.length > 1 ? parts[1] : null;
+  }
+  
+  static String? _extractBairro(String address) {
+    if (address.isEmpty) return null;
+    final parts = address.split(', ');
+    return parts.length > 2 ? parts[2] : null;
+  }
+  
+  static String? _extractCidade(String address) {
+    if (address.isEmpty) return null;
+    final parts = address.split(', ');
+    return parts.length > 3 ? parts[3] : null;
   }
 
-  // GET /empresa/{cnpj} - Get company by CNPJ
   static Future<Empresa> getEmpresa(String cnpj) async {
     final cnpjLimpo = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
-    print('ProfileService: Buscando empresa com CNPJ: $cnpjLimpo');
     
     final response = await http.get(
       Uri.parse('$_baseUrl/$cnpjLimpo'),
       headers: {'Content-Type': 'application/json'},
     );
-    
-    print('ProfileService: Status da resposta: ${response.statusCode}');
-    print('ProfileService: Corpo da resposta: ${response.body}');
     
     if (response.statusCode == 200) {
       return Empresa.fromJson(json.decode(response.body));
@@ -151,24 +161,10 @@ class ProfileService {
     throw Exception('Erro ao carregar dados');
   }
 
-  // POST /empresa/usuario - Get company by user
-  static Future<Empresa> getEmpresaUsuario(Usuario usuario) async {
-    final response = await http.post(
-      Uri.parse('$_baseUrl/usuario'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(usuario.toJson()),
-    );
-    
-    if (response.statusCode == 200) {
-      return Empresa.fromJson(json.decode(response.body));
-    }
-    throw Exception('Dados não encontrados para o usuário');
-  }
-
-  // PUT /empresa/{cnpj} - Update company
   static Future<Empresa> updateEmpresa(String cnpj, Empresa empresa) async {
+    final cnpjLimpo = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
     final response = await http.put(
-      Uri.parse('$_baseUrl/$cnpj'),
+      Uri.parse('$_baseUrl/$cnpjLimpo'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(empresa.toJson()),
     );
@@ -177,5 +173,19 @@ class ProfileService {
       return Empresa.fromJson(json.decode(response.body));
     }
     throw Exception('Erro ao atualizar empresa');
+  }
+  
+  static Future<Usuario> updateUsuario(String cpf, Usuario usuario) async {
+    final cpfLimpo = cpf.replaceAll(RegExp(r'[^0-9]'), '');
+    final response = await http.put(
+      Uri.parse('http://localhost:8080/usuario/$cpfLimpo'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(usuario.toJson()),
+    );
+    
+    if (response.statusCode == 200) {
+      return Usuario.fromJson(json.decode(response.body));
+    }
+    throw Exception('Erro ao atualizar usuário');
   }
 }
