@@ -8,9 +8,3 @@ SELECT u.cpf, u.nome_usuario, u.email, u.status_usuario
 FROM usuario u 
 JOIN empresa e ON e.usuario_id = u.id 
 WHERE e.cnpj = 'YOUR_CNPJ';
-
--- 3. Check password (be careful with this in production)
-SELECT u.senha_usuario 
-FROM usuario u 
-JOIN empresa e ON e.usuario_id = u.id 
-WHERE e.cnpj = 'YOUR_CNPJ';

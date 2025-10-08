@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '/auth/custom_auth/custom_auth_user_provider.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/models/servico.dart';
 import '/pages/profile/profile_widget.dart';
 import '/pages/contratos/contratos_widget.dart';
 import '/pages/inicial/inicial_widget.dart';
@@ -25,6 +26,7 @@ import '/pages/confirmar_senha/confirmar_senha_widget.dart';
 import '/pages/nova_senha_pos_validacao/nova_senha_pos_validacao_widget.dart';
 import '/pages/termos_uso/termos_uso_widget.dart';
 import '/pages/status_servico/status_servico_widget.dart';
+import '/pages/detalhes_servico/detalhes_servico_widget.dart';
 import '/pages/test_api.dart';
 
 export 'package:go_router/go_router.dart';
@@ -203,6 +205,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'TermosUso',
           path: '/termosUso',
           builder: (context, state) => const TermosUsoWidget(),
+        ),
+        GoRoute(
+          name: 'DetalhesServico',
+          path: '/detalhes-servico',
+          builder: (context, state) {
+            final servico = state.extra as Servico?;
+            if (servico == null) {
+              return const ServicosWidget();
+            }
+            return DetalhesServicoWidget(servico: servico);
+          },
         ),
         GoRoute(
           name: 'TestApi',

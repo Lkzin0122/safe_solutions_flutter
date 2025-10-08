@@ -67,25 +67,29 @@ class _ServicosWidgetState extends State<ServicosWidget> {
   }
 
   Widget _buildServicoCard(Servico servico) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16.0),
-      padding: EdgeInsets.all(20.0),
-      decoration: BoxDecoration(
-        color: FlutterFlowTheme.of(context).secondaryBackground,
-        borderRadius: BorderRadius.circular(16.0),
-        border: Border.all(
-          color: FlutterFlowTheme.of(context).alternate,
-          width: 1.0,
+    return GestureDetector(
+      onTap: () {
+        context.pushNamed('DetalhesServico', extra: servico);
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16.0),
+        padding: EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          color: FlutterFlowTheme.of(context).secondaryBackground,
+          borderRadius: BorderRadius.circular(16.0),
+          border: Border.all(
+            color: FlutterFlowTheme.of(context).alternate,
+            width: 1.0,
+          ),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 8.0,
+              color: Color(0x0F000000),
+              offset: Offset(0.0, 4.0),
+            )
+          ],
         ),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 8.0,
-            color: Color(0x0F000000),
-            offset: Offset(0.0, 4.0),
-          )
-        ],
-      ),
-      child: Column(
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -194,6 +198,7 @@ class _ServicosWidgetState extends State<ServicosWidget> {
             ),
           ],
         ],
+        ),
       ),
     );
   }
