@@ -98,7 +98,7 @@ class _ServicosWidgetState extends State<ServicosWidget> {
                 width: 50.0,
                 height: 50.0,
                 decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).primary.withValues(alpha: 0.1),
+                  color: FlutterFlowTheme.of(context).primary.withOpacity( 0.1),
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 child: Icon(
@@ -134,7 +134,7 @@ class _ServicosWidgetState extends State<ServicosWidget> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                   decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).primary.withValues(alpha: 0.1),
+                    color: FlutterFlowTheme.of(context).primary.withOpacity( 0.1),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: Text(
@@ -283,7 +283,7 @@ class _ServicosWidgetState extends State<ServicosWidget> {
                               'Soluções completas para sua casa',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
-                                color: Colors.white.withValues(alpha: 0.9),
+                                color: Colors.white.withOpacity( 0.9),
                               ),
                             ),
                           ],
@@ -324,9 +324,9 @@ class _ServicosWidgetState extends State<ServicosWidget> {
                         Container(
                           padding: EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
-                            color: Colors.red.withValues(alpha: 0.1),
+                            color: Colors.red.withOpacity( 0.1),
                             borderRadius: BorderRadius.circular(12.0),
-                            border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                            border: Border.all(color: Colors.red.withOpacity( 0.3)),
                           ),
                           child: Column(
                             children: [

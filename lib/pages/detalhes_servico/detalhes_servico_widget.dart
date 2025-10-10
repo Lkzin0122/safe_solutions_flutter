@@ -98,7 +98,7 @@ class _DetalhesServicoWidgetState extends State<DetalhesServicoWidget> {
                             width: 80.0,
                             height: 80.0,
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.2),
+                              color: Colors.white.withOpacity( 0.2),
                               borderRadius: BorderRadius.circular(20.0),
                             ),
                             child: Icon(
@@ -122,7 +122,7 @@ class _DetalhesServicoWidgetState extends State<DetalhesServicoWidget> {
                               widget.servico.categoriaServico!,
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
-                                color: Colors.white.withValues(alpha: 0.9),
+                                color: Colors.white.withOpacity( 0.9),
                               ),
                             ),
                         ],

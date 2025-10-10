@@ -233,10 +233,10 @@ class _ConfiguracoesWidgetState extends State<ConfiguracoesWidget> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: Colors.red.withValues(alpha: 0.1),
+                    color: Colors.red.withOpacity( 0.1),
                     borderRadius: BorderRadius.circular(12.0),
                     border: Border.all(
-                      color: Colors.red.withValues(alpha: 0.3),
+                      color: Colors.red.withOpacity( 0.3),
                       width: 1.0,
                     ),
                   ),

@@ -353,7 +353,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
             Container(
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: Colors.red.withValues(alpha: 0.1),
+                color: Colors.red.withOpacity( 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(Icons.error_outline, size: 64.0, color: Colors.red),
