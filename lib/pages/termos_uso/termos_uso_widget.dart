@@ -72,6 +72,7 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
                       'Termos de Uso — Safe Solutions',
                       style: FlutterFlowTheme.of(context).titleLarge.override(
                         fontFamily: 'Montserrat',
+                        color: Color(0xFF204060),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -87,7 +88,7 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
                       'Seção 1 - Usuário',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).primary,
+                        color: Color(0xFF204060),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -103,7 +104,7 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
                       'Seção 2 - Adesão em conjunto com a Política de Privacidade',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).primary,
+                        color: Color(0xFF204060),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -119,7 +120,7 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
                       'Seção 3 - Condições de acesso',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).primary,
+                        color: Color(0xFF204060),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -135,7 +136,7 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
                       'Seção 4 - Cookies',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).primary,
+                        color: Color(0xFF204060),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -151,7 +152,7 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
                       'Seção 5 - Propriedade Intelectual',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).primary,
+                        color: Color(0xFF204060),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -167,7 +168,7 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
                       'Seção 6 - Links para sites de terceiros',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).primary,
+                        color: Color(0xFF204060),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -183,7 +184,7 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
                       'Seção 7 - Prazos e alterações',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).primary,
+                        color: Color(0xFF204060),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -199,7 +200,7 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
                       'Seção 8 - Dados pessoais',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).primary,
+                        color: Color(0xFF204060),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -215,7 +216,7 @@ class _TermosUsoWidgetState extends State<TermosUsoWidget> {
                       'Seção 9 - Contato',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Montserrat',
-                        color: FlutterFlowTheme.of(context).primary,
+                        color: Color(0xFF204060),
                         fontWeight: FontWeight.w600,
                       ),
                     ),

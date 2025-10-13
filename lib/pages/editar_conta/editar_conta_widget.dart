@@ -4,7 +4,6 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'editar_conta_model.dart';
 import '../../models/user_profile.dart';
 export 'editar_conta_model.dart';
@@ -90,78 +89,49 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
           label,
           style: FlutterFlowTheme.of(context).bodyMedium.override(
             fontFamily: 'Montserrat',
-            color: FlutterFlowTheme.of(context).primary,
+            color: Color(0xFF204060),
             fontSize: 14.0,
-            fontWeight: FontWeight.w600,
           ),
         ),
         SizedBox(height: 8.0),
-        AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          child: _model.isEditing && controller != null
-              ? TextFormField(
-                  controller: controller,
-                  focusNode: focusNode,
-                  maxLines: maxLines,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate, width: 1.5),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: BorderSide(color: FlutterFlowTheme.of(context).primary, width: 2.0),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: BorderSide(color: Colors.red, width: 1.5),
-                    ),
+        _model.isEditing && controller != null
+            ? TextFormField(
+                controller: controller,
+                focusNode: focusNode,
+                maxLines: maxLines,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate),
                   ),
-                  validator: validator,
-                )
-              : Container(
-                  width: double.infinity,
-                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 14.0, 16.0, 14.0),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        FlutterFlowTheme.of(context).primaryBackground,
-                        FlutterFlowTheme.of(context).secondaryBackground,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: FlutterFlowTheme.of(context).alternate.withOpacity(0.5),
-                      width: 1.0,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 4.0,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate),
                   ),
-                  child: Text(
-                    value ?? 'N/A',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Montserrat',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      fontSize: 15.0,
-                    ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: Color(0xFF204060)),
                   ),
                 ),
-        ),
+                validator: validator,
+              )
+            : Container(
+                width: double.infinity,
+                padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 12.0),
+                decoration: BoxDecoration(
+                  color: Color(0xFFE8F0F0),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Text(
+                  value ?? 'N/A',
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                    fontFamily: 'Montserrat',
+                    color: FlutterFlowTheme.of(context).primaryText,
+                  ),
+                ),
+              ),
       ],
     );
   }
@@ -173,130 +143,39 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        appBar: isLoading ? null : AppBar(
-          backgroundColor: Colors.transparent,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  FlutterFlowTheme.of(context).primary,
-                  FlutterFlowTheme.of(context).secondary,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-          ),
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(Icons.arrow_back_rounded, color: Colors.white, size: 28.0),
-          ).animate().fadeIn(duration: 300.ms).slideX(begin: -0.3),
-          title: Text(
-            'Editar Conta',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-              fontFamily: 'Montserrat',
-              color: Colors.white,
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ).animate().fadeIn(duration: 500.ms).slideY(begin: -0.3),
-          centerTitle: true,
-          elevation: 0.0,
-        ),
+
         body: isLoading
-            ? Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      FlutterFlowTheme.of(context).primaryBackground,
-                      FlutterFlowTheme.of(context).secondaryBackground,
-                    ],
-                  ),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(FlutterFlowTheme.of(context).primary),
-                        strokeWidth: 3.0,
-                      ).animate().scale(duration: 1000.ms, curve: Curves.easeInOut),
-                      SizedBox(height: 24),
-                      Text(
-                        'Carregando dados...',
-                        style: FlutterFlowTheme.of(context).bodyLarge.override(
-                          fontFamily: 'Montserrat',
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                        ),
-                      ).animate().fadeIn(duration: 800.ms),
-                    ],
-                  ),
-                ),
-              )
+            ? Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF204060))))
             : SafeArea(
                 child: hasLoginError
                     ? _buildErrorScreen()
                     : Form(
                         key: _model.formKey,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                FlutterFlowTheme.of(context).primaryBackground,
-                                FlutterFlowTheme.of(context).secondaryBackground.withOpacity(0.3),
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
+                        child: SingleChildScrollView(
+                          padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Botão de voltar
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+                                  child: IconButton(
+                                    onPressed: () => Navigator.of(context).pop(),
+                                    icon: Icon(Icons.arrow_back, size: 22),
+                                  ),
+                                ),
+                              ),
+                        Text(
+                          'Dados da Empresa',
+                          style: FlutterFlowTheme.of(context).headlineSmall.override(
+                            fontFamily: 'Montserrat',
+                            color: Color(0xFF204060),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
                           ),
-                          child: SingleChildScrollView(
-                            padding: EdgeInsetsDirectional.fromSTEB(24.0, 32.0, 24.0, 32.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(20.0),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        FlutterFlowTheme.of(context).primary.withOpacity(0.1),
-                                        FlutterFlowTheme.of(context).secondary.withOpacity(0.05),
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(12.0),
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context).primary,
-                                          borderRadius: BorderRadius.circular(12.0),
-                                        ),
-                                        child: Icon(
-                                          Icons.business,
-                                          color: Colors.white,
-                                          size: 24.0,
-                                        ),
-                                      ),
-                                      SizedBox(width: 16.0),
-                                      Text(
-                                        'Dados da Empresa',
-                                        style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: FlutterFlowTheme.of(context).primary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.3),
+                        ),
                         SizedBox(height: 20.0),
                         
                         Row(
@@ -320,48 +199,15 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                         ),
                         SizedBox(height: 24.0),
                         
-                                Container(
-                                  padding: EdgeInsets.all(20.0),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        FlutterFlowTheme.of(context).secondary.withOpacity(0.1),
-                                        FlutterFlowTheme.of(context).primary.withOpacity(0.05),
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context).secondary.withOpacity(0.2),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(12.0),
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context).secondary,
-                                          borderRadius: BorderRadius.circular(12.0),
-                                        ),
-                                        child: Icon(
-                                          Icons.location_on,
-                                          color: Colors.white,
-                                          size: 24.0,
-                                        ),
-                                      ),
-                                      SizedBox(width: 16.0),
-                                      Text(
-                                        'Endereço',
-                                        style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: FlutterFlowTheme.of(context).secondary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ).animate().fadeIn(duration: 800.ms).slideY(begin: 0.3),
+                        Text(
+                          'Endereço',
+                          style: FlutterFlowTheme.of(context).headlineSmall.override(
+                            fontFamily: 'Montserrat',
+                            color: Color(0xFF204060),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         SizedBox(height: 20.0),
                         
                         Row(
@@ -373,48 +219,15 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                         ),
                         SizedBox(height: 24.0),
                         
-                                Container(
-                                  padding: EdgeInsets.all(20.0),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        FlutterFlowTheme.of(context).tertiary.withOpacity(0.1),
-                                        FlutterFlowTheme.of(context).primary.withOpacity(0.05),
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    border: Border.all(
-                                      color: FlutterFlowTheme.of(context).tertiary.withOpacity(0.2),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(12.0),
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context).tertiary,
-                                          borderRadius: BorderRadius.circular(12.0),
-                                        ),
-                                        child: Icon(
-                                          Icons.person,
-                                          color: Colors.white,
-                                          size: 24.0,
-                                        ),
-                                      ),
-                                      SizedBox(width: 16.0),
-                                      Text(
-                                        'Dados Pessoais',
-                                        style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: FlutterFlowTheme.of(context).tertiary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ).animate().fadeIn(duration: 1000.ms).slideY(begin: 0.3),
+                        Text(
+                          'Dados Pessoais',
+                          style: FlutterFlowTheme.of(context).headlineSmall.override(
+                            fontFamily: 'Montserrat',
+                            color: Color(0xFF204060),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         SizedBox(height: 20.0),
                         
                         Row(
@@ -429,191 +242,95 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                         _buildField('Telefone pessoal', userProfile?.personalPhone, _model.telefoneController, _model.telefoneFocusNode, _model.telefoneValidator),
                         SizedBox(height: 32.0),
                         
-                                Container(
-                                  padding: EdgeInsets.all(24.0),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Colors.white,
-                                        FlutterFlowTheme.of(context).primaryBackground,
-                                      ],
+                        Row(
+                          children: [
+                            if (_model.isEditing) ...{
+                              Expanded(
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    try {
+                                      if (_model.formKey.currentState?.validate() ?? false) {
+                                        final success = await _model.saveUserProfile();
+                                        if (success && mounted) {
+                                          setState(() {
+                                            _model.toggleEditMode();
+                                            userProfile = _model.userProfile;
+                                          });
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Dados salvos com sucesso!'), backgroundColor: Colors.green),
+                                          );
+                                        }
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Por favor, corrija os erros no formulário'), backgroundColor: Colors.orange),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      print('Erro ao salvar: $e');
+                                      if (mounted) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Erro ao salvar dados: ${e.toString()}'), backgroundColor: Colors.red),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  text: 'Salvar',
+                                  options: FFButtonOptions(
+                                    height: 50.0,
+                                    color: Color(0xFF204060),
+                                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                                      fontFamily: 'Montserrat',
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 10.0,
-                                        offset: Offset(0, 4),
-                                      ),
-                                    ],
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      if (_model.isEditing) ...[
-                                        Expanded(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  FlutterFlowTheme.of(context).primary,
-                                                  FlutterFlowTheme.of(context).secondary,
-                                                ],
-                                              ),
-                                              borderRadius: BorderRadius.circular(12.0),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
-                                                  blurRadius: 8.0,
-                                                  offset: Offset(0, 4),
-                                                ),
-                                              ],
-                                            ),
-                                            child: FFButtonWidget(
-                                              onPressed: () async {
-                                                try {
-                                                  if (_model.formKey.currentState?.validate() ?? false) {
-                                                    final success = await _model.saveUserProfile();
-                                                    if (success && mounted) {
-                                                      setState(() {
-                                                        _model.toggleEditMode();
-                                                        userProfile = _model.userProfile;
-                                                      });
-                                                      ScaffoldMessenger.of(context).showSnackBar(
-                                                        SnackBar(
-                                                          content: Row(
-                                                            children: [
-                                                              Icon(Icons.check_circle, color: Colors.white),
-                                                              SizedBox(width: 8),
-                                                              Text('Dados salvos com sucesso!'),
-                                                            ],
-                                                          ),
-                                                          backgroundColor: Colors.green,
-                                                          behavior: SnackBarBehavior.floating,
-                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                        ),
-                                                      );
-                                                    }
-                                                  } else {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                      SnackBar(
-                                                        content: Row(
-                                                          children: [
-                                                            Icon(Icons.warning, color: Colors.white),
-                                                            SizedBox(width: 8),
-                                                            Text('Por favor, corrija os erros'),
-                                                          ],
-                                                        ),
-                                                        backgroundColor: Colors.orange,
-                                                        behavior: SnackBarBehavior.floating,
-                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                      ),
-                                                    );
-                                                  }
-                                                } catch (e) {
-                                                  if (mounted) {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                      SnackBar(
-                                                        content: Row(
-                                                          children: [
-                                                            Icon(Icons.error, color: Colors.white),
-                                                            SizedBox(width: 8),
-                                                            Expanded(child: Text('Erro ao salvar: ${e.toString()}')),
-                                                          ],
-                                                        ),
-                                                        backgroundColor: Colors.red,
-                                                        behavior: SnackBarBehavior.floating,
-                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                      ),
-                                                    );
-                                                  }
-                                                }
-                                              },
-                                              text: 'Salvar Alterações',
-                                              icon: Icon(Icons.save, color: Colors.white, size: 20),
-                                              options: FFButtonOptions(
-                                                height: 56.0,
-                                                color: Colors.transparent,
-                                                textStyle: FlutterFlowTheme.of(context).titleMedium.override(
-                                                  fontFamily: 'Montserrat',
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16.0,
-                                                ),
-                                                borderRadius: BorderRadius.circular(12.0),
-                                              ),
-                                            ),
-                                          ).animate().scale(duration: 200.ms).then().shimmer(duration: 1000.ms),
-                                        ),
-                                        SizedBox(width: 16.0),
-                                        Expanded(
-                                          child: FFButtonWidget(
-                                            onPressed: () {
-                                              setState(() {
-                                                _model.toggleEditMode();
-                                                _model.initializeControllers();
-                                              });
-                                            },
-                                            text: 'Cancelar',
-                                            icon: Icon(Icons.close, color: FlutterFlowTheme.of(context).secondaryText, size: 20),
-                                            options: FFButtonOptions(
-                                              height: 56.0,
-                                              color: Colors.transparent,
-                                              textStyle: FlutterFlowTheme.of(context).titleMedium.override(
-                                                fontFamily: 'Montserrat',
-                                                color: FlutterFlowTheme.of(context).secondaryText,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16.0,
-                                              ),
-                                              borderSide: BorderSide(
-                                                color: FlutterFlowTheme.of(context).alternate,
-                                                width: 2.0,
-                                              ),
-                                              borderRadius: BorderRadius.circular(12.0),
-                                            ),
-                                          ).animate().fadeIn(duration: 300.ms),
-                                        ),
-                                      ] else
-                                        Expanded(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  FlutterFlowTheme.of(context).primary,
-                                                  FlutterFlowTheme.of(context).secondary,
-                                                ],
-                                              ),
-                                              borderRadius: BorderRadius.circular(12.0),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
-                                                  blurRadius: 8.0,
-                                                  offset: Offset(0, 4),
-                                                ),
-                                              ],
-                                            ),
-                                            child: FFButtonWidget(
-                                              onPressed: () => setState(() => _model.toggleEditMode()),
-                                              text: 'Editar Dados',
-                                              icon: Icon(Icons.edit, color: Colors.white, size: 20),
-                                              options: FFButtonOptions(
-                                                height: 56.0,
-                                                color: Colors.transparent,
-                                                textStyle: FlutterFlowTheme.of(context).titleMedium.override(
-                                                  fontFamily: 'Montserrat',
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16.0,
-                                                ),
-                                                borderRadius: BorderRadius.circular(12.0),
-                                              ),
-                                            ),
-                                          ).animate().scale(duration: 200.ms).then().shimmer(duration: 1500.ms),
-                                        ),
-                                    ],
+                                ),
+                              ),
+                              SizedBox(width: 16.0),
+                              Expanded(
+                                child: FFButtonWidget(
+                                  onPressed: () {
+                                    setState(() {
+                                      _model.toggleEditMode();
+                                      _model.initializeControllers();
+                                    });
+                                  },
+                                  text: 'Cancelar',
+                                  options: FFButtonOptions(
+                                    height: 50.0,
+                                    color: Colors.transparent,
+                                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                                      fontFamily: 'Montserrat',
+                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate, width: 1.0),
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                ).animate().fadeIn(duration: 1200.ms).slideY(begin: 0.3),
-                              ],
-                            ),
+                                ),
+                              ),
+                            } else
+                              Expanded(
+                                child: FFButtonWidget(
+                                  onPressed: () => setState(() => _model.toggleEditMode()),
+                                  text: 'Editar Dados',
+                                  options: FFButtonOptions(
+                                    height: 50.0,
+                                    color: Colors.transparent,
+                                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                                      fontFamily: 'Montserrat',
+                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate, width: 1.0),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                            ],
                           ),
                         ),
                       ),
@@ -632,16 +349,11 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
             Container(
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                gradient: RadialGradient(
-                  colors: [
-                    Colors.red.withOpacity(0.2),
-                    Colors.red.withOpacity(0.05),
-                  ],
-                ),
+                color: Colors.red.withOpacity( 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(Icons.error_outline, size: 64.0, color: Colors.red),
-            ).animate().scale(duration: 500.ms).then().shake(),
+            ),
             const SizedBox(height: 24.0),
             Text(
               'Acesso Negado',
@@ -661,49 +373,23 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
               ),
             ),
             const SizedBox(height: 32.0),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    FlutterFlowTheme.of(context).primary,
-                    FlutterFlowTheme.of(context).secondary,
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
-                    blurRadius: 8.0,
-                    offset: Offset(0, 4),
-                  ),
-                ],
+            ElevatedButton(
+              onPressed: () => GoRouter.of(context).goNamed('Login'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF204060),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
               ),
-              child: ElevatedButton(
-                onPressed: () => GoRouter.of(context).goNamed('Login'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                  elevation: 0,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.login, color: Colors.white),
-                    SizedBox(width: 8),
-                    Text(
-                      'Fazer Login',
-                      style: FlutterFlowTheme.of(context).titleMedium.override(
-                        fontFamily: 'Montserrat',
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+              child: Text(
+                'Fazer Login',
+                style: FlutterFlowTheme.of(context).titleMedium.override(
+                  fontFamily: 'Montserrat',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-            ).animate().scale(duration: 300.ms).then().shimmer(duration: 1000.ms),
+            ),
           ],
         ),
       ),
