@@ -2,7 +2,7 @@ import '/flutter_flow/flutter_flow_model.dart';
 import '/index.dart';
 import 'contratos_widget.dart' show ContratosWidget;
 import 'package:flutter/material.dart';
-import '../../services/contrato_service.dart';
+import '../../services/orcamento_service.dart';
 import '../../models/orcamento.dart';
 import '../../storage/session_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,13 +46,13 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   final TextEditingController searchController = TextEditingController();
   String searchQuery = '';
   
-  List<Orcamento> _servicosEmAndamento = [];
-  List<Orcamento> _servicosConcluidos = [];
+  List<Orcamento> _orcamentosEmAndamento = [];
+
   bool _isLoading = false;
   String? _error;
   
-  List<Orcamento> get servicosEmAndamento => _servicosEmAndamento;
-  List<Orcamento> get servicosConcluidos => _servicosConcluidos;
+  List<Orcamento> get orcamentosEmAndamento => _orcamentosEmAndamento;
+
   bool get isLoading => _isLoading;
   String? get error => _error;
   
@@ -165,25 +165,26 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
     _error = null;
     
     try {
-      _servicosEmAndamento = [];
-      _servicosConcluidos = [];
-      
+      _orcamentosEmAndamento = [];
+
       String? cpf = await _getCpfUsuario();
       
       if (cpf != null) {
         print('CPF encontrado: $cpf');
-        final emAndamento = await ContratoService.getContratosEmAndamento(cpf);
-        final aceitos = await ContratoService.getContratosAceitos(cpf);
-        final finalizados = await ContratoService.getContratosFinalizados(cpf);
         
-        _servicosEmAndamento = [...emAndamento, ...aceitos];
-        _servicosConcluidos = finalizados;
+        // Carregar orçamentos em andamento
+        final orcamentos = await OrcamentoService.getOrcamentosPorCpf(cpf);
+        _orcamentosEmAndamento = orcamentos.where((o) => 
+          o.statusOrcamento == StatusEnum.EM_ANDAMENTO || 
+          o.statusOrcamento == StatusEnum.ACEITO
+        ).toList();
+
       } else {
         _error = 'CPF do usuário não encontrado';
       }
     } catch (e) {
       _error = e.toString();
-      print('Erro ao carregar contratos: $e');
+      print('Erro ao carregar orçamentos: $e');
     } finally {
       _isLoading = false;
     }
@@ -235,25 +236,17 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
     ).toList();
   }
   
-  List<Orcamento> get filteredServicosEmAndamento {
+  List<Orcamento> get filteredOrcamentosEmAndamento {
     if (searchQuery.isEmpty) {
-      return _servicosEmAndamento;
+      return _orcamentosEmAndamento;
     }
-    return _servicosEmAndamento.where((orcamento) => 
+    return _orcamentosEmAndamento.where((orcamento) => 
       (orcamento.servico?.nomeServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false) ||
       (orcamento.servico?.descricaoServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false)
     ).toList();
   }
   
-  List<Orcamento> get filteredServicosConcluidos {
-    if (searchQuery.isEmpty) {
-      return _servicosConcluidos;
-    }
-    return _servicosConcluidos.where((orcamento) => 
-      (orcamento.servico?.nomeServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false) ||
-      (orcamento.servico?.descricaoServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false)
-    ).toList();
-  }
+
 
 
 
