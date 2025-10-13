@@ -2,6 +2,12 @@ import '/flutter_flow/flutter_flow_model.dart';
 import '/index.dart';
 import 'contratos_widget.dart' show ContratosWidget;
 import 'package:flutter/material.dart';
+import '../../services/contrato_service.dart';
+import '../../models/orcamento.dart';
+import '../../storage/session_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 
 
@@ -39,6 +45,16 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   bool isCompletedExpanded = false;
   final TextEditingController searchController = TextEditingController();
   String searchQuery = '';
+  
+  List<Orcamento> _servicosEmAndamento = [];
+  List<Orcamento> _servicosConcluidos = [];
+  bool _isLoading = false;
+  String? _error;
+  
+  List<Orcamento> get servicosEmAndamento => _servicosEmAndamento;
+  List<Orcamento> get servicosConcluidos => _servicosConcluidos;
+  bool get isLoading => _isLoading;
+  String? get error => _error;
   
   bool get showMontador => searchQuery.isEmpty || 'O Montador'.toLowerCase().contains(searchQuery.toLowerCase()) || 'montagem móveis'.toLowerCase().contains(searchQuery.toLowerCase());
   bool get showSuperClean => searchQuery.isEmpty || 'Super Clean'.toLowerCase().contains(searchQuery.toLowerCase()) || 'limpeza profissional'.toLowerCase().contains(searchQuery.toLowerCase());
@@ -140,7 +156,70 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   }
 
   @override
-  void initState(BuildContext context) {}
+  void initState(BuildContext context) {
+    loadContratos();
+  }
+  
+  Future<void> loadContratos() async {
+    _isLoading = true;
+    _error = null;
+    
+    try {
+      _servicosEmAndamento = [];
+      _servicosConcluidos = [];
+      
+      String? cpf = await _getCpfUsuario();
+      
+      if (cpf != null) {
+        print('CPF encontrado: $cpf');
+        final emAndamento = await ContratoService.getContratosEmAndamento(cpf);
+        final aceitos = await ContratoService.getContratosAceitos(cpf);
+        final finalizados = await ContratoService.getContratosFinalizados(cpf);
+        
+        _servicosEmAndamento = [...emAndamento, ...aceitos];
+        _servicosConcluidos = finalizados;
+      } else {
+        _error = 'CPF do usuário não encontrado';
+      }
+    } catch (e) {
+      _error = e.toString();
+      print('Erro ao carregar contratos: $e');
+    } finally {
+      _isLoading = false;
+    }
+  }
+  
+  Future<String?> _getCpfUsuario() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final cnpj = prefs.getString('user_cnpj');
+      
+      if (cnpj != null) {
+        final response = await http.get(
+          Uri.parse('http://localhost:8080/empresa/$cnpj'),
+          headers: {'Content-Type': 'application/json'},
+        );
+        
+        if (response.statusCode == 200) {
+          final empresaData = json.decode(response.body);
+          final cpf = empresaData['usuario']?['cpf'];
+          if (cpf != null) {
+            return cpf;
+          }
+        }
+      }
+      
+      final userProfile = await SessionStorage.getUserProfile();
+      if (userProfile?.personalCpf != null) {
+        return userProfile!.personalCpf!;
+      }
+      
+      return SessionStorage.userCpf;
+    } catch (e) {
+      print('Erro ao buscar CPF: $e');
+      return null;
+    }
+  }
 
   void updateSearchQuery(String query) {
     searchQuery = query;
@@ -153,6 +232,26 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
     return completedServices.where((service) => 
       service.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
       service.description.toLowerCase().contains(searchQuery.toLowerCase())
+    ).toList();
+  }
+  
+  List<Orcamento> get filteredServicosEmAndamento {
+    if (searchQuery.isEmpty) {
+      return _servicosEmAndamento;
+    }
+    return _servicosEmAndamento.where((orcamento) => 
+      (orcamento.servico?.nomeServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false) ||
+      (orcamento.servico?.descricaoServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false)
+    ).toList();
+  }
+  
+  List<Orcamento> get filteredServicosConcluidos {
+    if (searchQuery.isEmpty) {
+      return _servicosConcluidos;
+    }
+    return _servicosConcluidos.where((orcamento) => 
+      (orcamento.servico?.nomeServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false) ||
+      (orcamento.servico?.descricaoServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false)
     ).toList();
   }
 
