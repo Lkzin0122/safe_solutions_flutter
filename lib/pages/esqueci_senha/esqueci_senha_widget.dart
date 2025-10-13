@@ -68,121 +68,123 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).primary,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.white,
-              size: 30.0,
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text(
-            'Recuperar Senha',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-              fontFamily: 'Outfit',
-              color: Colors.white,
-              fontSize: 22.0,
-            ),
-          ),
-          centerTitle: false,
-          elevation: 2.0,
-        ),
+
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 140.0,
-                  margin: const EdgeInsets.only(top: 50.0),
-                  child: Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(0.0),
-                      child: Image.network(
-                        'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                        width: 250.0,
-                        fit: BoxFit.contain,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 140.0,
+                      margin: const EdgeInsets.only(top: 50.0),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            left: 16.0,
+                            top: 16.0,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_rounded,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 30.0,
+                              ),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                          ),
+                          Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(0.0),
+                              child: Image.network(
+                                'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                                width: constraints.maxWidth > 600 ? 250.0 : constraints.maxWidth * 0.6,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Recuperar Senha',
-                        style: FlutterFlowTheme.of(context).headlineMedium.override(
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        'Digite seu email cadastrado para receber o código de recuperação de senha.',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily: 'Montserrat',
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                        ),
-                      ),
-                      const SizedBox(height: 24.0),
-                      SizedBox(
-                        width: 370.0,
-                        child: TextFormField(
-                          controller: _emailController,
-                          autofocus: true,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            labelStyle: FlutterFlowTheme.of(context).labelMedium,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primaryBackground,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(12.0),
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 400),
+                      padding: EdgeInsets.all(constraints.maxWidth > 600 ? 32.0 : 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Recuperar Senha',
+                            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            'Digite seu email cadastrado para receber o código de recuperação de senha.',
+                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                            ),
+                          ),
+                          const SizedBox(height: 24.0),
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextFormField(
+                              controller: _emailController,
+                              autofocus: true,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelText: 'Email',
+                                labelStyle: FlutterFlowTheme.of(context).labelMedium,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).primaryBackground,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                filled: true,
+                                fillColor: FlutterFlowTheme.of(context).primaryBackground,
+                              ),
+                              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                fontFamily: 'Montserrat',
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                            ),
+                          ),
+                          const SizedBox(height: 24.0),
+                          SizedBox(
+                            width: double.infinity,
+                            child: FFButtonWidget(
+                              onPressed: _loading ? null : _enviarEmail,
+                              text: _loading ? 'Enviando...' : 'Recuperar Senha',
+                              options: FFButtonOptions(
+                                height: 44.0,
                                 color: FlutterFlowTheme.of(context).primary,
-                                width: 2.0,
+                                textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.white,
+                                ),
+                                elevation: 3.0,
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                              borderRadius: BorderRadius.circular(12.0),
                             ),
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context).primaryBackground,
                           ),
-                          style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Montserrat',
-                          ),
-                          keyboardType: TextInputType.emailAddress,
-                        ),
+                        ],
                       ),
-                      const SizedBox(height: 24.0),
-                      FFButtonWidget(
-                        onPressed: _loading ? null : _enviarEmail,
-                        text: _loading ? 'Enviando...' : 'Recuperar Senha',
-                        options: FFButtonOptions(
-                          width: 370.0,
-                          height: 44.0,
-                          color: FlutterFlowTheme.of(context).primary,
-                          textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                            fontFamily: 'Montserrat',
-                            color: Colors.white,
-                          ),
-                          elevation: 3.0,
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),

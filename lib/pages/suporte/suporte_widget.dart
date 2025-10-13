@@ -71,6 +71,7 @@ class _SuporteWidgetState extends State<SuporteWidget> {
                     style: FlutterFlowTheme.of(context).titleLarge.override(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
+                      color: Color(0xFF204060),
                     ),
                   ),
                   SizedBox(height: 16.0),
@@ -86,11 +87,12 @@ class _SuporteWidgetState extends State<SuporteWidget> {
                     style: FlutterFlowTheme.of(context).titleMedium.override(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w600,
+                      color: Color(0xFF204060),
                     ),
                   ),
                   SizedBox(height: 8.0),
                   Text(
-                    'Segunda a Sexta: 8h às 18h\nSábado: 8h às 12h\nDomingo: Fechado',
+                    'Segunda a Sexta: 8h às 18h',
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: 'Montserrat',
                     ),
@@ -101,6 +103,7 @@ class _SuporteWidgetState extends State<SuporteWidget> {
                     style: FlutterFlowTheme.of(context).titleMedium.override(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w600,
+                      color: Color(0xFF204060),
                     ),
                   ),
                   SizedBox(height: 12.0),
@@ -122,24 +125,7 @@ class _SuporteWidgetState extends State<SuporteWidget> {
                     ],
                   ),
                   SizedBox(height: 12.0),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.phone_outlined,
-                        color: FlutterFlowTheme.of(context).tertiary,
-                        size: 24.0,
-                      ),
-                      SizedBox(width: 12.0),
-                      Text(
-                        '(11) 99999-9999',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.0),
+
                   Row(
                     children: [
                       Icon(
@@ -149,7 +135,7 @@ class _SuporteWidgetState extends State<SuporteWidget> {
                       ),
                       SizedBox(width: 12.0),
                       Text(
-                        'Chat online disponível no app',
+                        'WhatsApp: (11) 97880-3756',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.w500,

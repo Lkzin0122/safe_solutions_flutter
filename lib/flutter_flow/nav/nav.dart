@@ -25,6 +25,7 @@ import '/pages/privacidade/privacidade_widget.dart';
 import '/pages/calendario/calendario_widget.dart';
 import '/pages/confirmar_senha/confirmar_senha_widget.dart';
 import '/pages/nova_senha_pos_validacao/nova_senha_pos_validacao_widget.dart';
+import '/pages/nova_senha/nova_senha_widget.dart';
 import '/pages/termos_uso/termos_uso_widget.dart';
 import '/pages/status_servico/status_servico_widget.dart';
 import '/pages/detalhes_servico/detalhes_servico_widget.dart';
@@ -208,6 +209,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, state) {
             final email = state.extra as String? ?? '';
             return NovaSenhaPosValidacaoWidget(email: email);
+          },
+        ),
+        GoRoute(
+          name: 'NovaSenha',
+          path: '/nova-senha',
+          builder: (context, state) {
+            final email = state.extra as String? ?? '';
+            return NovaSenhaWidget(email: email);
           },
         ),
         GoRoute(
