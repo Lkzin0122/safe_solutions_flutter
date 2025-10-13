@@ -9,7 +9,11 @@ import 'servicos_model.dart';
 export 'servicos_model.dart';
 import '/models/servico.dart';
 import '/services/servico_service.dart';
+<<<<<<< HEAD
 import '../test_servicos.dart';
+=======
+import '/pages/orcamentos/solicitar_orcamento_widget.dart';
+>>>>>>> 02b27a751efe377986dc08b2c56de0d1ee61f73c
 
 class ServicosWidget extends StatefulWidget {
   const ServicosWidget({super.key});
@@ -82,12 +86,9 @@ class _ServicosWidgetState extends State<ServicosWidget> {
   }
 
   Widget _buildServicoCard(Servico servico) {
-    return GestureDetector(
-      onTap: () {
-        context.pushNamed('DetalhesServico', extra: servico);
-      },
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.0),
       child: Container(
-        margin: EdgeInsets.only(bottom: 16.0),
         padding: EdgeInsets.all(20.0),
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
@@ -212,6 +213,63 @@ class _ServicosWidgetState extends State<ServicosWidget> {
               ],
             ),
           ],
+          SizedBox(height: 16.0),
+          Row(
+            children: [
+              Expanded(
+                child: FFButtonWidget(
+                  onPressed: () {
+                    context.pushNamed('DetalhesServico', extra: servico);
+                  },
+                  text: 'Ver Detalhes',
+                  options: FFButtonOptions(
+                    height: 40,
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                      fontFamily: 'Montserrat',
+                      color: FlutterFlowTheme.of(context).primary,
+                    ),
+                    borderSide: BorderSide(
+                      color: FlutterFlowTheme.of(context).primary,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              SizedBox(width: 12.0),
+              Expanded(
+                child: FFButtonWidget(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SolicitarOrcamentoWidget(
+                          servico: servico,
+                          onSuccess: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Orçamento solicitado com sucesso!'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                  text: 'Solicitar Orçamento',
+                  options: FFButtonOptions(
+                    height: 40,
+                    color: FlutterFlowTheme.of(context).primary,
+                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                      fontFamily: 'Montserrat',
+                      color: Colors.white,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
         ),
       ),

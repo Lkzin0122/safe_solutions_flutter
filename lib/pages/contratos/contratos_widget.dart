@@ -918,14 +918,14 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    GoRouter.of(context).goNamed('FaleConosco');
+                    GoRouter.of(context).goNamed('Orcamentos');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(
-                        Icons.message_outlined,
+                        Icons.receipt_long_outlined,
                         color: Color(0xFF888888),
                         size: 24,
                       ),
@@ -933,7 +933,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
-                          'Fale conosco',
+                          'Orçamentos',
                           style: FlutterFlowTheme.of(context)
                               .bodySmall
                               .override(
