@@ -4,10 +4,12 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'servicos_model.dart';
 export 'servicos_model.dart';
 import '/models/servico.dart';
 import '/services/servico_service.dart';
+import '../test_servicos.dart';
 
 class ServicosWidget extends StatefulWidget {
   const ServicosWidget({super.key});
@@ -41,7 +43,19 @@ class _ServicosWidgetState extends State<ServicosWidget> {
         _error = null;
       });
       
-      final servicos = await ServicoService.getServicosAtivos();
+      // Buscar CNPJ da empresa logada
+      final prefs = await SharedPreferences.getInstance();
+      final userCnpj = prefs.getString('user_cnpj');
+      
+      List<Servico> servicos;
+      if (userCnpj != null) {
+        // Se há empresa logada, buscar serviços da empresa
+        print('Buscando serviços para CNPJ: $userCnpj');
+        servicos = await ServicoService.getServicosByEmpresa(userCnpj);
+      } else {
+        // Se não há empresa logada, buscar todos os serviços ativos
+        servicos = await ServicoService.getServicosAtivos();
+      }
       
       if (mounted) {
         setState(() {
@@ -50,6 +64,7 @@ class _ServicosWidgetState extends State<ServicosWidget> {
         });
       }
     } catch (e) {
+      print('Erro ao carregar serviços: $e');
       if (mounted) {
         setState(() {
           _error = e.toString();
@@ -230,6 +245,20 @@ class _ServicosWidgetState extends State<ServicosWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // TODO: Navegar para página de cadastro de serviço
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Funcionalidade de cadastro de serviços em desenvolvimento'),
+                backgroundColor: FlutterFlowTheme.of(context).primary,
+              ),
+            );
+          },
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          child: Icon(Icons.add, color: Colors.white),
+          tooltip: 'Adicionar Serviço',
+        ),
 
         body: SafeArea(
           child: Column(
@@ -272,7 +301,7 @@ class _ServicosWidgetState extends State<ServicosWidget> {
                             ),
                             SizedBox(height: 16.0),
                             Text(
-                              'Nossos Serviços',
+                              'Meus Serviços',
                               style: FlutterFlowTheme.of(context).headlineMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: Colors.white,
@@ -280,7 +309,7 @@ class _ServicosWidgetState extends State<ServicosWidget> {
                               ),
                             ),
                             Text(
-                              'Soluções completas para sua casa',
+                              'Serviços cadastrados pela sua empresa',
                               style: FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Montserrat',
                                 color: Colors.white.withOpacity( 0.9),
@@ -297,16 +326,21 @@ class _ServicosWidgetState extends State<ServicosWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Serviços Disponíveis',
+                            'Serviços da Empresa',
                             style: FlutterFlowTheme.of(context).titleLarge.override(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          IconButton(
-                            onPressed: _carregarServicos,
-                            icon: Icon(Icons.refresh),
-                            tooltip: 'Recarregar serviços',
+                          Row(
+                            children: [
+
+                              IconButton(
+                                onPressed: _carregarServicos,
+                                icon: Icon(Icons.refresh),
+                                tooltip: 'Recarregar serviços',
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -371,12 +405,30 @@ class _ServicosWidgetState extends State<ServicosWidget> {
                               ),
                               SizedBox(height: 16),
                               Text(
-                                'Nenhum serviço disponível',
+                                'Nenhum serviço cadastrado',
                                 style: FlutterFlowTheme.of(context).titleMedium,
                               ),
                               Text(
-                                'Não há serviços ativos no momento',
+                                'Sua empresa ainda não possui serviços cadastrados',
                                 style: FlutterFlowTheme.of(context).bodySmall,
+                              ),
+                              SizedBox(height: 16),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  // TODO: Navegar para página de cadastro de serviço
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Funcionalidade de cadastro de serviços em desenvolvimento'),
+                                      backgroundColor: FlutterFlowTheme.of(context).primary,
+                                    ),
+                                  );
+                                },
+                                icon: Icon(Icons.add),
+                                label: Text('Cadastrar Primeiro Serviço'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: FlutterFlowTheme.of(context).primary,
+                                  foregroundColor: Colors.white,
+                                ),
                               ),
                             ],
                           ),

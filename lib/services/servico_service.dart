@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/servico.dart';
 
 class ServicoService {
-  static const String _baseUrl = 'http://localhost:8080/servico';
+  static const String _baseUrl = 'http://10.0.2.2:8080/servico'; // Para emulador Android
   
   // Método para testar conectividade
   static Future<bool> testarConectividade() async {
@@ -104,14 +104,28 @@ class ServicoService {
   static Future<List<Servico>> getServicosByEmpresa(String cnpj) async {
     try {
       final cnpjLimpo = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
+      final url = '$_baseUrl/empresa/$cnpjLimpo';
+      
+      print('=== BUSCAR SERVIÇOS DA EMPRESA ===');
+      print('CNPJ original: $cnpj');
+      print('CNPJ limpo: $cnpjLimpo');
+      print('URL: $url');
+      
       final response = await http.get(
-        Uri.parse('$_baseUrl/empresa/$cnpjLimpo'),
+        Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
       );
       
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);
+        print('Número de serviços encontrados: ${jsonList.length}');
         return jsonList.map((json) => Servico.fromJson(json)).toList();
+      } else if (response.statusCode == 404) {
+        print('Nenhum serviço encontrado para a empresa');
+        return []; // Retorna lista vazia em vez de erro
       }
       throw Exception('Erro ao carregar serviços da empresa: ${response.statusCode}');
     } catch (e) {

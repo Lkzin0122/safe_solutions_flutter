@@ -8,7 +8,7 @@ import '../models/usuario.dart';
 class ProfileService {
   static const String _profileKey = 'user_profile';
   static const String _empresaKey = 'empresa_data';
-  static const String _baseUrl = 'http://localhost:8080/empresa';
+  static const String _baseUrl = 'http://10.0.2.2:8080/empresa'; // Para emulador Android
 
   static Future<UserProfile> getUserProfile() async {
     final prefs = await SharedPreferences.getInstance();
@@ -178,7 +178,7 @@ class ProfileService {
   static Future<Usuario> updateUsuario(String cpf, Usuario usuario) async {
     final cpfLimpo = cpf.replaceAll(RegExp(r'[^0-9]'), '');
     final response = await http.put(
-      Uri.parse('http://localhost:8080/usuario/$cpfLimpo'),
+      Uri.parse('http://10.0.2.2:8080/usuario/$cpfLimpo'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(usuario.toJson()),
     );

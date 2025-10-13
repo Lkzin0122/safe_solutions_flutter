@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/usuario.dart';
 
 class UsuarioService {
-  static const String _baseUrl = 'http://localhost:8080/usuario';
+  static const String _baseUrl = 'http://10.0.2.2:8080/usuario'; // Para emulador Android
 
   // GET /usuario/email/{email} - Get user by email
   static Future<Usuario> getUsuarioByEmail(String email) async {

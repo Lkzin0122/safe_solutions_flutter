@@ -8,7 +8,7 @@ class FlutterFlowTheme {
   
   // Color constants
   static const Color primaryColor = Color(0xFF204060);
-  static const Color secondaryColor = Color(0xFF39D2C0);
+  static const Color secondaryColor = Color(0xFF2196F3);
   static const Color tertiaryColor = Color(0xFF204060);
   static const Color alternateColor = Color(0xFFE0E3E7);
   static const Color primaryBackgroundColor = Color(0xFFF1F4F8);

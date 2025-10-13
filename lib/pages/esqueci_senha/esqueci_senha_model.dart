@@ -1,22 +1,16 @@
-import '/flutter_flow/flutter_flow_model.dart';
-import '/index.dart';
-import 'esqueci_senha_widget.dart' show EsqueciSenhaWidget;
 import 'package:flutter/material.dart';
 
-class EsqueciSenhaModel extends FlutterFlowModel<EsqueciSenhaWidget> {
-  ///  State fields for stateful widgets in this page.
+class EsqueciSenhaModel {
+  final unfocusNode = FocusNode();
 
-  // State field(s) for emailAddress widget.
-  FocusNode? emailAddressFocusNode;
-  TextEditingController? emailAddressTextController;
-  String? Function(BuildContext, String?)? emailAddressTextControllerValidator;
+  TextEditingController? cnpjController;
+  FocusNode? cnpjFocusNode;
 
-  @override
   void initState(BuildContext context) {}
 
-  @override
   void dispose() {
-    emailAddressFocusNode?.dispose();
-    emailAddressTextController?.dispose();
+    unfocusNode.dispose();
+    cnpjController?.dispose();
+    cnpjFocusNode?.dispose();
   }
 }

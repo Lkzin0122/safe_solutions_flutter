@@ -90,7 +90,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
           label,
           style: FlutterFlowTheme.of(context).bodyMedium.override(
             fontFamily: 'Montserrat',
-            color: FlutterFlowTheme.of(context).primary,
+            color: Colors.blue,
             fontSize: 14.0,
             fontWeight: FontWeight.w600,
           ),
@@ -118,7 +118,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
-                      borderSide: BorderSide(color: FlutterFlowTheme.of(context).primary, width: 2.0),
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
@@ -179,8 +179,8 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  FlutterFlowTheme.of(context).primary,
-                  FlutterFlowTheme.of(context).secondary,
+                  Colors.blue,
+                  Colors.blue.shade700,
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -219,7 +219,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(FlutterFlowTheme.of(context).primary),
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                         strokeWidth: 3.0,
                       ).animate().scale(duration: 1000.ms, curve: Curves.easeInOut),
                       SizedBox(height: 24),
@@ -260,13 +260,13 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
-                                        FlutterFlowTheme.of(context).primary.withOpacity(0.1),
-                                        FlutterFlowTheme.of(context).secondary.withOpacity(0.05),
+                                        Colors.blue.withOpacity(0.1),
+                                        Colors.blue.withOpacity(0.05),
                                       ],
                                     ),
                                     borderRadius: BorderRadius.circular(16.0),
                                     border: Border.all(
-                                      color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                                      color: Colors.blue.withOpacity(0.2),
                                       width: 1.0,
                                     ),
                                   ),
@@ -275,7 +275,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                       Container(
                                         padding: EdgeInsets.all(12.0),
                                         decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context).primary,
+                                          color: Colors.blue,
                                           borderRadius: BorderRadius.circular(12.0),
                                         ),
                                         child: Icon(
@@ -291,7 +291,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                           fontFamily: 'Montserrat',
                                           fontSize: 20.0,
                                           fontWeight: FontWeight.bold,
-                                          color: FlutterFlowTheme.of(context).primary,
+                                          color: Colors.blue,
                                         ),
                                       ),
                                     ],
@@ -325,13 +325,13 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
-                                        FlutterFlowTheme.of(context).secondary.withOpacity(0.1),
-                                        FlutterFlowTheme.of(context).primary.withOpacity(0.05),
+                                        Colors.blue.withOpacity(0.1),
+                                        Colors.blue.withOpacity(0.05),
                                       ],
                                     ),
                                     borderRadius: BorderRadius.circular(16.0),
                                     border: Border.all(
-                                      color: FlutterFlowTheme.of(context).secondary.withOpacity(0.2),
+                                      color: Colors.blue.withOpacity(0.2),
                                       width: 1.0,
                                     ),
                                   ),
@@ -340,7 +340,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                       Container(
                                         padding: EdgeInsets.all(12.0),
                                         decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context).secondary,
+                                          color: Colors.blue,
                                           borderRadius: BorderRadius.circular(12.0),
                                         ),
                                         child: Icon(
@@ -356,7 +356,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                           fontFamily: 'Montserrat',
                                           fontSize: 20.0,
                                           fontWeight: FontWeight.bold,
-                                          color: FlutterFlowTheme.of(context).secondary,
+                                          color: Colors.blue,
                                         ),
                                       ),
                                     ],
@@ -378,13 +378,13 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
-                                        FlutterFlowTheme.of(context).tertiary.withOpacity(0.1),
-                                        FlutterFlowTheme.of(context).primary.withOpacity(0.05),
+                                        Colors.blue.withOpacity(0.1),
+                                        Colors.blue.withOpacity(0.05),
                                       ],
                                     ),
                                     borderRadius: BorderRadius.circular(16.0),
                                     border: Border.all(
-                                      color: FlutterFlowTheme.of(context).tertiary.withOpacity(0.2),
+                                      color: Colors.blue.withOpacity(0.2),
                                       width: 1.0,
                                     ),
                                   ),
@@ -393,7 +393,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                       Container(
                                         padding: EdgeInsets.all(12.0),
                                         decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context).tertiary,
+                                          color: Colors.blue,
                                           borderRadius: BorderRadius.circular(12.0),
                                         ),
                                         child: Icon(
@@ -409,7 +409,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                           fontFamily: 'Montserrat',
                                           fontSize: 20.0,
                                           fontWeight: FontWeight.bold,
-                                          color: FlutterFlowTheme.of(context).tertiary,
+                                          color: Colors.blue,
                                         ),
                                       ),
                                     ],
@@ -455,14 +455,14 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                             decoration: BoxDecoration(
                                               gradient: LinearGradient(
                                                 colors: [
-                                                  FlutterFlowTheme.of(context).primary,
-                                                  FlutterFlowTheme.of(context).secondary,
+                                                  Colors.blue,
+                                                  Colors.blue.shade700,
                                                 ],
                                               ),
                                               borderRadius: BorderRadius.circular(12.0),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
+                                                  color: Colors.blue.withOpacity(0.3),
                                                   blurRadius: 8.0,
                                                   offset: Offset(0, 4),
                                                 ),
@@ -578,14 +578,14 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                             decoration: BoxDecoration(
                                               gradient: LinearGradient(
                                                 colors: [
-                                                  FlutterFlowTheme.of(context).primary,
-                                                  FlutterFlowTheme.of(context).secondary,
+                                                  Colors.blue,
+                                                  Colors.blue.shade700,
                                                 ],
                                               ),
                                               borderRadius: BorderRadius.circular(12.0),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
+                                                  color: Colors.blue.withOpacity(0.3),
                                                   blurRadius: 8.0,
                                                   offset: Offset(0, 4),
                                                 ),
@@ -665,14 +665,14 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    FlutterFlowTheme.of(context).primary,
-                    FlutterFlowTheme.of(context).secondary,
+                    Colors.blue,
+                    Colors.blue.shade700,
                   ],
                 ),
                 borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
                   BoxShadow(
-                    color: FlutterFlowTheme.of(context).primary.withOpacity(0.3),
+                    color: Colors.blue.withOpacity(0.3),
                     blurRadius: 8.0,
                     offset: Offset(0, 4),
                   ),
