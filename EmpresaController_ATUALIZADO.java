@@ -49,7 +49,6 @@ public class EmpresaController {
 
     // Armazena códigos de recuperação temporariamente
     private static final ConcurrentHashMap<String, String> codigosRecuperacao = new ConcurrentHashMap<>();
-    private static final java.util.Map<String, String> codigosRecuperacaoSenha = new java.util.HashMap<>();
 
     // ==========================
     // 🧑💼 Criação de Empresa
@@ -209,15 +208,42 @@ public class EmpresaController {
     // 🔑 Recuperação de Senha
     // ==========================
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/recuperar-senha")
-    public ResponseEntity<String> recuperarSenha(@RequestBody java.util.Map<String, String> request) {
-        String email = request.get("email");
-        String codigo = "123456789"; // Código fixo para teste
-        codigosRecuperacaoSenha.put(email, codigo);
-        
-        System.out.println("CÓDIGO: " + codigo + " PARA EMAIL: " + email);
-        
-        return ResponseEntity.ok("ok");
+    public ResponseEntity<Object> recuperarSenha(@RequestBody java.util.Map<String, String> request) {
+        try {
+            String email = request.get("email");
+
+            // Buscar empresa pelo email do usuário
+            List<Empresa> todasEmpresas = empresaService.findAll();
+            Optional<Empresa> empresaOptional = todasEmpresas.stream()
+                    .filter(empresa -> empresa.getUsuario() != null &&
+                            email.equals(empresa.getUsuario().getEmail()))
+                    .findFirst();
+
+            if (empresaOptional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("{\"erro\": \"Email não encontrado\"}");
+            }
+
+            Empresa empresa = empresaOptional.get();
+
+            // Gerar código de recuperação de 9 dígitos
+            String codigo = String.format("%09d", new java.util.Random().nextInt(1000000000));
+            codigosRecuperacao.put(email, codigo);
+
+            // Log do código no console para teste
+            System.out.println("=== CÓDIGO DE RECUPERAÇÃO ===");
+            System.out.println("Email: " + email);
+            System.out.println("Código: " + codigo);
+            System.out.println("=============================");
+
+            return ResponseEntity.ok("{\"mensagem\": \"Código de recuperação enviado para o email cadastrado\"}");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"erro\": \"Erro interno do servidor\"}");
+        }
     }
 
     // ==========================
@@ -313,15 +339,25 @@ public class EmpresaController {
     // 🔑 Validação de Código de Recuperação
     // ==========================
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/validar-codigo")
-    public ResponseEntity<String> validarCodigoRecuperacao(@RequestBody java.util.Map<String, String> request) {
-        String email = request.get("email");
-        String codigo = request.get("codigo");
-        
-        if ("123456789".equals(codigo)) {
-            return ResponseEntity.ok("ok");
+    public ResponseEntity<Object> validarCodigoRecuperacao(@RequestBody java.util.Map<String, String> request) {
+        try {
+            String email = request.get("email");
+            String codigo = request.get("codigo");
+
+            String codigoArmazenado = codigosRecuperacao.get(email);
+
+            if (codigoArmazenado == null || !codigoArmazenado.equals(codigo)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("{\"erro\": \"Código inválido ou expirado\"}");
+            }
+
+            return ResponseEntity.ok("{\"mensagem\": \"Código validado com sucesso\"}");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"erro\": \"Erro interno do servidor\"}");
         }
-        
-        return ResponseEntity.status(400).body("erro");
     }
 }

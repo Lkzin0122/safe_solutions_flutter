@@ -9,11 +9,7 @@ import 'servicos_model.dart';
 export 'servicos_model.dart';
 import '/models/servico.dart';
 import '/services/servico_service.dart';
-<<<<<<< HEAD
-import '../test_servicos.dart';
-=======
 import '/pages/orcamentos/solicitar_orcamento_widget.dart';
->>>>>>> 02b27a751efe377986dc08b2c56de0d1ee61f73c
 
 class ServicosWidget extends StatefulWidget {
   const ServicosWidget({super.key});

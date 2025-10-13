@@ -9,7 +9,8 @@ import '/pages/contratos/contratos_widget.dart';
 import '/pages/inicial/inicial_widget.dart';
 import '/pages/login1/login1_widget.dart';
 import '/pages/esqueci_senha/esqueci_senha_widget.dart';
-import '/pages/nova_senha/nova_senha_widget.dart';
+import '/pages/validar_codigo/validar_codigo_widget.dart';
+
 import '/pages/servicos/servicos_widget.dart';
 import '/pages/montador/montador_widget.dart';
 import '/pages/super_clean/super_clean_widget.dart';
@@ -108,10 +109,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, state) => const EsqueciSenhaWidget(),
         ),
         GoRoute(
-          name: 'NovaSenha',
-          path: '/novaSenha',
-          builder: (context, state) => const NovaSenhaWidget(),
+          name: 'ValidarCodigo',
+          path: '/validar-codigo',
+          builder: (context, state) {
+            final email = state.extra as String? ?? '';
+            return ValidarCodigoWidget(email: email);
+          },
         ),
+
         GoRoute(
           name: 'Inicial',
           path: '/inicial',
@@ -200,7 +205,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         GoRoute(
           name: 'NovaSenhaPosValidacao',
           path: '/novaSenhaPosValidacao',
-          builder: (context, state) => const NovaSenhaPosValidacaoWidget(),
+          builder: (context, state) {
+            final email = state.extra as String? ?? '';
+            return NovaSenhaPosValidacaoWidget(email: email);
+          },
         ),
         GoRoute(
           name: 'TermosUso',

@@ -1,10 +1,8 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/services/recuperacao_senha_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'esqueci_senha_model.dart';
 export 'esqueci_senha_model.dart';
 
@@ -20,103 +18,45 @@ class EsqueciSenhaWidget extends StatefulWidget {
 
 class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
   late EsqueciSenhaModel _model;
-  bool _isLoading = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _formKey = GlobalKey<FormState>();
-
-  Future<void> _recuperarSenha(String email) async {
-    setState(() => _isLoading = true);
-
-    try {
-      final response = await http.post(
-        Uri.parse('http://localhost:8080/empresa/recuperar-senha'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'email': email}),
-      ).timeout(const Duration(seconds: 10));
-
-      if (response.statusCode == 200) {
-        _showSuccessDialog();
-      } else if (response.statusCode == 404) {
-        _showErrorDialog('Email não encontrado.');
-      } else {
-        _showErrorDialog('Erro no servidor. Tente novamente.');
-      }
-    } catch (e) {
-      _showErrorDialog('Erro de conexão: ${e.toString()}');
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.green, size: 28),
-            SizedBox(width: 8),
-            Text('Sucesso!'),
-          ],
-        ),
-        content: const Text('Instruções para recuperação de senha foram enviadas para o email cadastrado.'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Row(
-          children: [
-            Icon(Icons.error, color: Colors.red, size: 28),
-            SizedBox(width: 8),
-            Text('Erro'),
-          ],
-        ),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Por favor, insira o email.';
-    }
-    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-      return 'Email inválido.';
-    }
-    return null;
-  }
-
-
+  final _emailController = TextEditingController();
+  bool _loading = false;
 
   @override
   void initState() {
     super.initState();
     _model = EsqueciSenhaModel();
-    _model.cnpjController ??= TextEditingController();
-    _model.cnpjFocusNode ??= FocusNode();
+  }
+
+  void _enviarEmail() async {
+    if (_emailController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Digite um email válido'), backgroundColor: Colors.red),
+      );
+      return;
+    }
+
+    setState(() => _loading = true);
+    
+    final result = await RecuperacaoSenhaService.validarEmailUsuario(_emailController.text);
+    
+    setState(() => _loading = false);
+    
+    if (result['success']) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result['message'])),
+      );
+      context.pushNamed('ValidarCodigo', extra: _emailController.text);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result['message']), backgroundColor: Colors.red),
+      );
+    }
   }
 
   @override
   void dispose() {
+    _emailController.dispose();
     _model.dispose();
     super.dispose();
   }
@@ -171,112 +111,74 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(32.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Recuperar Senha',
-                          style: FlutterFlowTheme.of(context).headlineMedium.override(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.bold,
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Recuperar Senha',
+                        style: FlutterFlowTheme.of(context).headlineMedium.override(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          'Digite seu email cadastrado para receber o código de recuperação de senha.',
+                      ),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        'Digite seu email cadastrado para receber o código de recuperação de senha.',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Montserrat',
+                          color: FlutterFlowTheme.of(context).secondaryText,
+                        ),
+                      ),
+                      const SizedBox(height: 24.0),
+                      SizedBox(
+                        width: 370.0,
+                        child: TextFormField(
+                          controller: _emailController,
+                          autofocus: true,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            labelStyle: FlutterFlowTheme.of(context).labelMedium,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).primaryBackground,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).primary,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            filled: true,
+                            fillColor: FlutterFlowTheme.of(context).primaryBackground,
+                          ),
                           style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Montserrat',
-                            color: FlutterFlowTheme.of(context).secondaryText,
                           ),
+                          keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 24.0),
-                        SizedBox(
+                      ),
+                      const SizedBox(height: 24.0),
+                      FFButtonWidget(
+                        onPressed: _loading ? null : _enviarEmail,
+                        text: _loading ? 'Enviando...' : 'Recuperar Senha',
+                        options: FFButtonOptions(
                           width: 370.0,
-                          child: TextFormField(
-                            controller: _model.cnpjController,
-                            focusNode: _model.cnpjFocusNode,
-                            autofocus: true,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              labelText: 'Email',
-                              labelStyle: FlutterFlowTheme.of(context).labelMedium,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context).primaryBackground,
-                                  width: 2.0,
-                                ),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  width: 2.0,
-                                ),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context).alternate,
-                                  width: 2.0,
-                                ),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context).alternate,
-                                  width: 2.0,
-                                ),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              filled: true,
-                              fillColor: FlutterFlowTheme.of(context).primaryBackground,
-                            ),
-                            style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Montserrat',
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: _validateEmail,
+                          height: 44.0,
+                          color: FlutterFlowTheme.of(context).primary,
+                          textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                            fontFamily: 'Montserrat',
+                            color: Colors.white,
                           ),
+                          elevation: 3.0,
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
-                        const SizedBox(height: 24.0),
-                        FFButtonWidget(
-                          onPressed: _isLoading
-                              ? null
-                              : () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    final email = _model.cnpjController?.text ?? '';
-                                    await _recuperarSenha(email);
-                                  }
-                                },
-                          text: _isLoading ? '' : 'Recuperar Senha',
-                          icon: _isLoading
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                  ),
-                                )
-                              : null,
-                          options: FFButtonOptions(
-                            width: 370.0,
-                            height: 44.0,
-                            color: _isLoading
-                                ? FlutterFlowTheme.of(context).primary.withOpacity(0.7)
-                                : FlutterFlowTheme.of(context).primary,
-                            textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                              fontFamily: 'Montserrat',
-                              color: Colors.white,
-                            ),
-                            elevation: 3.0,
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],

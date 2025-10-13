@@ -2,13 +2,15 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/services/recuperacao_senha_service.dart';
 import 'package:flutter/material.dart';
 import 'nova_senha_pos_validacao_model.dart';
 export 'nova_senha_pos_validacao_model.dart';
 
 class NovaSenhaPosValidacaoWidget extends StatefulWidget {
-  const NovaSenhaPosValidacaoWidget({super.key});
+  const NovaSenhaPosValidacaoWidget({super.key, required this.email});
 
+  final String email;
   static String routeName = 'novaSenhaPosValidacao';
   static String routePath = '/novaSenhaPosValidacao';
 
@@ -19,6 +21,7 @@ class NovaSenhaPosValidacaoWidget extends StatefulWidget {
 class _NovaSenhaPosValidacaoWidgetState extends State<NovaSenhaPosValidacaoWidget> {
   late NovaSenhaPosValidacaoModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _loading = false;
 
   @override
   void initState() {
@@ -275,23 +278,47 @@ class _NovaSenhaPosValidacaoWidgetState extends State<NovaSenhaPosValidacaoWidge
                     child: Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
                       child: FFButtonWidget(
-                        onPressed: () async {
+                        onPressed: _loading ? null : () async {
                           if (_model.formKey.currentState?.validate() ?? false) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Senha alterada com sucesso!',
-                                  style: TextStyle(color: Colors.white),
+                            final senha = _model.passwordTextController?.text ?? '';
+                            final confirmSenha = _model.passwordConfirmTextController?.text ?? '';
+                            
+                            if (senha != confirmSenha) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('As senhas não coincidem'),
+                                  backgroundColor: Colors.red,
                                 ),
-                                backgroundColor: Colors.green,
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                            await Future.delayed(Duration(seconds: 1));
-                            context.goNamed('Login');
+                              );
+                              return;
+                            }
+                            
+                            setState(() => _loading = true);
+                            
+                            final result = await RecuperacaoSenhaService.atualizarSenha(widget.email, senha);
+                            
+                            setState(() => _loading = false);
+                            
+                            if (result['success']) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Senha alterada com sucesso!'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                              await Future.delayed(Duration(seconds: 1));
+                              context.goNamed('Login');
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(result['message']),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
                           }
                         },
-                        text: 'Alterar Senha',
+                        text: _loading ? 'Alterando...' : 'Alterar Senha',
                         options: FFButtonOptions(
                           width: 270.0,
                           height: 50.0,
