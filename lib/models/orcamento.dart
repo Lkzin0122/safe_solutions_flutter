@@ -41,6 +41,20 @@ class Orcamento {
     this.motivoRecusa,
   });
 
+  static double? _parseDouble(dynamic value) {
+    if (value == null) return null;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) {
+      try {
+        return double.parse(value);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
+
   factory Orcamento.fromJson(Map<String, dynamic> json) {
     return Orcamento(
       id: json['id'],
@@ -51,7 +65,7 @@ class Orcamento {
       prazoOrcamento: json['prazo_orcamento'] != null 
           ? DateTime.parse(json['prazo_orcamento']) 
           : null,
-      valorServico: json['valor_servico']?.toDouble(),
+      valorServico: _parseDouble(json['valor_servico']),
       enderecoOrcamento: json['endereco_orcamento'],
       statusOrcamento: json['status_orcamento'] != null 
           ? StatusEnum.values.firstWhere(

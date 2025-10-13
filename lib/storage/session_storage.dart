@@ -1,4 +1,5 @@
 import 'package:get_storage/get_storage.dart';
+import '../models/user_profile.dart';
 
 class SessionStorage {
   static final _storage = GetStorage();
@@ -11,6 +12,8 @@ class SessionStorage {
   static const String _deviceTokenKey = 'device_token';
   static const String _userType = 'user_type';
   static const String _accessToken = 'access_token';
+  static const String _userProfileKey = 'user_profile';
+  static const String _userCpfKey = 'user_cpf';
 
   // Save session data
   static void saveSession({
@@ -42,6 +45,26 @@ class SessionStorage {
   static String get token => accessToken ?? '';
   static bool get isLoggedIn => idToken != null;
 
+  // Save user profile
+  static void saveUserProfile(UserProfile profile) {
+    _storage.write(_userProfileKey, profile.toJson());
+    if (profile.personalCpf != null) {
+      _storage.write(_userCpfKey, profile.personalCpf);
+    }
+  }
+
+  // Get user profile
+  static Future<UserProfile?> getUserProfile() async {
+    final profileData = _storage.read(_userProfileKey);
+    if (profileData != null) {
+      return UserProfile.fromJson(Map<String, dynamic>.from(profileData));
+    }
+    return null;
+  }
+
+  // Get user CPF
+  static String? get userCpf => _storage.read(_userCpfKey);
+
   // Clear all session data
   static void clearSession() {
     _storage.remove(_userIdKey);
@@ -51,5 +74,7 @@ class SessionStorage {
     _storage.remove(_deviceTokenKey);
     _storage.remove(_userType);
     _storage.remove(_accessToken);
+    _storage.remove(_userProfileKey);
+    _storage.remove(_userCpfKey);
   }
 }

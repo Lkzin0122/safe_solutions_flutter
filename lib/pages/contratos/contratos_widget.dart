@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'contratos_model.dart';
-
 import '../../services/auth_service.dart';
 export 'contratos_model.dart';
 
@@ -75,7 +74,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   List<ServicoModel> _servicos = [];
   bool _isLoading = true;
   String? _error;
-  String? _userCnpj;
+  String? _userCpf;
   String _searchQuery = '';
   bool hasLoginError = false;
 
@@ -101,41 +100,34 @@ class _ContratosWidgetState extends State<ContratosWidget> {
 
   Future<void> _checkLoginAndLoadData() async {
     try {
-      final isLoggedIn = await AuthService.isLoggedIn();
+      setState(() {
+        _isLoading = true;
+      });
       
-      if (!isLoggedIn) {
-        if (mounted) {
-          setState(() {
-            hasLoginError = true;
-            _isLoading = false;
-          });
-        }
-        return;
-      }
+      await _model.loadContratos();
       
-      await _loadUserCnpj();
-      if (_userCnpj != null) {
-        _loadServicos();
-      }
+      setState(() {
+        _isLoading = false;
+      });
     } catch (e) {
       if (mounted) {
         setState(() {
-          hasLoginError = true;
+          _error = e.toString();
           _isLoading = false;
         });
       }
     }
   }
 
-  Future<void> _loadUserCnpj() async {
+  Future<void> _loadUserCpf() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _userCnpj = prefs.getString('user_cnpj');
+      _userCpf = prefs.getString('user_cpf');
     });
   }
 
   Future<void> _loadServicos() async {
-    if (_userCnpj == null) return;
+    if (_userCpf == null) return;
     
     try {
       setState(() {
@@ -143,10 +135,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
         _error = null;
       });
 
-      final servicos = await fetchServicosEmpresa(_userCnpj!);
+      await _model.loadContratos();
 
       setState(() {
-        _servicos = servicos;
         _isLoading = false;
       });
     } catch (e) {
@@ -214,6 +205,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   void _updateSearchQuery(String query) {
     setState(() {
       _searchQuery = query;
+      _model.updateSearchQuery(query);
     });
   }
 
@@ -243,6 +235,37 @@ class _ContratosWidgetState extends State<ContratosWidget> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Detalhes do serviço: ${servico.nome}'),
+            backgroundColor: FlutterFlowTheme.of(context).primary,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildOrcamentoCard(Orcamento orcamento, {bool isCompleted = false}) {
+    final servico = orcamento.servico;
+    if (servico == null) return const SizedBox.shrink();
+
+    String title = servico.nomeServico;
+    String imageUrl = _getDefaultImageForService(title);
+    String description = servico.descricaoServico ?? "";
+    
+    if (orcamento.valorServico != null) {
+      description += '\nValor: R\$ ${orcamento.valorServico!.toStringAsFixed(2)}';
+    }
+    
+    if (orcamento.enderecoOrcamento != null) {
+      description += '\nEndereço: ${orcamento.enderecoOrcamento}';
+    }
+
+    return _buildServiceCard(
+      title: title,
+      description: description,
+      imageUrl: imageUrl,
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Status: ${orcamento.statusTexto}'),
             backgroundColor: FlutterFlowTheme.of(context).primary,
           ),
         );
@@ -301,13 +324,16 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             ),
             const SizedBox(height: 8.0),
             Text(
-              _error ?? 'Erro desconhecido',
+              _model.error ?? _error ?? 'Erro desconhecido',
               textAlign: TextAlign.center,
               style: FlutterFlowTheme.of(context).bodySmall,
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: _loadServicos,
+              onPressed: () async {
+                await _model.loadContratos();
+                setState(() {});
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: FlutterFlowTheme.of(context).primary,
               ),
@@ -589,7 +615,10 @@ class _ContratosWidgetState extends State<ContratosWidget> {
           child: hasLoginError
               ? _buildErrorScreen()
               : RefreshIndicator(
-                  onRefresh: _loadServicos,
+                  onRefresh: () async {
+                    await _model.loadContratos();
+                    setState(() {});
+                  },
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
@@ -678,11 +707,11 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       ],
                     ),
                   ),
-                  if (_isLoading)
+                  if (_model.isLoading || _isLoading)
                     _buildLoadingWidget()
-                  else if (_error != null)
+                  else if (_model.error != null || _error != null)
                     _buildErrorWidget()
-                  else if (_servicos.isEmpty)
+                  else if (_model.servicosEmAndamento.isEmpty && _model.servicosConcluidos.isEmpty)
                     _buildEmptyWidget()
                   else ...[
                     Container(
@@ -693,7 +722,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Serviços em Andamento',
+                            'Contratos em Andamento',
                             style: FlutterFlowTheme.of(context)
                                 .headlineSmall
                                 .override(
@@ -712,8 +741,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             ),
                             child: Text(
                               _searchQuery.isEmpty
-                                  ? '${_servicosAtivos.length} Ativos'
-                                  : '${_servicosAtivos.length} Encontrados',
+                                  ? '${_model.filteredServicosEmAndamento.length} Ativos'
+                                  : '${_model.filteredServicosEmAndamento.length} Encontrados',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 12.0,
@@ -725,21 +754,31 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       ),
                     ),
                     const SizedBox(height: 10.0),
-                    if (_servicosAtivos.isEmpty && _searchQuery.isNotEmpty)
+                    if (_model.filteredServicosEmAndamento.isEmpty && _searchQuery.isNotEmpty)
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             24.0, 20.0, 24.0, 20.0),
                         child: Text(
-                          'Nenhum serviço ativo encontrado com "$_searchQuery"',
+                          'Nenhum contrato em andamento encontrado com "$_searchQuery"',
+                          style: FlutterFlowTheme.of(context).bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    else if (_model.filteredServicosEmAndamento.isEmpty)
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            24.0, 20.0, 24.0, 20.0),
+                        child: Text(
+                          'Você não possui contratos em andamento.',
                           style: FlutterFlowTheme.of(context).bodyMedium,
                           textAlign: TextAlign.center,
                         ),
                       )
                     else
-                      ..._servicosAtivos
-                          .map((servico) => _buildServicoFromBackend(servico)),
+                      ..._model.filteredServicosEmAndamento
+                          .map((orcamento) => _buildOrcamentoCard(orcamento)),
                     const SizedBox(height: 30.0),
-                    if (_servicosConcluidos.isNotEmpty ||
+                    if (_model.filteredServicosConcluidos.isNotEmpty ||
                         _searchQuery.isNotEmpty) ...[
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
@@ -771,7 +810,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Serviços Concluídos',
+                                      'Contratos Concluídos',
                                       style: FlutterFlowTheme.of(context)
                                           .titleMedium
                                           .override(
@@ -794,8 +833,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                                       ),
                                       child: Text(
                                         _searchQuery.isEmpty
-                                            ? '${_servicosConcluidos.length} Concluídos'
-                                            : '${_servicosConcluidos.length} Encontrados',
+                                            ? '${_model.filteredServicosConcluidos.length} Concluídos'
+                                            : '${_model.filteredServicosConcluidos.length} Encontrados',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 10.0,
@@ -823,21 +862,32 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         secondChild: Column(
                           children: [
                             const SizedBox(height: 10.0),
-                            if (_servicosConcluidos.isEmpty &&
+                            if (_model.filteredServicosConcluidos.isEmpty &&
                                 _searchQuery.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     24.0, 20.0, 24.0, 20.0),
                                 child: Text(
-                                  'Nenhum serviço concluído encontrado com "$_searchQuery"',
+                                  'Nenhum contrato concluído encontrado com "$_searchQuery"',
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            else if (_model.filteredServicosConcluidos.isEmpty)
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    24.0, 20.0, 24.0, 20.0),
+                                child: Text(
+                                  'Você não possui contratos concluídos.',
                                   style:
                                       FlutterFlowTheme.of(context).bodyMedium,
                                   textAlign: TextAlign.center,
                                 ),
                               )
                             else
-                              ..._servicosConcluidos.map((servico) =>
-                                  _buildServicoFromBackend(servico,
+                              ..._model.filteredServicosConcluidos.map((orcamento) =>
+                                  _buildOrcamentoCard(orcamento,
                                       isCompleted: true)),
                           ],
                         ),
@@ -918,14 +968,14 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    GoRouter.of(context).goNamed('Orcamentos');
+                    GoRouter.of(context).goNamed('FaleConosco');
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(
-                        Icons.receipt_long_outlined,
+                        Icons.chat_outlined,
                         color: Color(0xFF888888),
                         size: 24,
                       ),
@@ -933,7 +983,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
-                          'Orçamentos',
+                          'Fale Conosco',
                           style: FlutterFlowTheme.of(context)
                               .bodySmall
                               .override(
