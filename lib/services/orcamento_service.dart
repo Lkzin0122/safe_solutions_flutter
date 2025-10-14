@@ -64,6 +64,20 @@ class OrcamentoService {
     }
   }
 
+  // Buscar orçamento específico por ID
+  static Future<Orcamento?> getOrcamentoPorId(int id) async {
+    try {
+      final orcamentos = await getAllOrcamentos();
+      return orcamentos.firstWhere(
+        (o) => o.id == id,
+        orElse: () => throw Exception('Orçamento não encontrado'),
+      );
+    } catch (e) {
+      print('Erro ao buscar orçamento por ID: $e');
+      throw Exception('Erro de conexão: $e');
+    }
+  }
+
   // GET /orcamento/pendentes/{cnpj} - Buscar orçamentos pendentes por CNPJ
   static Future<List<Orcamento>> getOrcamentosPendentes(String cnpj) async {
     try {

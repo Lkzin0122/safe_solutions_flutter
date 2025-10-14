@@ -4,6 +4,7 @@ import '../../flutter_flow/flutter_flow_widgets.dart';
 import '../../models/orcamento.dart';
 import '../../services/orcamento_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'detalhes_orcamento_widget.dart';
 
 class OrcamentosWidget extends StatefulWidget {
   const OrcamentosWidget({Key? key}) : super(key: key);
@@ -154,12 +155,26 @@ class _OrcamentosWidgetState extends State<OrcamentosWidget> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
+                            child: InkWell(
+                              onTap: () {
+                                if (orcamento.id != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetalhesOrcamentoWidget(
+                                        orcamentoId: orcamento.id!,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              borderRadius: BorderRadius.circular(12),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
@@ -190,132 +205,133 @@ class _OrcamentosWidgetState extends State<OrcamentosWidget> {
                                         ),
                                       ),
                                     ],
-                                  ),
-                                  const SizedBox(height: 12),
-                                  if (orcamento.detalhesOrcamento != null) ...[
-                                    Text(
-                                      'Detalhes:',
-                                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w500,
-                                          ),
                                     ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      orcamento.detalhesOrcamento!,
-                                      style: FlutterFlowTheme.of(context).bodySmall,
-                                    ),
-                                    const SizedBox(height: 8),
-                                  ],
-                                  if (orcamento.enderecoOrcamento != null) ...[
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_on_outlined,
-                                          size: 16,
-                                          color: FlutterFlowTheme.of(context).secondaryText,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Expanded(
-                                          child: Text(
-                                            orcamento.enderecoOrcamento!,
-                                            style: FlutterFlowTheme.of(context).bodySmall,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 8),
-                                  ],
-                                  if (orcamento.valorServico != null) ...[
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.attach_money,
-                                          size: 16,
-                                          color: FlutterFlowTheme.of(context).secondaryText,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          'R\$ ${orcamento.valorServico!.toStringAsFixed(2)}',
-                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w600,
-                                                color: FlutterFlowTheme.of(context).primary,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 8),
-                                  ],
-                                  if (orcamento.dataSolicitacao != null) ...[
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.calendar_today_outlined,
-                                          size: 16,
-                                          color: FlutterFlowTheme.of(context).secondaryText,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          'Solicitado em: ${orcamento.dataSolicitacao!.day.toString().padLeft(2, '0')}/${orcamento.dataSolicitacao!.month.toString().padLeft(2, '0')}/${orcamento.dataSolicitacao!.year}',
-                                          style: FlutterFlowTheme.of(context).bodySmall,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (orcamento.empresa != null) ...[
-                                    const SizedBox(height: 8),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.business_outlined,
-                                          size: 16,
-                                          color: FlutterFlowTheme.of(context).secondaryText,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          orcamento.empresa!.nomeEmpresa ?? 'Empresa não informada',
-                                          style: FlutterFlowTheme.of(context).bodySmall,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (orcamento.motivoRecusa != null) ...[
-                                    const SizedBox(height: 8),
-                                    Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                          color: Colors.red.withOpacity(0.3),
-                                        ),
+                                    const SizedBox(height: 12),
+                                    if (orcamento.detalhesOrcamento != null) ...[
+                                      Text(
+                                        'Detalhes:',
+                                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                       ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        orcamento.detalhesOrcamento!,
+                                        style: FlutterFlowTheme.of(context).bodySmall,
+                                      ),
+                                      const SizedBox(height: 8),
+                                    ],
+                                    if (orcamento.enderecoOrcamento != null) ...[
+                                      Row(
                                         children: [
-                                          Text(
-                                            'Motivo da recusa:',
-                                            style: FlutterFlowTheme.of(context).bodySmall.override(
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.red[700],
-                                                ),
+                                          Icon(
+                                            Icons.location_on_outlined,
+                                            size: 16,
+                                            color: FlutterFlowTheme.of(context).secondaryText,
                                           ),
-                                          const SizedBox(height: 4),
+                                          const SizedBox(width: 4),
+                                          Expanded(
+                                            child: Text(
+                                              orcamento.enderecoOrcamento!,
+                                              style: FlutterFlowTheme.of(context).bodySmall,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                    ],
+                                    if (orcamento.valorServico != null) ...[
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.attach_money,
+                                            size: 16,
+                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                          ),
+                                          const SizedBox(width: 4),
                                           Text(
-                                            orcamento.motivoRecusa!,
-                                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                                            'R\$ ${orcamento.valorServico!.toStringAsFixed(2)}',
+                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
                                                   fontFamily: 'Montserrat',
-                                                  color: Colors.red[600],
+                                                  fontWeight: FontWeight.w600,
+                                                  color: FlutterFlowTheme.of(context).primary,
                                                 ),
                                           ),
                                         ],
                                       ),
-                                    ),
+                                      const SizedBox(height: 8),
+                                    ],
+                                    if (orcamento.dataSolicitacao != null) ...[
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.calendar_today_outlined,
+                                            size: 16,
+                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            'Solicitado em: ${orcamento.dataSolicitacao!.day.toString().padLeft(2, '0')}/${orcamento.dataSolicitacao!.month.toString().padLeft(2, '0')}/${orcamento.dataSolicitacao!.year}',
+                                            style: FlutterFlowTheme.of(context).bodySmall,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                    if (orcamento.empresa != null) ...[
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.business_outlined,
+                                            size: 16,
+                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            orcamento.empresa!.nomeEmpresa ?? 'Empresa não informada',
+                                            style: FlutterFlowTheme.of(context).bodySmall,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                    if (orcamento.motivoRecusa != null) ...[
+                                      const SizedBox(height: 8),
+                                      Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red.withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(
+                                            color: Colors.red.withOpacity(0.3),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Motivo da recusa:',
+                                              style: FlutterFlowTheme.of(context).bodySmall.override(
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.red[700],
+                                                  ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              orcamento.motivoRecusa!,
+                                              style: FlutterFlowTheme.of(context).bodySmall.override(
+                                                    fontFamily: 'Montserrat',
+                                                    color: Colors.red[600],
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ],
-                                ],
+                                ),
                               ),
                             ),
                           );

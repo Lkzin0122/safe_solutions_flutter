@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'contratos_model.dart';
 import '../../services/auth_service.dart';
+import '../orcamentos/detalhes_orcamento_widget.dart';
 export 'contratos_model.dart';
 
 
@@ -269,12 +270,16 @@ class _ContratosWidgetState extends State<ContratosWidget> {
       imageUrl: imageUrl,
       isOrcamento: isOrcamento,
       onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(isOrcamento ? 'Orçamento - Status: ${orcamento.statusTexto}' : 'Contrato - Status: ${orcamento.statusTexto}'),
-            backgroundColor: FlutterFlowTheme.of(context).primary,
-          ),
-        );
+        if (orcamento.id != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetalhesOrcamentoWidget(
+                orcamentoId: orcamento.id!,
+              ),
+            ),
+          );
+        }
       },
     );
   }
@@ -404,10 +409,10 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             width: double.infinity,
             height: 120.0,
             decoration: BoxDecoration(
-              color: isOrcamento ? Colors.blue[50] : Colors.grey[100],
+              color: Colors.white,
               borderRadius: BorderRadius.circular(16.0),
               border: Border.all(
-                color: isOrcamento ? Colors.blue[800]! : Colors.grey[300]!,
+                color: FlutterFlowTheme.of(context).primary,
                 width: 1.0,
               ),
             ),
@@ -479,7 +484,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                           decoration: BoxDecoration(
-                            color: Colors.blue[800],
+                            color: FlutterFlowTheme.of(context).primary,
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           child: const Text(
@@ -678,62 +683,30 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       ),
                     ),
                   ),
-                  // Campo de busca e botão calendário
+                  // Campo de busca
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(
                         24.0, 20.0, 24.0, 0.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context)
+                            .secondaryBackground,
+                        borderRadius: BorderRadius.circular(12.0),
+                        border: Border.all(
+                            color:
+                                FlutterFlowTheme.of(context).alternate),
+                      ),
+                      child: TextField(
+                        onChanged: _updateSearchQuery,
+                        decoration: InputDecoration(
+                          hintText: 'Buscar serviços...',
+                          prefixIcon: Icon(Icons.search,
                               color: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              borderRadius: BorderRadius.circular(12.0),
-                              border: Border.all(
-                                  color:
-                                      FlutterFlowTheme.of(context).alternate),
-                            ),
-                            child: TextField(
-                              onChanged: _updateSearchQuery,
-                              decoration: InputDecoration(
-                                hintText: 'Buscar serviços...',
-                                prefixIcon: Icon(Icons.search,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText),
-                                border: InputBorder.none,
-                                contentPadding: const EdgeInsets.all(12.0),
-                              ),
-                            ),
-                          ),
+                                  .secondaryText),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.all(12.0),
                         ),
-                        const SizedBox(width: 12.0),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).primary,
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: IconButton(
-                            onPressed: () => GoRouter.of(context).goNamed('Calendario'),
-                            icon: const Icon(Icons.calendar_month,
-                                color: Colors.white),
-                            tooltip: 'Ver Calendário',
-                          ),
-                        ),
-                        const SizedBox(width: 12.0),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.orange,
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: IconButton(
-                            onPressed: () => GoRouter.of(context).goNamed('TestApi'),
-                            icon: const Icon(Icons.bug_report,
-                                color: Colors.white),
-                            tooltip: 'Testar API',
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                   if (_model.isLoading || _isLoading)
@@ -765,7 +738,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 12.0, 6.0, 12.0, 6.0),
                             decoration: BoxDecoration(
-                              color: Colors.orange,
+                              color: FlutterFlowTheme.of(context).primary,
                               borderRadius: BorderRadius.circular(20.0),
                             ),
                             child: Text(
