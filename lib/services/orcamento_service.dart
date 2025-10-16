@@ -35,13 +35,26 @@ class OrcamentoService {
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> jsonList = json.decode(response.body);
-        return jsonList.map((json) => Orcamento.fromJson(json)).toList();
+        try {
+          final responseBody = response.body;
+          if (responseBody.isEmpty || responseBody == '[]') {
+            return [];
+          }
+          final List<dynamic> jsonList = json.decode(responseBody);
+          return jsonList.map((json) => Orcamento.fromJson(json)).toList();
+        } catch (parseError) {
+          print('Erro ao fazer parse da resposta: $parseError');
+          return [];
+        }
       }
       throw Exception('Erro ao carregar orçamentos: ${response.statusCode}');
     } catch (e) {
+      if (e.toString().contains('SocketException') || e.toString().contains('Connection')) {
+        print('Erro de conexão: $e');
+        throw Exception('Erro de conexão com o servidor');
+      }
       print('Erro ao buscar orçamentos por CPF: $e');
-      throw Exception('Erro de conexão: $e');
+      throw e;
     }
   }
 

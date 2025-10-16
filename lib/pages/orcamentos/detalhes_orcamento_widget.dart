@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../flutter_flow/flutter_flow_theme.dart';
 import '../../flutter_flow/flutter_flow_widgets.dart';
 import '../../models/orcamento.dart';
@@ -359,11 +360,11 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                               decoration: BoxDecoration(
-                                color: _getStatusColor(_orcamento?.statusOrcamento),
+                                color: Colors.blue,
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
                               child: Text(
-                                _orcamento?.statusTexto ?? 'Desconhecido',
+                                'Em Andamento',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12.0,
@@ -622,6 +623,115 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                     ],
                   ),
                 ),
+        bottomNavigationBar: Container(
+          width: double.infinity,
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10.0,
+                offset: const Offset(0.0, -2.0),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.description,
+                        color: FlutterFlowTheme.of(context).primary,
+                        size: 24,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                      child: Text(
+                        'Serviços',
+                        style: FlutterFlowTheme.of(context).bodySmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).primary,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+                InkWell(
+                  onTap: () => GoRouter.of(context).goNamed('FaleConosco'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.chat_outlined,
+                        color: Color(0xFF888888),
+                        size: 24,
+                      ),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          'Fale Conosco',
+                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () => GoRouter.of(context).goNamed('Profile'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.person_outlined,
+                        color: Color(0xFF888888),
+                        size: 24,
+                      ),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          'Perfil',
+                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
     );
   }
 }

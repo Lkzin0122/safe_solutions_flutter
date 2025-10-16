@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../flutter_flow/flutter_flow_theme.dart';
 import '../../flutter_flow/flutter_flow_widgets.dart';
 import '../../models/orcamento.dart';
@@ -36,19 +37,31 @@ class _OrcamentosWidgetState extends State<OrcamentosWidget> {
       
       if (cpf != null && cpf.isNotEmpty) {
         final orcamentos = await OrcamentoService.getOrcamentosPorCpf(cpf);
+        final orcamentosFiltrados = orcamentos.where((orcamento) => 
+          orcamento.statusOrcamento != StatusEnum.FINALIZADO
+        ).toList();
         setState(() {
-          _orcamentos = orcamentos;
+          _orcamentos = orcamentosFiltrados;
           _isLoading = false;
         });
       } else {
         setState(() {
-          _error = 'CPF do usuário não encontrado';
+          _error = 'CPF do usuário não encontrado nas preferências';
           _isLoading = false;
         });
       }
     } catch (e) {
+      String errorMessage;
+      if (e.toString().contains('Erro de conexão com o servidor')) {
+        errorMessage = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
+      } else if (e.toString().contains('404')) {
+        errorMessage = 'Serviço não encontrado. Verifique se o servidor está rodando.';
+      } else {
+        errorMessage = 'Erro inesperado: ${e.toString().replaceAll('Exception: ', '')}';
+      }
+      
       setState(() {
-        _error = 'Erro ao carregar orçamentos: $e';
+        _error = errorMessage;
         _isLoading = false;
       });
     }
@@ -338,6 +351,115 @@ class _OrcamentosWidgetState extends State<OrcamentosWidget> {
                         },
                       ),
                     ),
+        bottomNavigationBar: Container(
+          width: double.infinity,
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10.0,
+                offset: const Offset(0.0, -2.0),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InkWell(
+                  onTap: () => GoRouter.of(context).goNamed('servicos'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.description,
+                        color: Color(0xFF888888),
+                        size: 24,
+                      ),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          'Serviços',
+                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () => GoRouter.of(context).goNamed('FaleConosco'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.chat_outlined,
+                        color: Color(0xFF888888),
+                        size: 24,
+                      ),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          'Fale Conosco',
+                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                fontFamily: 'Montserrat',
+                                color: FlutterFlowTheme.of(context).secondaryText,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.receipt_long,
+                        color: FlutterFlowTheme.of(context).primary,
+                        size: 24,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                      child: Text(
+                        'Orçamentos',
+                        style: FlutterFlowTheme.of(context).bodySmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).primary,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
     );
   }
 }

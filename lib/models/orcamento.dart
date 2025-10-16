@@ -47,8 +47,11 @@ class Orcamento {
     if (value is int) return value.toDouble();
     if (value is String) {
       try {
-        return double.parse(value);
+        // Remove espaços e substitui vírgula por ponto se necessário
+        String cleanValue = value.toString().trim().replaceAll(',', '.');
+        return double.parse(cleanValue);
       } catch (e) {
+        print('Erro ao fazer parse do valor: $value - $e');
         return null;
       }
     }
