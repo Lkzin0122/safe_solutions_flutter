@@ -47,11 +47,13 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   String searchQuery = '';
   
   List<Orcamento> _orcamentosEmAndamento = [];
+  List<Orcamento> _orcamentosFinalizados = [];
 
   bool _isLoading = false;
   String? _error;
   
   List<Orcamento> get orcamentosEmAndamento => _orcamentosEmAndamento;
+  List<Orcamento> get orcamentosFinalizados => _orcamentosFinalizados;
 
   bool get isLoading => _isLoading;
   String? get error => _error;
@@ -172,11 +174,17 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
       if (cpf != null) {
         print('CPF encontrado: $cpf');
         
-        // Carregar orçamentos em andamento
+        // Carregar orçamentos
         final orcamentos = await OrcamentoService.getOrcamentosPorCpf(cpf);
+        
+        // Separar orçamentos por status
         _orcamentosEmAndamento = orcamentos.where((o) => 
           o.statusOrcamento == StatusEnum.EM_ANDAMENTO || 
           o.statusOrcamento == StatusEnum.ACEITO
+        ).toList();
+        
+        _orcamentosFinalizados = orcamentos.where((o) => 
+          o.statusOrcamento == StatusEnum.FINALIZADO
         ).toList();
 
       } else {
@@ -241,6 +249,16 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
       return _orcamentosEmAndamento;
     }
     return _orcamentosEmAndamento.where((orcamento) => 
+      (orcamento.servico?.nomeServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false) ||
+      (orcamento.servico?.descricaoServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false)
+    ).toList();
+  }
+  
+  List<Orcamento> get filteredOrcamentosFinalizados {
+    if (searchQuery.isEmpty) {
+      return _orcamentosFinalizados;
+    }
+    return _orcamentosFinalizados.where((orcamento) => 
       (orcamento.servico?.nomeServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false) ||
       (orcamento.servico?.descricaoServico?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false)
     ).toList();

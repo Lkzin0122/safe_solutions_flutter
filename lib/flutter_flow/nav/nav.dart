@@ -14,7 +14,6 @@ import '/pages/validar_codigo/validar_codigo_widget.dart';
 import '/pages/servicos/servicos_widget.dart';
 import '/pages/montador/montador_widget.dart';
 import '/pages/super_clean/super_clean_widget.dart';
-import '/pages/bratecno/bratecno_widget.dart';
 import '/pages/super_clean_copy/super_clean_copy_widget.dart';
 import '/pages/verificar_codigo/verificar_codigo_widget.dart';
 import '/pages/fale_conosco/fale_conosco_widget.dart';
@@ -22,13 +21,13 @@ import '/pages/editar_conta/editar_conta_widget.dart';
 import '/pages/configuracoes/configuracoes_widget.dart';
 import '/pages/suporte/suporte_widget.dart';
 import '/pages/privacidade/privacidade_widget.dart';
-import '/pages/calendario/calendario_widget.dart';
 import '/pages/confirmar_senha/confirmar_senha_widget.dart';
 import '/pages/nova_senha_pos_validacao/nova_senha_pos_validacao_widget.dart';
 import '/pages/nova_senha/nova_senha_widget.dart';
 import '/pages/termos_uso/termos_uso_widget.dart';
 import '/pages/status_servico/status_servico_widget.dart';
 import '/pages/detalhes_servico/detalhes_servico_widget.dart';
+import '/pages/orcamentos/detalhes_orcamento_widget.dart';
 
 import '/pages/test_api.dart';
 
@@ -148,11 +147,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/superClean',
           builder: (context, state) => const SuperCleanWidget(),
         ),
-        GoRoute(
-          name: 'Bratecno',
-          path: '/bratecno',
-          builder: (context, state) => const BratecnoWidget(),
-        ),
+       
         GoRoute(
           name: 'SuperCleanCopy',
           path: '/superCleanCopy',
@@ -188,11 +183,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/privacidade',
           builder: (context, state) => const PrivacidadeWidget(),
         ),
-        GoRoute(
-          name: 'Calendario',
-          path: '/calendario',
-          builder: (context, state) => const CalendarioWidget(),
-        ),
+        
         GoRoute(
           name: 'ConfirmarSenha',
           path: '/confirmarSenha',
@@ -233,6 +224,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               return const ServicosWidget();
             }
             return DetalhesServicoWidget(servico: servico);
+          },
+        ),
+        GoRoute(
+          name: 'DetalhesOrcamento',
+          path: '/detalhes-orcamento',
+          builder: (context, state) {
+            final orcamentoId = state.extra as int?;
+            if (orcamentoId == null) {
+              return const ContratosWidget();
+            }
+            return DetalhesOrcamentoWidget(orcamentoId: orcamentoId);
           },
         ),
 

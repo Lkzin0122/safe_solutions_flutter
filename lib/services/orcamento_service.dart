@@ -65,13 +65,23 @@ class OrcamentoService {
   }
 
   // Buscar orçamento específico por ID
-  static Future<Orcamento?> getOrcamentoPorId(int id) async {
+  static Future<Orcamento> getOrcamentoPorId(int id) async {
     try {
-      final orcamentos = await getAllOrcamentos();
-      return orcamentos.firstWhere(
-        (o) => o.id == id,
-        orElse: () => throw Exception('Orçamento não encontrado'),
+      final response = await http.get(
+        Uri.parse('$_baseUrl/$id'),
+        headers: {'Content-Type': 'application/json'},
       );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData is List && responseData.isNotEmpty) {
+          return Orcamento.fromJson(responseData.first);
+        } else if (responseData is Map<String, dynamic>) {
+          return Orcamento.fromJson(responseData);
+        }
+        throw Exception('Orçamento não encontrado');
+      }
+      throw Exception('Orçamento não encontrado: ${response.statusCode}');
     } catch (e) {
       print('Erro ao buscar orçamento por ID: $e');
       throw Exception('Erro de conexão: $e');

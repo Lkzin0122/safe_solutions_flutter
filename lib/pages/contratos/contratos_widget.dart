@@ -269,6 +269,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
       description: description,
       imageUrl: imageUrl,
       isOrcamento: isOrcamento,
+      isCompleted: isCompleted,
       onTap: () {
         if (orcamento.id != null) {
           Navigator.push(
@@ -377,7 +378,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             Text(
               _searchQuery.isNotEmpty
                   ? 'Não encontramos orçamentos com o termo "$_searchQuery"'
-                  : 'Você ainda não possui orçamentos em andamento.',
+                  : 'Você ainda não possui orçamentos.',
               textAlign: TextAlign.center,
               style: FlutterFlowTheme.of(context).bodySmall,
             ),
@@ -393,6 +394,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
     required String imageUrl,
     required VoidCallback onTap,
     bool isOrcamento = false,
+    bool isCompleted = false,
   }) {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(24.0, 8.0, 24.0, 8.0),
@@ -409,10 +411,10 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             width: double.infinity,
             height: 120.0,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isCompleted ? Colors.grey[50] : Colors.white,
               borderRadius: BorderRadius.circular(16.0),
               border: Border.all(
-                color: FlutterFlowTheme.of(context).primary,
+                color: isCompleted ? Colors.green : FlutterFlowTheme.of(context).primary,
                 width: 1.0,
               ),
             ),
@@ -484,12 +486,12 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                           decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).primary,
+                            color: isCompleted ? Colors.green : FlutterFlowTheme.of(context).primary,
                             borderRadius: BorderRadius.circular(12.0),
                           ),
-                          child: const Text(
-                            'ORÇAMENTO',
-                            style: TextStyle(
+                          child: Text(
+                            isCompleted ? 'FINALIZADO' : 'ORÇAMENTO',
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 10.0,
                               fontWeight: FontWeight.bold,
@@ -498,8 +500,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         ),
                       const SizedBox(height: 4.0),
                       Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.grey[600],
+                        isCompleted ? Icons.check_circle : Icons.arrow_forward_ios,
+                        color: isCompleted ? Colors.green : Colors.grey[600],
                         size: 16.0,
                       ),
                     ],
@@ -713,63 +715,124 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     _buildLoadingWidget()
                   else if (_model.error != null || _error != null)
                     _buildErrorWidget()
-                  else if (_model.orcamentosEmAndamento.isEmpty)
+                  else if (_model.orcamentosEmAndamento.isEmpty && _model.orcamentosFinalizados.isEmpty)
                     _buildEmptyWidget()
                   else ...[
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          24.0, 20.0, 24.0, 0.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Orçamentos em Andamento',
-                            style: FlutterFlowTheme.of(context)
-                                .headlineSmall
-                                .override(
-                                  fontFamily: 'Montserrat',
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          const SizedBox(height: 8.0),
-                          Container(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                12.0, 6.0, 12.0, 6.0),
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).primary,
-                              borderRadius: BorderRadius.circular(20.0),
+                    // Seção de Orçamentos em Andamento
+                    if (_model.filteredOrcamentosEmAndamento.isNotEmpty || (_searchQuery.isEmpty && _model.orcamentosEmAndamento.isNotEmpty)) ...[
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            24.0, 20.0, 24.0, 0.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Orçamentos em Andamento',
+                              style: FlutterFlowTheme.of(context)
+                                  .headlineSmall
+                                  .override(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
-                            child: Text(
-                              _searchQuery.isEmpty
-                                  ? '${_model.filteredOrcamentosEmAndamento.length} Em Andamento'
-                                  : '${_model.filteredOrcamentosEmAndamento.length} Encontrados',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w600,
+                            const SizedBox(height: 8.0),
+                            Container(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 6.0, 12.0, 6.0),
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: Text(
+                                _searchQuery.isEmpty
+                                    ? '${_model.filteredOrcamentosEmAndamento.length} Em Andamento'
+                                    : '${_model.filteredOrcamentosEmAndamento.length} Encontrados',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    if (_model.filteredOrcamentosEmAndamento.isEmpty && _searchQuery.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            24.0, 20.0, 24.0, 20.0),
-                        child: Text(
-                          'Nenhum orçamento em andamento encontrado com "$_searchQuery"',
-                          style: FlutterFlowTheme.of(context).bodyMedium,
-                          textAlign: TextAlign.center,
+                          ],
                         ),
-                      )
-                    else
-                      ..._model.filteredOrcamentosEmAndamento
-                          .map((orcamento) => _buildOrcamentoCard(orcamento, isOrcamento: true)),
-                    const SizedBox(height: 30.0),
+                      ),
+                      const SizedBox(height: 10.0),
+                      if (_model.filteredOrcamentosEmAndamento.isEmpty && _searchQuery.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              24.0, 20.0, 24.0, 20.0),
+                          child: Text(
+                            'Nenhum orçamento em andamento encontrado com "$_searchQuery"',
+                            style: FlutterFlowTheme.of(context).bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      else
+                        ..._model.filteredOrcamentosEmAndamento
+                            .map((orcamento) => _buildOrcamentoCard(orcamento, isOrcamento: true)),
+                      const SizedBox(height: 30.0),
+                    ],
+                    
+                    // Seção de Orçamentos Finalizados
+                    if (_model.filteredOrcamentosFinalizados.isNotEmpty || (_searchQuery.isEmpty && _model.orcamentosFinalizados.isNotEmpty)) ...[
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            24.0, 20.0, 24.0, 0.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Orçamentos Finalizados',
+                              style: FlutterFlowTheme.of(context)
+                                  .headlineSmall
+                                  .override(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Container(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 6.0, 12.0, 6.0),
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: Text(
+                                _searchQuery.isEmpty
+                                    ? '${_model.filteredOrcamentosFinalizados.length} Finalizados'
+                                    : '${_model.filteredOrcamentosFinalizados.length} Encontrados',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10.0),
+                      if (_model.filteredOrcamentosFinalizados.isEmpty && _searchQuery.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              24.0, 20.0, 24.0, 20.0),
+                          child: Text(
+                            'Nenhum orçamento finalizado encontrado com "$_searchQuery"',
+                            style: FlutterFlowTheme.of(context).bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      else
+                        ..._model.filteredOrcamentosFinalizados
+                            .map((orcamento) => _buildOrcamentoCard(orcamento, isCompleted: true, isOrcamento: true)),
+                      const SizedBox(height: 30.0),
+                    ],
                   ],
                     const SizedBox(height: 20.0),
                   ],

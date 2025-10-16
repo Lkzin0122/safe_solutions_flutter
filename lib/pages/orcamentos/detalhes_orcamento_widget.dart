@@ -45,6 +45,33 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
     }
   }
 
+  Future<void> _finalizarOrcamento() async {
+    if (_orcamento?.empresa == null) return;
+    
+    try {
+      await OrcamentoService.finalizarOrcamento(widget.orcamentoId, _orcamento!.empresa!);
+      await _carregarDetalhes(); // Recarrega os dados
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Orçamento finalizado com sucesso!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao finalizar orçamento: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   Color _getStatusColor(StatusEnum? status) {
     switch (status) {
       case StatusEnum.PENDENTE:
@@ -132,9 +159,9 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                 _buildStatusConnector(true),
                 _buildStatusStep('Materiais adquiridos', true, Colors.green, Icons.shopping_cart, '✓ Todos os materiais prontos'),
                 _buildStatusConnector(true),
-                _buildStatusStep('Em execução', true, Colors.orange, Icons.build, '🔧 Montagem em andamento'),
-                _buildStatusConnector(false),
-                _buildStatusStep('Finalizado', false, Colors.grey, Icons.done_all, 'Aguardando conclusão'),
+                _buildStatusStep('Em execução', _orcamento?.statusOrcamento == StatusEnum.EM_ANDAMENTO || _orcamento?.statusOrcamento == StatusEnum.FINALIZADO, _orcamento?.statusOrcamento == StatusEnum.EM_ANDAMENTO ? Colors.orange : Colors.green, Icons.build, _orcamento?.statusOrcamento == StatusEnum.EM_ANDAMENTO ? '🔧 Montagem em andamento' : '✓ Execução concluída'),
+                _buildStatusConnector(_orcamento?.statusOrcamento == StatusEnum.FINALIZADO),
+                _buildStatusStep('Finalizado', _orcamento?.statusOrcamento == StatusEnum.FINALIZADO, _orcamento?.statusOrcamento == StatusEnum.FINALIZADO ? Colors.green : Colors.grey, Icons.done_all, _orcamento?.statusOrcamento == StatusEnum.FINALIZADO ? '✓ Serviço concluído' : 'Aguardando conclusão'),
                 SizedBox(height: 28),
                 Container(
                   width: double.infinity,
@@ -306,11 +333,26 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(12.0),
-                              child: Image.network(
-                                'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png',
+                              child: Image.asset(
+                                'images/orcamento_default.png',
                                 width: 100.0,
                                 height: 100.0,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    width: 100.0,
+                                    height: 100.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: Icon(
+                                      Icons.description,
+                                      size: 50,
+                                      color: Colors.grey[600],
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                             SizedBox(height: 16.0),
@@ -482,7 +524,7 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                           children: [
                             Expanded(
                               child: SizedBox(
-                                height: 50.0,
+                                height: 40.0,
                                 child: ElevatedButton(
                                   onPressed: () => _showStatusPopup(context),
                                   style: ElevatedButton.styleFrom(
@@ -492,10 +534,82 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                                     ),
                                   ),
                                   child: Text(
-                                    'Ver Status do Serviço',
+                                    'Ver Status',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 14.0,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 12.0),
+                            Expanded(
+                              child: SizedBox(
+                                height: 40.0,
+                                child: ElevatedButton(
+                                  onPressed: _finalizarOrcamento,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Finalizar',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ] else if (_orcamento?.statusOrcamento == StatusEnum.ACEITO) ...[
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: 40.0,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    try {
+                                      await OrcamentoService.atualizarStatusOrcamento(widget.orcamentoId);
+                                      await _carregarDetalhes();
+                                      if (mounted) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Serviço iniciado!'),
+                                            backgroundColor: Colors.blue,
+                                          ),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      if (mounted) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Erro: $e'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Iniciar',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
