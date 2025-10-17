@@ -7,11 +7,13 @@ import '../../services/orcamento_service.dart';
 
 class DetalhesOrcamentoWidget extends StatefulWidget {
   final int orcamentoId;
-  
-  const DetalhesOrcamentoWidget({Key? key, required this.orcamentoId}) : super(key: key);
+
+  const DetalhesOrcamentoWidget({Key? key, required this.orcamentoId})
+      : super(key: key);
 
   @override
-  State<DetalhesOrcamentoWidget> createState() => _DetalhesOrcamentoWidgetState();
+  State<DetalhesOrcamentoWidget> createState() =>
+      _DetalhesOrcamentoWidgetState();
 }
 
 class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
@@ -27,13 +29,15 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
 
   Future<void> _carregarDetalhes() async {
     try {
-      print('Iniciando carregamento de detalhes para ID: ${widget.orcamentoId}');
+      print(
+          'Iniciando carregamento de detalhes para ID: ${widget.orcamentoId}');
       setState(() {
         _isLoading = true;
         _error = null;
       });
 
-      final orcamento = await OrcamentoService.getOrcamentoPorId(widget.orcamentoId);
+      final orcamento =
+          await OrcamentoService.getOrcamentoPorId(widget.orcamentoId);
       print('Orçamento carregado: ${orcamento.toJson()}');
 
       setState(() {
@@ -51,11 +55,12 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
 
   Future<void> _finalizarOrcamento() async {
     if (_orcamento?.empresa == null) return;
-    
+
     try {
-      await OrcamentoService.finalizarOrcamento(widget.orcamentoId, _orcamento!.empresa!);
+      await OrcamentoService.finalizarOrcamento(
+          widget.orcamentoId, _orcamento!.empresa!);
       await _carregarDetalhes(); // Recarrega os dados
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -97,13 +102,14 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
 
   void _showStatusPopup(BuildContext context) {
     if (_orcamento?.statusOrcamento != StatusEnum.EM_ANDAMENTO) return;
-    
+
     showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           elevation: 16,
           child: Container(
             padding: EdgeInsets.all(28),
@@ -132,7 +138,8 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                           color: Color(0xFF204060),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Icon(Icons.timeline, color: Colors.white, size: 24),
+                        child:
+                            Icon(Icons.timeline, color: Colors.white, size: 24),
                       ),
                       SizedBox(width: 16),
                       Expanded(
@@ -161,13 +168,35 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                   ),
                 ),
                 SizedBox(height: 28),
-                _buildStatusStep('Orçamento aprovado', true, Colors.green, Icons.check_circle, '✓ Aprovado pelo cliente'),
+                _buildStatusStep('Orçamento aprovado', true, Colors.green,
+                    Icons.check_circle, '✓ Aprovado pelo cliente'),
                 _buildStatusConnector(true),
-                _buildStatusStep('Materiais adquiridos', true, Colors.green, Icons.shopping_cart, '✓ Todos os materiais prontos'),
+                _buildStatusStep('Materiais adquiridos', true, Colors.green,
+                    Icons.shopping_cart, '✓ Todos os materiais prontos'),
                 _buildStatusConnector(true),
-                _buildStatusStep('Em execução', _orcamento?.statusOrcamento == StatusEnum.EM_ANDAMENTO || _orcamento?.statusOrcamento == StatusEnum.FINALIZADO, _orcamento?.statusOrcamento == StatusEnum.EM_ANDAMENTO ? Colors.orange : Colors.green, Icons.build, _orcamento?.statusOrcamento == StatusEnum.EM_ANDAMENTO ? '🔧 Montagem em andamento' : '✓ Execução concluída'),
-                _buildStatusConnector(_orcamento?.statusOrcamento == StatusEnum.FINALIZADO),
-                _buildStatusStep('Finalizado', _orcamento?.statusOrcamento == StatusEnum.FINALIZADO, _orcamento?.statusOrcamento == StatusEnum.FINALIZADO ? Colors.green : Colors.grey, Icons.done_all, _orcamento?.statusOrcamento == StatusEnum.FINALIZADO ? '✓ Serviço concluído' : 'Aguardando conclusão'),
+                _buildStatusStep(
+                    'Em execução',
+                    _orcamento?.statusOrcamento == StatusEnum.EM_ANDAMENTO ||
+                        _orcamento?.statusOrcamento == StatusEnum.FINALIZADO,
+                    _orcamento?.statusOrcamento == StatusEnum.EM_ANDAMENTO
+                        ? Colors.orange
+                        : Colors.green,
+                    Icons.build,
+                    _orcamento?.statusOrcamento == StatusEnum.EM_ANDAMENTO
+                        ? '🔧 Montagem em andamento'
+                        : '✓ Execução concluída'),
+                _buildStatusConnector(
+                    _orcamento?.statusOrcamento == StatusEnum.FINALIZADO),
+                _buildStatusStep(
+                    'Finalizado',
+                    _orcamento?.statusOrcamento == StatusEnum.FINALIZADO,
+                    _orcamento?.statusOrcamento == StatusEnum.FINALIZADO
+                        ? Colors.green
+                        : Colors.grey,
+                    Icons.done_all,
+                    _orcamento?.statusOrcamento == StatusEnum.FINALIZADO
+                        ? '✓ Serviço concluído'
+                        : 'Aguardando conclusão'),
                 SizedBox(height: 28),
                 Container(
                   width: double.infinity,
@@ -176,7 +205,8 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                     onPressed: () => Navigator.of(context).pop(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF204060),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
                       elevation: 2,
                     ),
                     child: Text(
@@ -197,7 +227,8 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
     );
   }
 
-  Widget _buildStatusStep(String text, bool completed, Color color, IconData icon, String subtitle) {
+  Widget _buildStatusStep(String text, bool completed, Color color,
+      IconData icon, String subtitle) {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -216,13 +247,15 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
             decoration: BoxDecoration(
               color: completed ? color : Colors.grey[300],
               shape: BoxShape.circle,
-              boxShadow: completed ? [
-                BoxShadow(
-                  color: color.withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: Offset(0, 2),
-                ),
-              ] : null,
+              boxShadow: completed
+                  ? [
+                      BoxShadow(
+                        color: color.withOpacity(0.3),
+                        blurRadius: 8,
+                        offset: Offset(0, 2),
+                      ),
+                    ]
+                  : null,
             ),
             child: Icon(
               completed ? Icons.check : icon,
@@ -302,10 +335,11 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                           width: 200,
                           height: 40,
                           color: FlutterFlowTheme.of(context).primary,
-                          textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                                fontFamily: 'Montserrat',
-                                color: Colors.white,
-                              ),
+                          textStyle:
+                              FlutterFlowTheme.of(context).titleSmall.override(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.white,
+                                  ),
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
@@ -320,7 +354,8 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              16.0, 0.0, 0.0, 0.0),
                           child: IconButton(
                             onPressed: () => Navigator.pop(context),
                             icon: Icon(Icons.arrow_back, size: 22),
@@ -363,9 +398,11 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                             ),
                             SizedBox(height: 16.0),
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 6.0),
                               decoration: BoxDecoration(
-                                color: _getStatusColor(_orcamento?.statusOrcamento),
+                                color: _getStatusColor(
+                                    _orcamento?.statusOrcamento),
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
                               child: Text(
@@ -380,15 +417,16 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                           ],
                         ),
                       ),
-                      
+
                       SizedBox(height: 24.0),
-                      
+
                       // Descrição
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.all(20.0),
                         decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).secondaryBackground,
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
                           borderRadius: BorderRadius.circular(16.0),
                           boxShadow: [
                             BoxShadow(
@@ -403,32 +441,40 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                           children: [
                             Text(
                               'Descrição do Orçamento',
-                              style: FlutterFlowTheme.of(context).titleMedium.override(
-                                fontFamily: 'Montserrat',
-                                color: FlutterFlowTheme.of(context).tertiary,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .titleMedium
+                                  .override(
+                                    fontFamily: 'Montserrat',
+                                    color:
+                                        FlutterFlowTheme.of(context).tertiary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                             SizedBox(height: 12.0),
                             Text(
-                              _orcamento?.detalhesOrcamento ?? 'Sem detalhes disponíveis',
-                              style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                fontFamily: 'Montserrat',
-                                color: FlutterFlowTheme.of(context).secondaryText,
-                              ),
+                              _orcamento?.detalhesOrcamento ??
+                                  'Sem detalhes disponíveis',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Montserrat',
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                  ),
                             ),
                           ],
                         ),
                       ),
-                      
+
                       SizedBox(height: 16.0),
-                      
+
                       // Detalhes
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.all(20.0),
                         decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).secondaryBackground,
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
                           borderRadius: BorderRadius.circular(16.0),
                           boxShadow: [
                             BoxShadow(
@@ -443,27 +489,55 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Serviço:', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat', fontWeight: FontWeight.w500)),
-                                Text(_orcamento?.servico?.nomeServico ?? 'Não informado', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat')),
+                                Text('Serviço:',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w500)),
+                                Text(
+                                    _orcamento?.servico?.nomeServico ??
+                                        'Não informado',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(fontFamily: 'Montserrat')),
                               ],
                             ),
                             SizedBox(height: 8.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Empresa:', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat', fontWeight: FontWeight.w500)),
-                                Text(_orcamento?.empresa?.nomeEmpresa ?? 'Não atribuída', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat')),
+                                Text('Empresa:',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w500)),
+                                Text(
+                                    _orcamento?.empresa?.nomeEmpresa ??
+                                        'Não atribuída',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(fontFamily: 'Montserrat')),
                               ],
                             ),
                             SizedBox(height: 8.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Localização:', style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat', fontWeight: FontWeight.w500)),
+                                Text('Localização:',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w500)),
                                 Expanded(
                                   child: Text(
-                                    _orcamento?.enderecoOrcamento ?? 'Não informado',
-                                    style: FlutterFlowTheme.of(context).bodyMedium.override(fontFamily: 'Montserrat'),
+                                    _orcamento?.enderecoOrcamento ??
+                                        'Não informado',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(fontFamily: 'Montserrat'),
                                     textAlign: TextAlign.end,
                                   ),
                                 ),
@@ -478,20 +552,26 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                                   children: [
                                     Text(
                                       'Valor Total',
-                                      style: FlutterFlowTheme.of(context).bodySmall.override(
-                                        fontFamily: 'Montserrat',
-                                        color: FlutterFlowTheme.of(context).secondaryText,
-                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .override(
+                                            fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                          ),
                                     ),
                                     Text(
-                                      _orcamento?.valorServico != null 
+                                      _orcamento?.valorServico != null
                                           ? 'R\$ ${_orcamento!.valorServico!.toStringAsFixed(2)}'
                                           : 'A definir',
-                                      style: FlutterFlowTheme.of(context).headlineSmall.override(
-                                        fontFamily: 'Montserrat',
-                                        color: FlutterFlowTheme.of(context).primary,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .headlineSmall
+                                          .override(
+                                            fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                     ),
                                   ],
                                 ),
@@ -500,19 +580,24 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                                   children: [
                                     Text(
                                       'Prazo',
-                                      style: FlutterFlowTheme.of(context).bodySmall.override(
-                                        fontFamily: 'Montserrat',
-                                        color: FlutterFlowTheme.of(context).secondaryText,
-                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .override(
+                                            fontFamily: 'Montserrat',
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                          ),
                                     ),
                                     Text(
                                       _orcamento?.prazoOrcamento != null
                                           ? '${_orcamento!.prazoOrcamento!.day.toString().padLeft(2, '0')}/${_orcamento!.prazoOrcamento!.month.toString().padLeft(2, '0')}/${_orcamento!.prazoOrcamento!.year}'
                                           : 'A definir',
-                                      style: FlutterFlowTheme.of(context).titleMedium.override(
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .override(
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                     ),
                                   ],
                                 ),
@@ -521,11 +606,12 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                           ],
                         ),
                       ),
-                      
+
                       SizedBox(height: 24.0),
-                      
+
                       // Botões
-                      if (_orcamento?.statusOrcamento == StatusEnum.EM_ANDAMENTO) ...[
+                      if (_orcamento?.statusOrcamento ==
+                          StatusEnum.EM_ANDAMENTO) ...[
                         Row(
                           children: [
                             Expanded(
@@ -575,7 +661,8 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                             ),
                           ],
                         ),
-                      ] else if (_orcamento?.statusOrcamento == StatusEnum.ACEITO) ...[
+                      ] else if (_orcamento?.statusOrcamento ==
+                          StatusEnum.ACEITO) ...[
                         Row(
                           children: [
                             Expanded(
@@ -584,10 +671,13 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     try {
-                                      await OrcamentoService.atualizarStatusOrcamento(widget.orcamentoId);
+                                      await OrcamentoService
+                                          .atualizarStatusOrcamento(
+                                              widget.orcamentoId);
                                       await _carregarDetalhes();
                                       if (mounted) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
                                           SnackBar(
                                             content: Text('Serviço iniciado!'),
                                             backgroundColor: Colors.blue,
@@ -598,7 +688,8 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                                       }
                                     } catch (e) {
                                       if (mounted) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
                                           SnackBar(
                                             content: Text('Erro: $e'),
                                             backgroundColor: Colors.red,
@@ -630,115 +721,118 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                     ],
                   ),
                 ),
-        bottomNavigationBar: Container(
-          width: double.infinity,
-          height: 80,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10.0,
-                offset: const Offset(0.0, -2.0),
-              ),
-            ],
+      bottomNavigationBar: Container(
+        width: double.infinity,
+        height: 80,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
           ),
-          child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10.0,
+              offset: const Offset(0.0, -2.0),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color:
+                          FlutterFlowTheme.of(context).primary.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.description,
+                      color: FlutterFlowTheme.of(context).primary,
+                      size: 24,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                    child: Text(
+                      'Serviços',
+                      style: FlutterFlowTheme.of(context).bodySmall.override(
+                            fontFamily: 'Montserrat',
+                            color: FlutterFlowTheme.of(context).primary,
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              InkWell(
+                onTap: () => GoRouter.of(context).goNamed('FaleConosco'),
+                child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).primary.withOpacity(0.2),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.description,
-                        color: FlutterFlowTheme.of(context).primary,
-                        size: 24,
-                      ),
+                    const Icon(
+                      Icons.chat_outlined,
+                      color: Color(0xFF888888),
+                      size: 24,
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                       child: Text(
-                        'Serviços',
+                        'Fale Conosco',
                         style: FlutterFlowTheme.of(context).bodySmall.override(
                               fontFamily: 'Montserrat',
-                              color: FlutterFlowTheme.of(context).primary,
+                              color: FlutterFlowTheme.of(context).secondaryText,
                               letterSpacing: 0.0,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                       ),
                     ),
                   ],
                 ),
-                InkWell(
-                  onTap: () => GoRouter.of(context).goNamed('FaleConosco'),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.chat_outlined,
-                        color: Color(0xFF888888),
-                        size: 24,
+              ),
+              InkWell(
+                onTap: () => GoRouter.of(context).goNamed('Profile'),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.person_outlined,
+                      color: Color(0xFF888888),
+                      size: 24,
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                      child: Text(
+                        'Perfil',
+                        style: FlutterFlowTheme.of(context).bodySmall.override(
+                              fontFamily: 'Montserrat',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w500,
+                            ),
                       ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Text(
-                          'Fale Conosco',
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily: 'Montserrat',
-                                color: FlutterFlowTheme.of(context).secondaryText,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                InkWell(
-                  onTap: () => GoRouter.of(context).goNamed('Profile'),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.person_outlined,
-                        color: Color(0xFF888888),
-                        size: 24,
-                      ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Text(
-                          'Perfil',
-                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                                fontFamily: 'Montserrat',
-                                color: FlutterFlowTheme.of(context).secondaryText,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }
+
+// Leonzz
