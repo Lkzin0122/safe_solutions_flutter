@@ -220,6 +220,7 @@ class _Login1WidgetState extends State<Login1Widget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
           top: true,
           child: Row(
