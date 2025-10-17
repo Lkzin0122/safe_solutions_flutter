@@ -491,8 +491,6 @@ class _Login1WidgetState extends State<Login1Widget> {
                                               fontWeight: FontWeight.w600,
                                             ),
                                       ),
-                                      SizedBox(height:
-                                      MediaQuery.of(context).viewInsets.bottom),
                                     ),
                                   ),
                                   Padding(
@@ -552,6 +550,8 @@ class _Login1WidgetState extends State<Login1Widget> {
                                       ),
                                     ),
                                   ),
+                                  SizedBox(height:
+                                  MediaQuery.of(context).viewInsets.bottom),
                                 ],
                               ),
                             ),
