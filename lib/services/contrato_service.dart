@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/orcamento.dart';
 
 class ContratoService {
-  static const String _baseUrl = 'http://localhost:8080/contratos';
+  static const String _baseUrl = 'https://spring-aplication.onrender.com/contratos';
 
   static Future<List<Orcamento>> getContratosFinalizados(String cpf) async {
     try {

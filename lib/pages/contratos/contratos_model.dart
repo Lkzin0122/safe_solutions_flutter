@@ -166,7 +166,7 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
       
       if (cnpj != null) {
         final response = await http.get(
-          Uri.parse('http://localhost:8080/empresa/$cnpj'),
+          Uri.parse('https://spring-aplication.onrender.com/empresa/$cnpj'),
           headers: {'Content-Type': 'application/json'},
         );
         
