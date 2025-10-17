@@ -165,7 +165,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
         final List<dynamic> data = json.decode(response.body);
         return data.map((json) => ServicoModel.fromJson(json)).toList();
       } else {
-        throw Exception('Erro ao buscar serviços: ${response.statusCode}');
+        throw Exception('Erro ao buscar orçamentos: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Erro de conexão: $e');
