@@ -51,12 +51,11 @@ class _Login1WidgetState extends State<Login1Widget> {
       } catch (e) {
         print('Servidor não está respondendo: $e');
         _showErrorDialog('Servidor não está rodando. Inicie o backend Spring Boot na porta 8080.');
-        return;
-      }
+        return;      }
       
       print('Fazendo login...');
       final response = await http.get(
-        Uri.parse('https://spring-aplication.onrender.comi/empresa/login/$cnpjNumbers?senha=${Uri.encodeComponent(senhaLimpa)}'),
+        Uri.parse('https://spring-aplication.onrender.com/empresa/login/$cnpjNumbers?senha=${Uri.encodeComponent(senhaLimpa)}'),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 10));
       
