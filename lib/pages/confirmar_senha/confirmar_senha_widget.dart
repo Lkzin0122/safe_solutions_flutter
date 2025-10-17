@@ -50,6 +50,7 @@ class _ConfirmarSenhaWidgetState extends State<ConfirmarSenhaWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+resizeToAvoidBottomInset: true,
         body: SafeArea(
           top: true,
           child: Container(
