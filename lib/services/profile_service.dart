@@ -178,7 +178,7 @@ class ProfileService {
   static Future<Usuario> updateUsuario(String cpf, Usuario usuario) async {
     final cpfLimpo = cpf.replaceAll(RegExp(r'[^0-9]'), '');
     final response = await http.put(
-      Uri.parse('http://localhost:8080/usuario/$cpfLimpo'),
+      Uri.parse('https://spring-aplication.onrender.com/usuario/$cpfLimpo'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(usuario.toJson()),
     );

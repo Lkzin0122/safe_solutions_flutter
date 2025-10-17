@@ -45,7 +45,7 @@ class _FaleConoscoWidgetState extends State<FaleConoscoWidget> {
 
   Future<void> _enviarContato() async {
     try {
-      final url = Uri.parse('http://localhost:8080/contato/enviar');
+      final url = Uri.parse('https://spring-aplication.onrender.com/contato/enviar');
       
       // Busca dados da empresa logada
       final prefs = await SharedPreferences.getInstance();
