@@ -72,47 +72,8 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   
   static Set<String> completedServiceIds = {};
   
-  static List<CompletedService> completedServices = [
-    CompletedService(
-      id: '1',
-      title: 'Instalação Elétrica Residencial',
-      description: 'Instalação completa do sistema elétrico em residência de 3 quartos.',
-      icon: Icons.electrical_services,
-      completedDate: '15/12/2024',
-    ),
-    CompletedService(
-      id: '2',
-      title: 'Manutenção de Ar Condicionado',
-      description: 'Limpeza e manutenção preventiva de 4 unidades de ar condicionado.',
-      icon: Icons.ac_unit,
-      completedDate: '10/12/2024',
-    ),
-    CompletedService(
-      id: '3',
-      title: 'Pintura Comercial',
-      description: 'Pintura completa de escritório comercial de 200m².',
-      icon: Icons.format_paint,
-      completedDate: '05/12/2024',
-    ),
-    CompletedService(
-      id: '4',
-      title: 'Instalação de Câmeras de Segurança',
-      description: 'Sistema completo com 8 câmeras HD e monitoramento 24h.',
-      icon: Icons.security,
-      completedDate: '28/11/2024',
-    ),
-    CompletedService(
-      id: '5',
-      title: 'Reforma de Banheiro',
-      description: 'Reforma completa incluindo azulejos, louças e instalações hidráulicas.',
-      icon: Icons.bathroom,
-      completedDate: '20/11/2024',
-    ),
-  ];
+ 
 
-  static void addCompletedService(CompletedService service) {
-    completedServices.insert(0, service);
-  }
   
   static void completeService(String serviceId, String completedDate) {
     completedServiceIds.add(serviceId);
@@ -150,7 +111,7 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
       completedDate: completedDate,
     );
     
-    completedServices.insert(0, completedService);
+    
   }
   
   static bool isServiceCompleted(String serviceId) {
@@ -234,16 +195,7 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
     searchQuery = query;
   }
 
-  List<CompletedService> get filteredCompletedServices {
-    if (searchQuery.isEmpty) {
-      return completedServices;
-    }
-    return completedServices.where((service) => 
-      service.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
-      service.description.toLowerCase().contains(searchQuery.toLowerCase())
-    ).toList();
-  }
-  
+ 
   List<Orcamento> get filteredOrcamentosEmAndamento {
     if (searchQuery.isEmpty) {
       return _orcamentosEmAndamento;

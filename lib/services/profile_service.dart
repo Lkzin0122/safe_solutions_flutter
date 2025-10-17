@@ -8,7 +8,7 @@ import '../models/usuario.dart';
 class ProfileService {
   static const String _profileKey = 'user_profile';
   static const String _empresaKey = 'empresa_data';
-  static const String _baseUrl = 'http://localhost:8080/empresa'; // Para emulador Android
+  static const String _baseUrl = 'http://localhost:8080/empresa';
 
   static Future<UserProfile> getUserProfile() async {
     final prefs = await SharedPreferences.getInstance();

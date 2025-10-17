@@ -21,6 +21,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
   UserProfile? userProfile;
   bool isLoading = true;
   bool hasLoginError = false;
+  bool isSaving = false;
 
   @override
   void initState() {
@@ -247,18 +248,22 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                             if (_model.isEditing) ...{
                               Expanded(
                                 child: FFButtonWidget(
-                                  onPressed: () async {
+                                  onPressed: isSaving ? null : () async {
                                     try {
                                       if (_model.formKey.currentState?.validate() ?? false) {
+                                        setState(() => isSaving = true);
                                         final success = await _model.saveUserProfile();
                                         if (success && mounted) {
                                           setState(() {
                                             _model.toggleEditMode();
                                             userProfile = _model.userProfile;
+                                            isSaving = false;
                                           });
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(content: Text('Dados salvos com sucesso!'), backgroundColor: Colors.green),
                                           );
+                                        } else {
+                                          setState(() => isSaving = false);
                                         }
                                       } else {
                                         ScaffoldMessenger.of(context).showSnackBar(
@@ -267,6 +272,7 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                       }
                                     } catch (e) {
                                       print('Erro ao salvar: $e');
+                                      setState(() => isSaving = false);
                                       if (mounted) {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(content: Text('Erro ao salvar dados: ${e.toString()}'), backgroundColor: Colors.red),
@@ -274,7 +280,15 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                       }
                                     }
                                   },
-                                  text: 'Salvar',
+                                  text: isSaving ? '' : 'Salvar',
+                                  icon: isSaving ? SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                    ),
+                                  ) : null,
                                   options: FFButtonOptions(
                                     height: 50.0,
                                     color: Color(0xFF204060),
@@ -317,13 +331,13 @@ class _EditarContaWidgetState extends State<EditarContaWidget> {
                                   text: 'Editar Dados',
                                   options: FFButtonOptions(
                                     height: 50.0,
-                                    color: Colors.transparent,
+                                    color: Color(0xFF1B365D),
                                     textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                                       fontFamily: 'Montserrat',
-                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w500,
                                     ),
-                                    borderSide: BorderSide(color: FlutterFlowTheme.of(context).alternate, width: 1.0),
+                                    borderSide: BorderSide(color: Color(0xFF1B365D), width: 1.0),
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),

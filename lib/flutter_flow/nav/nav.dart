@@ -11,25 +11,16 @@ import '/pages/login1/login1_widget.dart';
 import '/pages/esqueci_senha/esqueci_senha_widget.dart';
 import '/pages/validar_codigo/validar_codigo_widget.dart';
 
-import '/pages/servicos/servicos_widget.dart';
-import '/pages/montador/montador_widget.dart';
-import '/pages/super_clean/super_clean_widget.dart';
-import '/pages/super_clean_copy/super_clean_copy_widget.dart';
-import '/pages/verificar_codigo/verificar_codigo_widget.dart';
 import '/pages/fale_conosco/fale_conosco_widget.dart';
 import '/pages/editar_conta/editar_conta_widget.dart';
 import '/pages/configuracoes/configuracoes_widget.dart';
 import '/pages/suporte/suporte_widget.dart';
 import '/pages/privacidade/privacidade_widget.dart';
 import '/pages/confirmar_senha/confirmar_senha_widget.dart';
-import '/pages/nova_senha_pos_validacao/nova_senha_pos_validacao_widget.dart';
 import '/pages/nova_senha/nova_senha_widget.dart';
 import '/pages/termos_uso/termos_uso_widget.dart';
-import '/pages/status_servico/status_servico_widget.dart';
-import '/pages/detalhes_servico/detalhes_servico_widget.dart';
-import '/pages/orcamentos/detalhes_orcamento_widget.dart';
+import '../../pages/contratos/detalhes_orcamento_widget.dart';
 
-import '/pages/test_api.dart';
 
 export 'package:go_router/go_router.dart';
 
@@ -132,32 +123,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/profile',
           builder: (context, state) => const ProfileWidget(),
         ),
-        GoRoute(
-          name: 'Servicos',
-          path: '/servicospage',
-          builder: (context, state) => const ServicosWidget(),
-        ),
-        GoRoute(
-          name: 'Montador',
-          path: '/montador',
-          builder: (context, state) => const MontadorWidget(),
-        ),
-        GoRoute(
-          name: 'SuperClean',
-          path: '/superClean',
-          builder: (context, state) => const SuperCleanWidget(),
-        ),
+  
        
-        GoRoute(
-          name: 'SuperCleanCopy',
-          path: '/superCleanCopy',
-          builder: (context, state) => const SuperCleanCopyWidget(),
-        ),
-        GoRoute(
-          name: 'VerificarCodigo',
-          path: '/verificarCodigo',
-          builder: (context, state) => const VerificarCodigoWidget(),
-        ),
         GoRoute(
           name: 'FaleConosco',
           path: '/faleConosco',
@@ -189,19 +156,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/confirmarSenha',
           builder: (context, state) => const ConfirmarSenhaWidget(),
         ),
-        GoRoute(
-          name: 'StatusServico',
-          path: '/statusServico',
-          builder: (context, state) => const StatusServicoWidget(),
-        ),
-        GoRoute(
-          name: 'NovaSenhaPosValidacao',
-          path: '/novaSenhaPosValidacao',
-          builder: (context, state) {
-            final email = state.extra as String? ?? '';
-            return NovaSenhaPosValidacaoWidget(email: email);
-          },
-        ),
+      
+      
         GoRoute(
           name: 'NovaSenha',
           path: '/nova-senha',
@@ -215,17 +171,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/termosUso',
           builder: (context, state) => const TermosUsoWidget(),
         ),
-        GoRoute(
-          name: 'DetalhesServico',
-          path: '/detalhes-servico',
-          builder: (context, state) {
-            final servico = state.extra as Servico?;
-            if (servico == null) {
-              return const ServicosWidget();
-            }
-            return DetalhesServicoWidget(servico: servico);
-          },
-        ),
+      
         GoRoute(
           name: 'DetalhesOrcamento',
           path: '/detalhes-orcamento',
@@ -236,12 +182,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             }
             return DetalhesOrcamentoWidget(orcamentoId: orcamentoId);
           },
-        ),
-
-        GoRoute(
-          name: 'TestApi',
-          path: '/testapi',
-          builder: (context, state) => TestApiPage(),
         ),
       ],
     );

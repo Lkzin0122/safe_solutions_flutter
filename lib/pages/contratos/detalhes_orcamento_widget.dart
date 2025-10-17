@@ -82,7 +82,7 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
       case StatusEnum.RECUSADO:
         return Colors.red;
       case StatusEnum.EM_ANDAMENTO:
-        return Colors.blue;
+        return Color(0xFF204060);
       case StatusEnum.FINALIZADO:
         return Colors.grey;
       default:
@@ -116,7 +116,7 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                 Container(
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.blue[50],
+                    color: Color(0xFF204060).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -124,7 +124,7 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                       Container(
                         padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Color(0xFF204060),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(Icons.timeline, color: Colors.white, size: 24),
@@ -139,14 +139,14 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.blue[800],
+                                color: Color(0xFF204060),
                               ),
                             ),
                             Text(
                               'Acompanhe o progresso',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.blue[600],
+                                color: Color(0xFF204060).withOpacity(0.7),
                               ),
                             ),
                           ],
@@ -170,7 +170,7 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                   child: ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Color(0xFF204060),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       elevation: 2,
                     ),
@@ -360,7 +360,7 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Color(0xFF204060),
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
                               child: Text(
@@ -601,7 +601,7 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue,
+                                    backgroundColor: Color(0xFF204060),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),

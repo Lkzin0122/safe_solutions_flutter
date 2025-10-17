@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'contratos_model.dart';
 import '../../services/auth_service.dart';
-import '../orcamentos/detalhes_orcamento_widget.dart';
+import 'detalhes_orcamento_widget.dart';
 export 'contratos_model.dart';
 
 
@@ -715,7 +715,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     _buildLoadingWidget()
                   else if (_model.error != null || _error != null)
                     _buildErrorWidget()
-                  else if (_model.orcamentosEmAndamento.isEmpty && _model.orcamentosFinalizados.isEmpty)
+                  else if (_model.orcamentosEmAndamento.isEmpty)
                     _buildEmptyWidget()
                   else ...[
                     // Seção de Orçamentos em Andamento
@@ -742,7 +742,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   12.0, 6.0, 12.0, 6.0),
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Color(0xFF204060),
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
                               child: Text(
@@ -776,63 +776,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                       const SizedBox(height: 30.0),
                     ],
                     
-                    // Seção de Orçamentos Finalizados
-                    if (_model.filteredOrcamentosFinalizados.isNotEmpty || (_searchQuery.isEmpty && _model.orcamentosFinalizados.isNotEmpty)) ...[
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            24.0, 20.0, 24.0, 0.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Orçamentos Finalizados',
-                              style: FlutterFlowTheme.of(context)
-                                  .headlineSmall
-                                  .override(
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Container(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 6.0, 12.0, 6.0),
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: Text(
-                                _searchQuery.isEmpty
-                                    ? '${_model.filteredOrcamentosFinalizados.length} Finalizados'
-                                    : '${_model.filteredOrcamentosFinalizados.length} Encontrados',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10.0),
-                      if (_model.filteredOrcamentosFinalizados.isEmpty && _searchQuery.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              24.0, 20.0, 24.0, 20.0),
-                          child: Text(
-                            'Nenhum orçamento finalizado encontrado com "$_searchQuery"',
-                            style: FlutterFlowTheme.of(context).bodyMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      else
-                        ..._model.filteredOrcamentosFinalizados
-                            .map((orcamento) => _buildOrcamentoCard(orcamento, isCompleted: true, isOrcamento: true)),
-                      const SizedBox(height: 30.0),
-                    ],
+
                   ],
                     const SizedBox(height: 20.0),
                   ],
