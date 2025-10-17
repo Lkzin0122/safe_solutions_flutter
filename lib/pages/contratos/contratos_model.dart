@@ -120,15 +120,16 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
 
   @override
   void initState(BuildContext context) {
-    loadContratos();
+    loadContratos(forceRefresh: true);
   }
   
-  Future<void> loadContratos() async {
+  Future<void> loadContratos({bool forceRefresh = false}) async {
     _isLoading = true;
     _error = null;
     
     try {
       _orcamentosEmAndamento = [];
+      _orcamentosFinalizados = [];
 
       String? cpf = await _getCpfUsuario();
       
@@ -147,6 +148,10 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
         _orcamentosFinalizados = orcamentos.where((o) => 
           o.statusOrcamento == StatusEnum.FINALIZADO
         ).toList();
+
+        print('Orçamentos carregados: ${orcamentos.length}');
+        print('Em andamento: ${_orcamentosEmAndamento.length}');
+        print('Finalizados: ${_orcamentosFinalizados.length}');
 
       } else {
         _error = 'CPF do usuário não encontrado';

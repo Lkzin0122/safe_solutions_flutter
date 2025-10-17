@@ -27,18 +27,21 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
 
   Future<void> _carregarDetalhes() async {
     try {
+      print('Iniciando carregamento de detalhes para ID: ${widget.orcamentoId}');
       setState(() {
         _isLoading = true;
         _error = null;
       });
 
       final orcamento = await OrcamentoService.getOrcamentoPorId(widget.orcamentoId);
+      print('Orçamento carregado: ${orcamento.toJson()}');
 
       setState(() {
         _orcamento = orcamento;
         _isLoading = false;
       });
     } catch (e) {
+      print('Erro ao carregar detalhes: $e');
       setState(() {
         _error = 'Erro ao carregar detalhes: $e';
         _isLoading = false;
@@ -60,6 +63,8 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
             backgroundColor: Colors.green,
           ),
         );
+        // Volta para a tela anterior para forçar refresh
+        Navigator.pop(context, true);
       }
     } catch (e) {
       if (mounted) {
@@ -360,11 +365,11 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                               decoration: BoxDecoration(
-                                color: Color(0xFF204060),
+                                color: _getStatusColor(_orcamento?.statusOrcamento),
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
                               child: Text(
-                                'Em Andamento',
+                                _orcamento?.statusTexto ?? 'Carregando...',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12.0,
@@ -588,6 +593,8 @@ class _DetalhesOrcamentoWidgetState extends State<DetalhesOrcamentoWidget> {
                                             backgroundColor: Colors.blue,
                                           ),
                                         );
+                                        // Volta para a tela anterior para forçar refresh
+                                        Navigator.pop(context, true);
                                       }
                                     } catch (e) {
                                       if (mounted) {

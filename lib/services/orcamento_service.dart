@@ -31,7 +31,10 @@ class OrcamentoService {
       final cpfLimpo = cpf.replaceAll(RegExp(r'[^0-9]'), '');
       final response = await http.get(
         Uri.parse('$_baseUrl/getAll/$cpfLimpo'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache', // Força buscar dados atualizados
+        },
       );
 
       if (response.statusCode == 200) {
@@ -80,24 +83,38 @@ class OrcamentoService {
   // Buscar orçamento específico por ID
   static Future<Orcamento> getOrcamentoPorId(int id) async {
     try {
+      print('Buscando orçamento ID: $id');
+      final url = '$_baseUrl/$id';
+      print('URL: $url');
+      
       final response = await http.get(
-        Uri.parse('$_baseUrl/$id'),
-        headers: {'Content-Type': 'application/json'},
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
+        },
       );
+
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
+        print('Response Data Type: ${responseData.runtimeType}');
+        
         if (responseData is List && responseData.isNotEmpty) {
+          print('Retornando primeiro item da lista');
           return Orcamento.fromJson(responseData.first);
         } else if (responseData is Map<String, dynamic>) {
+          print('Retornando objeto único');
           return Orcamento.fromJson(responseData);
         }
-        throw Exception('Orçamento não encontrado');
+        throw Exception('Orçamento não encontrado - dados vazios');
       }
-      throw Exception('Orçamento não encontrado: ${response.statusCode}');
+      throw Exception('Erro HTTP ${response.statusCode}: ${response.body}');
     } catch (e) {
-      print('Erro ao buscar orçamento por ID: $e');
-      throw Exception('Erro de conexão: $e');
+      print('Erro completo ao buscar orçamento por ID: $e');
+      rethrow;
     }
   }
 

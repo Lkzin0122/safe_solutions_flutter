@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'contratos_model.dart';
 import '../../services/auth_service.dart';
 import 'detalhes_orcamento_widget.dart';
+import 'detalhes_orcamento_widget_v2.dart';
 export 'contratos_model.dart';
 
 
@@ -270,16 +271,20 @@ class _ContratosWidgetState extends State<ContratosWidget> {
       imageUrl: imageUrl,
       isOrcamento: isOrcamento,
       isCompleted: isCompleted,
-      onTap: () {
-        if (orcamento.id != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetalhesOrcamentoWidget(
-                orcamentoId: orcamento.id!,
-              ),
+      onTap: () async {
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetalhesOrcamentoWidgetV2(
+              orcamento: orcamento,
             ),
-          );
+          ),
+        );
+        
+        // Se retornou true, significa que houve alteração, então recarrega
+        if (result == true) {
+          await _model.loadContratos(forceRefresh: true);
+          setState(() {});
         }
       },
     );
@@ -343,7 +348,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () async {
-                await _model.loadContratos();
+                await _model.loadContratos(forceRefresh: true);
                 setState(() {});
               },
               style: ElevatedButton.styleFrom(
@@ -652,7 +657,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
               ? _buildErrorScreen()
               : RefreshIndicator(
                   onRefresh: () async {
-                    await _model.loadContratos();
+                    await _model.loadContratos(forceRefresh: true);
                     setState(() {});
                   },
                   child: SingleChildScrollView(
