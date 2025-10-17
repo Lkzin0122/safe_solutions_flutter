@@ -68,6 +68,7 @@ class _EsqueciSenhaWidgetState extends State<EsqueciSenhaWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+resizeToAvoidBottomInset: false,
 
         body: SafeArea(
           child: LayoutBuilder(
