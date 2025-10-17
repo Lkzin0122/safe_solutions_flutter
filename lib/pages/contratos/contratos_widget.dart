@@ -256,10 +256,6 @@ class _ContratosWidgetState extends State<ContratosWidget> {
       description += '\nValor: R\$ ${orcamento.valorServico!.toStringAsFixed(2)}';
     }
     
-    if (orcamento.enderecoOrcamento != null) {
-      description += '\nEndereço: ${orcamento.enderecoOrcamento}';
-    }
-    
     // Adicionar status para orçamentos
     if (isOrcamento) {
       description += '\nStatus: ${orcamento.statusTexto}';
