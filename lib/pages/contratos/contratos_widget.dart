@@ -151,7 +151,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   }
 
   Future<List<ServicoModel>> fetchServicosEmpresa(String cnpj) async {
-    final url = Uri.parse('https://spring-aplication.onrender.com/servico/empresa/$cnpj');
+    final url = Uri.parse('localhost:8080/servico/empresa/$cnpj');
 
     try {
       final response = await http.get(

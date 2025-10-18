@@ -4,7 +4,7 @@ import '../models/orcamento.dart';
 import '../models/empresa.dart';
 
 class OrcamentoService {
-  static const String _baseUrl = 'https://spring-aplication.onrender.com/orcamento';
+  static const String _baseUrl = 'http://localhost:8080/orcamento';
 
   // POST /orcamento/criar-solicitacao/ - Criar nova solicitação de orçamento
   static Future<Orcamento> criarSolicitacao(Orcamento orcamento) async {

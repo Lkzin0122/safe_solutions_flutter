@@ -164,7 +164,7 @@ final cnpj = prefs.getString('user_cnpj');
 
 if (cnpj != null) {  
     final response = await http.get(  
-      Uri.parse('https://spring-aplication.onrender.com/empresa/$cnpj'),  
+      Uri.parse('http://localhost:8080/empresa/$cnpj'),  
       headers: {'Content-Type': 'application/json'},  
     );  
 

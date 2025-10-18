@@ -5,7 +5,7 @@ import '../models/empresa.dart';
 import '../services/profile_service.dart';
 
 class AuthService {
-  static const String _baseUrl = 'https://spring-aplication.onrender.com/empresa'; // Para emulador Android
+  static const String _baseUrl = 'http://localhost:8080/empresa'; // Para emulador Android
 
   static Future<Empresa> login(String cnpj, String senha) async {
     try {

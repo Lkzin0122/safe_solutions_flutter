@@ -12,7 +12,7 @@ Future<void> testOrcamentoById(int id) async {
   try {
     print('=== Testando orçamento ID: $id ===');
     final response = await http.get(
-      Uri.parse('https://spring-aplication.onrender.com/orcamento/$id'),
+      Uri.parse('http://localhost:8080/orcamento/$id'),
       headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',
