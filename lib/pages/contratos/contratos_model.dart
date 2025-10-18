@@ -58,65 +58,10 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   bool get isLoading => _isLoading;
   String? get error => _error;
   
-  bool get showMontador => searchQuery.isEmpty || 'O Montador'.toLowerCase().contains(searchQuery.toLowerCase()) || 'montagem móveis'.toLowerCase().contains(searchQuery.toLowerCase());
-  bool get showSuperClean => searchQuery.isEmpty || 'Super Clean'.toLowerCase().contains(searchQuery.toLowerCase()) || 'limpeza profissional'.toLowerCase().contains(searchQuery.toLowerCase());
-  bool get showBratecno => searchQuery.isEmpty || 'Bratecno'.toLowerCase().contains(searchQuery.toLowerCase()) || 'manutenção hardware'.toLowerCase().contains(searchQuery.toLowerCase());
   
-  int get activeServicesCount {
-    int count = 0;
-    if (!isServiceCompleted('montador') && showMontador) count++;
-    if (!isServiceCompleted('super_clean') && showSuperClean) count++;
-    if (!isServiceCompleted('bratecno') && showBratecno) count++;
-    return count;
-  }
   
   static Set<String> completedServiceIds = {};
   
- 
-
-  
-  static void completeService(String serviceId, String completedDate) {
-    completedServiceIds.add(serviceId);
-    
-    String title, description;
-    IconData icon;
-    
-    switch (serviceId) {
-      case 'montador':
-        title = 'O Montador';
-        description = 'Montagem de três móveis planejados de escritório concluída com sucesso.';
-        icon = Icons.build;
-        break;
-      case 'super_clean':
-        title = 'Super Clean';
-        description = 'Limpeza profissional de espaço comercial concluída com excelência.';
-        icon = Icons.cleaning_services;
-        break;
-      case 'bratecno':
-        title = 'Bratecno';
-        description = 'Manutenção de hardware realizada com sucesso, garantindo desempenho ideal.';
-        icon = Icons.computer;
-        break;
-      default:
-        title = 'Serviço';
-        description = 'Serviço concluído com sucesso.';
-        icon = Icons.check_circle;
-    }
-    
-    final completedService = CompletedService(
-      id: serviceId,
-      title: title,
-      description: description,
-      icon: icon,
-      completedDate: completedDate,
-    );
-    
-    
-  }
-  
-  static bool isServiceCompleted(String serviceId) {
-    return completedServiceIds.contains(serviceId);
-  }
 
   @override
   void initState(BuildContext context) {
