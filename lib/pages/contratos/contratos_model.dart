@@ -68,6 +68,44 @@ return count;
 
 static Set<String> completedServiceIds = {};
 
+static void completeService(String serviceId, String completedDate) {
+completedServiceIds.add(serviceId);
+
+String title, description;  
+IconData icon;  
+
+switch (serviceId) {  
+  case 'montador':  
+    title = 'O Montador';  
+    description = 'Montagem de três móveis planejados de escritório concluída com sucesso.';  
+    icon = Icons.build;  
+    break;  
+  case 'super_clean':  
+    title = 'Super Clean';  
+    description = 'Limpeza profissional de espaço comercial concluída com excelência.';  
+    icon = Icons.cleaning_services;  
+    break;  
+  case 'bratecno':  
+    title = 'Bratecno';  
+    description = 'Manutenção de hardware realizada com sucesso, garantindo desempenho ideal.';  
+    icon = Icons.computer;  
+    break;  
+  default:  
+    title = 'Serviço';  
+    description = 'Serviço concluído com sucesso.';  
+    icon = Icons.check_circle;  
+}  
+
+final completedService = CompletedService(  
+  id: serviceId,  
+  title: title,  
+  description: description,  
+  icon: icon,  
+  completedDate: completedDate,  
+);
+
+}
+
 static bool isServiceCompleted(String serviceId) {
 return completedServiceIds.contains(serviceId);
 }
@@ -180,5 +218,5 @@ return _orcamentosFinalizados.where((orcamento) =>
 void dispose() {
 searchController.dispose();
 }
-}
+} 
 
