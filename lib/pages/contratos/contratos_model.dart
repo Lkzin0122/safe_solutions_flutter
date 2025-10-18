@@ -10,37 +10,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 
-
-class CompletedService {
-  final String id;
-  final String title;
-  final String description;
-  final IconData icon;
-  final String completedDate;
-  final double rating;
-
-  CompletedService({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.icon,
-    required this.completedDate,
-    this.rating = 5.0,
-  });
-
-  static CompletedService fromServicoModel(dynamic servico) {
-    return CompletedService(
-      id: servico.id ?? '0',
-      title: servico.nome ?? 'Serviço',
-      description: servico.descricao ?? 'Descrição não disponível',
-      icon: Icons.check_circle,
-      completedDate: DateTime.now().toString().substring(0, 10),
-    );
-  }
-}
-
-
-
 class ContratosModel extends FlutterFlowModel<ContratosWidget> {
   bool isCompletedExpanded = false;
   final TextEditingController searchController = TextEditingController();
@@ -57,10 +26,6 @@ class ContratosModel extends FlutterFlowModel<ContratosWidget> {
 
   bool get isLoading => _isLoading;
   String? get error => _error;
-  
-  
-  
-  static Set<String> completedServiceIds = {};
   
 
   @override
