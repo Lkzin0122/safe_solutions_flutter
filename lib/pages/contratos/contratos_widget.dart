@@ -151,7 +151,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   }
 
   Future<List<ServicoModel>> fetchServicosEmpresa(String cnpj) async {
-    final url = Uri.parse('localhost:8080/servico/empresa/$cnpj');
+    final url = Uri.parse('http://localhost:8080/servico/empresa/$cnpj');
 
     try {
       final response = await http.get(
@@ -282,8 +282,16 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   }
 
   String _getDefaultImageForService(String serviceName) {
-  return 'assets/images/orcamento_default.png';
-}
+  final name = serviceName.toLowerCase();
+    if (name.contains('montador') || name.contains('montagem')) {
+      return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png';
+    } else if (name.contains('clean') || name.contains('limpeza')) {
+      return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/dfq8wa491iyv/image_17_(1).png';
+    } else if (name.contains('tecno') || name.contains('hardware')) {
+      return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/42x886euiaf7/image_20_1.png';
+    }
+    return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png';
+  }
 
   Widget _buildLoadingWidget() {
     return Padding(
