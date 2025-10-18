@@ -255,11 +255,6 @@ class _ContratosWidgetState extends State<ContratosWidget> {
     if (orcamento.valorServico != null) {
       description += '\nValor: R\$ ${orcamento.valorServico!.toStringAsFixed(2)}';
     }
-    
-    // Adicionar status para orçamentos
-    if (isOrcamento) {
-      description += '\nStatus: ${orcamento.statusTexto}';
-    }
 
     return _buildServiceCard(
       title: title,
