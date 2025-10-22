@@ -12,8 +12,6 @@ import 'detalhes_orcamento_widget.dart';
 import 'detalhes_orcamento_widget_v2.dart';
 export 'contratos_model.dart';
 
-
-
 class ServicoModel {
   final String id;
   final String nome;
@@ -105,9 +103,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
       setState(() {
         _isLoading = true;
       });
-      
+
       await _model.loadContratos();
-      
+
       setState(() {
         _isLoading = false;
       });
@@ -130,7 +128,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
 
   Future<void> _loadServicos() async {
     if (_userCpf == null) return;
-    
+
     try {
       setState(() {
         _isLoading = true;
@@ -151,7 +149,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   }
 
   Future<List<ServicoModel>> fetchServicosEmpresa(String cnpj) async {
-    final url = Uri.parse('https://spring-aplication.onrender.com/servico/empresa/$cnpj');
+    final url = Uri.parse(
+        'https://spring-aplication.onrender.com/servico/empresa/$cnpj');
 
     try {
       final response = await http.get(
@@ -173,7 +172,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   }
 
   List<ServicoModel> get _servicosAtivos {
-    var servicos = _servicos.where((servico) => servico.status == true).toList();
+    var servicos =
+        _servicos.where((servico) => servico.status == true).toList();
 
     if (_searchQuery.isNotEmpty) {
       servicos = servicos
@@ -189,7 +189,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   }
 
   List<ServicoModel> get _servicosConcluidos {
-    var servicos = _servicos.where((servico) => servico.status == false).toList();
+    var servicos =
+        _servicos.where((servico) => servico.status == false).toList();
 
     if (_searchQuery.isNotEmpty) {
       servicos = servicos
@@ -214,7 +215,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   Widget _buildServicoFromBackend(ServicoModel servico,
       {bool isCompleted = false}) {
     String imageUrl = _getDefaultImageForService(servico.nome);
-    String description = '${servico.descricao}\nLocal: ${servico.local}\nValor: R\$ ${servico.valor.toStringAsFixed(2)}';
+    String description =
+        '${servico.descricao}\nLocal: ${servico.local}\nValor: R\$ ${servico.valor.toStringAsFixed(2)}';
 
     if (isCompleted) {
       final completedService = CompletedService(
@@ -244,16 +246,18 @@ class _ContratosWidgetState extends State<ContratosWidget> {
     );
   }
 
-  Widget _buildOrcamentoCard(Orcamento orcamento, {bool isCompleted = false, bool isOrcamento = false}) {
+  Widget _buildOrcamentoCard(Orcamento orcamento,
+      {bool isCompleted = false, bool isOrcamento = false}) {
     final servico = orcamento.servico;
     if (servico == null) return const SizedBox.shrink();
 
     String title = servico.nomeServico;
     String imageUrl = _getDefaultImageForService(title);
     String description = servico.descricaoServico ?? "";
-    
+
     if (orcamento.valorServico != null) {
-      description += '\nValor: R\$ ${orcamento.valorServico!.toStringAsFixed(2)}';
+      description +=
+          '\nValor: R\$ ${orcamento.valorServico!.toStringAsFixed(2)}';
     }
 
     return _buildServiceCard(
@@ -271,7 +275,7 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             ),
           ),
         );
-        
+
         // Se retornou true, significa que houve alteração, então recarrega
         if (result == true) {
           await _model.loadContratos(forceRefresh: true);
@@ -282,8 +286,16 @@ class _ContratosWidgetState extends State<ContratosWidget> {
   }
 
   String _getDefaultImageForService(String serviceName) {
-  return 'assets/images/orcamento_default.png';
-}
+    final name = serviceName.toLowerCase();
+    if (name.contains('montador') || name.contains('montagem')) {
+      return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png';
+    } else if (name.contains('clean') || name.contains('limpeza')) {
+      return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/dfq8wa491iyv/image_17_(1).png';
+    } else if (name.contains('tecno') || name.contains('hardware')) {
+      return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/42x886euiaf7/image_20_1.png';
+    }
+    return 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/zqwlt240p7sd/image_17.png';
+  }
 
   Widget _buildLoadingWidget() {
     return Padding(
@@ -402,7 +414,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
               color: isCompleted ? Colors.grey[50] : Colors.white,
               borderRadius: BorderRadius.circular(16.0),
               border: Border.all(
-                color: isCompleted ? Colors.green : FlutterFlowTheme.of(context).primary,
+                color: isCompleted
+                    ? Colors.green
+                    : FlutterFlowTheme.of(context).primary,
                 width: 1.0,
               ),
             ),
@@ -472,9 +486,12 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                     children: [
                       if (isOrcamento)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
                           decoration: BoxDecoration(
-                            color: isCompleted ? Colors.green : FlutterFlowTheme.of(context).primary,
+                            color: isCompleted
+                                ? Colors.green
+                                : FlutterFlowTheme.of(context).primary,
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           child: Text(
@@ -488,7 +505,9 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                         ),
                       const SizedBox(height: 4.0),
                       Icon(
-                        isCompleted ? Icons.check_circle : Icons.arrow_forward_ios,
+                        isCompleted
+                            ? Icons.check_circle
+                            : Icons.arrow_forward_ios,
                         color: isCompleted ? Colors.green : Colors.grey[600],
                         size: 16.0,
                       ),
@@ -646,132 +665,136 @@ class _ContratosWidgetState extends State<ContratosWidget> {
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
-                children: [
-                  // Logo padronizada
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        24.0, 20.0, 24.0, 20.0),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x0D000000),
-                          blurRadius: 4.0,
-                          offset: Offset(0.0, 2.0),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(0.0),
-                        child: Image.network(
-                          'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
-                          width: 250.0,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Campo de busca
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        24.0, 20.0, 24.0, 0.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context)
-                            .secondaryBackground,
-                        borderRadius: BorderRadius.circular(12.0),
-                        border: Border.all(
-                            color:
-                                FlutterFlowTheme.of(context).alternate),
-                      ),
-                      child: TextField(
-                        onChanged: _updateSearchQuery,
-                        decoration: InputDecoration(
-                          hintText: 'Buscar serviços...',
-                          prefixIcon: Icon(Icons.search,
-                              color: FlutterFlowTheme.of(context)
-                                  .secondaryText),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.all(12.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (_model.isLoading || _isLoading)
-                    _buildLoadingWidget()
-                  else if (_model.error != null || _error != null)
-                    _buildErrorWidget()
-                  else if (_model.orcamentosEmAndamento.isEmpty)
-                    _buildEmptyWidget()
-                  else ...[
-                    // Seção de Orçamentos em Andamento
-                    if (_model.filteredOrcamentosEmAndamento.isNotEmpty || (_searchQuery.isEmpty && _model.orcamentosEmAndamento.isNotEmpty)) ...[
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            24.0, 20.0, 24.0, 0.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Orçamentos em Andamento',
-                              style: FlutterFlowTheme.of(context)
-                                  .headlineSmall
-                                  .override(
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Container(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12.0, 6.0, 12.0, 6.0),
-                              decoration: BoxDecoration(
-                                color: Color(0xFF204060),
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: Text(
-                                _searchQuery.isEmpty
-                                    ? '${_model.filteredOrcamentosEmAndamento.length} Em Andamento'
-                                    : '${_model.filteredOrcamentosEmAndamento.length} Encontrados',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10.0),
-                      if (_model.filteredOrcamentosEmAndamento.isEmpty && _searchQuery.isNotEmpty)
-                        Padding(
+                      children: [
+                        // Logo padronizada
+                        Container(
+                          width: double.infinity,
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               24.0, 20.0, 24.0, 20.0),
-                          child: Text(
-                            'Nenhum orçamento em andamento encontrado com "$_searchQuery"',
-                            style: FlutterFlowTheme.of(context).bodyMedium,
-                            textAlign: TextAlign.center,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0x0D000000),
+                                blurRadius: 4.0,
+                                offset: Offset(0.0, 2.0),
+                              ),
+                            ],
                           ),
-                        )
-                      else
-                        ..._model.filteredOrcamentosEmAndamento
-                            .map((orcamento) => _buildOrcamentoCard(orcamento, isOrcamento: true)),
-                      const SizedBox(height: 30.0),
-                    ],
-                    
-
-                  ],
-                    const SizedBox(height: 20.0),
-                  ],
+                          child: Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(0.0),
+                              child: Image.network(
+                                'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/safe-solutions-1bblqz/assets/mor10gnszw4j/WhatsApp_Image_2025-05-31_at_12.34.51.jpeg',
+                                width: 250.0,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Campo de busca
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              24.0, 20.0, 24.0, 0.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              borderRadius: BorderRadius.circular(12.0),
+                              border: Border.all(
+                                  color:
+                                      FlutterFlowTheme.of(context).alternate),
+                            ),
+                            child: TextField(
+                              onChanged: _updateSearchQuery,
+                              decoration: InputDecoration(
+                                hintText: 'Buscar serviços...',
+                                prefixIcon: Icon(Icons.search,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText),
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.all(12.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                        if (_model.isLoading || _isLoading)
+                          _buildLoadingWidget()
+                        else if (_model.error != null || _error != null)
+                          _buildErrorWidget()
+                        else if (_model.orcamentosEmAndamento.isEmpty)
+                          _buildEmptyWidget()
+                        else ...[
+                          // Seção de Orçamentos em Andamento
+                          if (_model.filteredOrcamentosEmAndamento.isNotEmpty ||
+                              (_searchQuery.isEmpty &&
+                                  _model.orcamentosEmAndamento.isNotEmpty)) ...[
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  24.0, 20.0, 24.0, 0.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Orçamentos em Andamento',
+                                    style: FlutterFlowTheme.of(context)
+                                        .headlineSmall
+                                        .override(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                  const SizedBox(height: 8.0),
+                                  Container(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            12.0, 6.0, 12.0, 6.0),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFF204060),
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: Text(
+                                      _searchQuery.isEmpty
+                                          ? '${_model.filteredOrcamentosEmAndamento.length} Em Andamento'
+                                          : '${_model.filteredOrcamentosEmAndamento.length} Encontrados',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
+                            if (_model.filteredOrcamentosEmAndamento.isEmpty &&
+                                _searchQuery.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    24.0, 20.0, 24.0, 20.0),
+                                child: Text(
+                                  'Nenhum orçamento em andamento encontrado com "$_searchQuery"',
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            else
+                              ..._model.filteredOrcamentosEmAndamento.map(
+                                  (orcamento) => _buildOrcamentoCard(orcamento,
+                                      isOrcamento: true)),
+                            const SizedBox(height: 30.0),
+                          ],
+                        ],
+                        const SizedBox(height: 20.0),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
+        ),
         bottomNavigationBar: Container(
           width: double.infinity,
           height: 80,
@@ -939,19 +962,19 @@ class _ContratosWidgetState extends State<ContratosWidget> {
             Text(
               'Acesso Negado',
               style: FlutterFlowTheme.of(context).headlineMedium.override(
-                fontFamily: 'Montserrat',
-                color: Colors.red,
-                fontWeight: FontWeight.bold,
-              ),
+                    fontFamily: 'Montserrat',
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 16.0),
             Text(
               'Você precisa fazer login para acessar esta página.',
               textAlign: TextAlign.center,
               style: FlutterFlowTheme.of(context).bodyLarge.override(
-                fontFamily: 'Montserrat',
-                color: FlutterFlowTheme.of(context).secondaryText,
-              ),
+                    fontFamily: 'Montserrat',
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                  ),
             ),
             const SizedBox(height: 32.0),
             ElevatedButton(
@@ -961,7 +984,8 @@ class _ContratosWidgetState extends State<ContratosWidget> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: FlutterFlowTheme.of(context).primary,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 32.0, vertical: 16.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
                 ),
@@ -969,10 +993,10 @@ class _ContratosWidgetState extends State<ContratosWidget> {
               child: Text(
                 'Fazer Login',
                 style: FlutterFlowTheme.of(context).titleMedium.override(
-                  fontFamily: 'Montserrat',
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
+                      fontFamily: 'Montserrat',
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ),
           ],
