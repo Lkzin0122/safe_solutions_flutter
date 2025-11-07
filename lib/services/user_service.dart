@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import '../models/usuario.dart';
 
 class UsuarioService {
-  final Dio dio = Dio(BaseOptions(baseUrl: 'https://spring-aplication.onrender.com/usuario'));
+  final Dio dio = Dio(BaseOptions(baseUrl: 'http://localhost:8080/usuario'));
 
   Future<Usuario?> buscarPorEmail(String email) async {
     try {

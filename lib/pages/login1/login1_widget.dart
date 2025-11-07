@@ -44,7 +44,7 @@ class _Login1WidgetState extends State<Login1Widget> {
       print('Testando conexão com servidor...');
       try {
         final testResponse = await http.get(
-          Uri.parse('https://spring-aplication.onrender.com/empresa'),
+          Uri.parse('http://localhost:8080/empresa'),
           headers: {'Content-Type': 'application/json'},
         ).timeout(const Duration(seconds: 5));
         print('Servidor respondeu: ${testResponse.statusCode}');
@@ -55,7 +55,7 @@ class _Login1WidgetState extends State<Login1Widget> {
       
       print('Fazendo login...');
       final response = await http.get(
-        Uri.parse('https://spring-aplication.onrender.com/empresa/login/$cnpjNumbers?senha=${Uri.encodeComponent(senhaLimpa)}'),
+        Uri.parse('http://localhost:8080/empresa/login/$cnpjNumbers?senha=${Uri.encodeComponent(senhaLimpa)}'),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 10));
       

@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class RecuperacaoSenhaService {
-  static const String baseUrl = 'https://spring-aplication.onrender.com/usuario';
+  static const String baseUrl = 'http://localhost:8080/usuario';
 
   static Future<Map<String, dynamic>> validarEmailUsuario(String email) async {
     try {

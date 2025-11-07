@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/empresa.dart';
 
 class EmpresaService {
-  static const String _baseUrl = 'https://spring-aplication.onrender.com/empresa';
+  static const String _baseUrl = 'http://localhost:8080/empresa';
 
   static Future<Map<String, dynamic>?> getEmpresaData() async {
     final prefs = await SharedPreferences.getInstance();
