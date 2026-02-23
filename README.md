@@ -12,8 +12,6 @@ O sistema foi projetado seguindo uma arquitetura moderna baseada em **API REST**
 
 ## 🏗️ Arquitetura do Sistema****
 
-## 🏗️ Arquitetura do Sistema
-
 ```text
 Aplicativo Mobile (Flutter)
         │
@@ -25,9 +23,7 @@ Banco de Dados SQL Server
         ▲
         │
 Plataforma Web (React)
-
-
----
+```
 
 ## 🌐 Frontend Web — React
 
