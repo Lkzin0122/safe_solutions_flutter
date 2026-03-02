@@ -159,3 +159,13 @@ O Safe Solutions foi criado com o objetivo de:
 - Oferecer transparência no andamento dos serviços
 
 ---
+
+## Integrantes do Projeto:
+
+- Lucas Gabriel - Desenvolvimento Web e Scrum Master
+- Geovanna Cunha - Documentação do projeto e Product Owner
+- Bruno Magno - Desenvolvimento Mobile
+- Lucas Bitencourt - Desenvolvimento Mobile
+- Vinicius de Santana - Documentação do Projeto
+- Bethânia Renero - Documentação do Projeto
+- Fernanda Lopes - Documentação do Projeto
